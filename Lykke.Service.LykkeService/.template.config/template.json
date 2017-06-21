@@ -1,0 +1,19 @@
+{
+  "author": "Lykke",
+  "classifications": ["LykkeService"],
+  "name": "LykkeService",
+  "identity": "LykkeService",
+  "shortName": "lkeservice",
+  "preferNameDirectory" : "true",
+  "tags": {
+    "language": "C#"
+  },
+  "sourceName": "LykkeService",
+  "symbols":{
+        "serviceName": {
+            "type": "parameter",
+            "defaultValue": "LykkeService",
+            "replaces":"LykkeService"
+        }
+    }
+}
