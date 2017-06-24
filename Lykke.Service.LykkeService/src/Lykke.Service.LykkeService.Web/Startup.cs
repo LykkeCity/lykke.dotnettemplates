@@ -62,7 +62,7 @@ namespace Lykke.Service.LykkeService.Web
             return new AutofacServiceProvider(ApplicationContainer);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime appLifetime)
         {
             if (env.IsDevelopment())
             {
@@ -72,6 +72,11 @@ namespace Lykke.Service.LykkeService.Web
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUi();
+
+            appLifetime.ApplicationStopped.Register(() =>
+            {
+                ApplicationContainer.Dispose();
+            });
         }
     }
 }
