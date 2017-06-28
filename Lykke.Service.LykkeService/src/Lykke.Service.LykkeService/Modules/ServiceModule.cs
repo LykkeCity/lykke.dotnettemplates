@@ -5,7 +5,7 @@ using Lykke.Logs;
 using Lykke.Service.LykkeService.Core;
 using Microsoft.Extensions.PlatformAbstractions;
 
-namespace Lykke.Service.LykkeService.Web.Modules
+namespace Lykke.Service.LykkeService.Modules
 {
     public class ServiceModule : Module
     {

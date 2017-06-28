@@ -3,7 +3,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Flurl.Http;
 using Lykke.Service.LykkeService.Core;
-using Lykke.Service.LykkeService.Web.Modules;
+using Lykke.Service.LykkeService.Modules;
 using Lykke.SettingsReader;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.Swagger.Model;
 
-namespace Lykke.Service.LykkeService.Web
+namespace Lykke.Service.LykkeService
 {
     public class Startup
     {

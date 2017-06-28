@@ -1,4 +1,4 @@
-﻿namespace Lykke.Service.IpGeoLocation.Web.Models
+﻿namespace Lykke.Service.LykkeService.Models
 {
     public class IsAliveResponse
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Common.Log;
 
-namespace Lykke.Service.LykkeService
+namespace Lykke.Service.LykkeService.Client
 {
     public class LykkeServiceClient : ILykkeServiceClient, IDisposable
     {
