@@ -8,11 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Lykke.Common" Version="1.1.69" />
+    <PackageReference Include="Lykke.Common" Version="1.1.76" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Lykke.Service.LykkeService\Lykke.Service.LykkeService.csproj" />
+    <Folder Include="Domain\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

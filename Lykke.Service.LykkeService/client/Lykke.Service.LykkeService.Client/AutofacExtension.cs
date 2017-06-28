@@ -2,7 +2,7 @@
 using Autofac;
 using Common.Log;
 
-namespace Lykke.Service.LykkeService
+namespace Lykke.Service.LykkeService.Client
 {
     public static class AutofacExtension
     {

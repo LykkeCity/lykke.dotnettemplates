@@ -1,8 +1,9 @@
 ﻿using System;
-using Lykke.Service.IpGeoLocation.Web.Models;
+using Lykke.Service.LykkeService.Models;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.SwaggerGen.Annotations;
 
-namespace Lykke.Service.IpGeoLocation.Web.Controllers
+namespace Lykke.Service.LykkeService.Controllers
 {
     [Route("api/[controller]")]
     public class IsAliveController : Controller
@@ -12,6 +13,7 @@ namespace Lykke.Service.IpGeoLocation.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [SwaggerOperation("IsAlive")]
         public IsAliveResponse Get()
         {
             return new IsAliveResponse

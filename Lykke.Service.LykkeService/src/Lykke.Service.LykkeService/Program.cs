@@ -1,8 +1,7 @@
 ﻿using System.IO;
-using Lykke.Service.IpGeoLocation.Web;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Lykke.Service.LykkeService.Web
+namespace Lykke.Service.LykkeService
 {
     public class Program
     {
@@ -13,6 +12,7 @@ namespace Lykke.Service.LykkeService.Web
                 .UseUrls("http://*:5000")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
+                .UseApplicationInsights()
                 .Build();
 
             host.Run();
