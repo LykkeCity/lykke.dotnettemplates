@@ -15,10 +15,6 @@
 
   <ItemGroup>
     <Folder Include="AutorestClient\" />
-    <Folder Include="AutorestClient\" />
-    <Folder Include="AutorestClient\" />
-    <Folder Include="AutorestClient\" />
-    <Folder Include="AutorestClient\" />
     <Folder Include="Models\" />
   </ItemGroup>
 

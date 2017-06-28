@@ -1,15 +1,20 @@
 ﻿using System;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Flurl.Http;
+using AzureStorage.Tables;
+using Common.Log;
+using Lykke.AzureQueueIntegration;
+using Lykke.Common.ApiLibrary.Middleware;
+using Lykke.Common.ApiLibrary.Swagger;
+using Lykke.Logs;
 using Lykke.Service.LykkeService.Core;
 using Lykke.Service.LykkeService.Modules;
 using Lykke.SettingsReader;
+using Lykke.SlackNotification.AzureQueue;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.Swagger.Model;
 
 namespace Lykke.Service.LykkeService
 {
@@ -42,23 +47,19 @@ namespace Lykke.Service.LykkeService
 
             services.AddSwaggerGen(options =>
             {
-                options.SingleApiVersion(new Info
-                {
-                    Version = "v1",
-                    Title = "LykkeService Api"
-                });
-                options.DescribeAllEnumsAsStrings();
+                options.DefaultLykkeConfiguration("v1", "LykkeService API");
             });
 
             var builder = new ContainerBuilder();
-
-            AppSettings appSettings = Environment.IsDevelopment()
+            var appSettings = Environment.IsDevelopment()
                 ? Configuration.Get<AppSettings>()
-                : SettingsProcessor.Process<AppSettings>(Configuration["SettingsUrl"].GetStringAsync().Result);
+                : HttpSettingsLoader.Load<AppSettings>();
+            var log = CreateLogWithSlack(services, appSettings);
 
-            builder.RegisterModule(new ServiceModule(appSettings.LykkeServiceService));
+            builder.RegisterModule(new ServiceModule(appSettings.LykkeServiceService, log));
             builder.Populate(services);
             ApplicationContainer = builder.Build();
+
             return new AutofacServiceProvider(ApplicationContainer);
         }
 
@@ -69,6 +70,8 @@ namespace Lykke.Service.LykkeService
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseLykkeMiddleware("LykkeService", ex => new {Message = "Technical problem"});
+
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUi();
@@ -77,6 +80,42 @@ namespace Lykke.Service.LykkeService
             {
                 ApplicationContainer.Dispose();
             });
+        }
+
+        private static ILog CreateLogWithSlack(IServiceCollection services, AppSettings settings)
+        {
+            LykkeLogToAzureStorage logToAzureStorage = null;
+
+            var logToConsole = new LogToConsole();
+            var logAggregate = new LogAggregate();
+
+            logAggregate.AddLogger(logToConsole);
+
+            var dbLogConnectionString = settings.LykkeServiceService.Db.LogsConnString;
+
+            // Creating azure storage logger, which logs own messages to concole log
+            if (!string.IsNullOrEmpty(dbLogConnectionString) && !(dbLogConnectionString.StartsWith("${") && dbLogConnectionString.EndsWith("}")))
+            {
+                logToAzureStorage = new LykkeLogToAzureStorage("Lykke.Service.LykkeService", new AzureTableStorage<LogEntity>(
+                    settings.LykkeServiceService.Db.LogsConnString, "LykkeServiceLog", logToConsole));
+
+                logAggregate.AddLogger(logToAzureStorage);
+            }
+
+            // Creating aggregate log, which logs to console and to azure storage, if last one specified
+            var log = logAggregate.CreateLogger();
+
+            // Creating slack notification service, which logs own azure queue processing messages to aggregate log
+            var slackService = services.UseSlackNotificationsSenderViaAzureQueue(new AzureQueueIntegration.AzureQueueSettings
+            {
+                ConnectionString = settings.SlackNotifications.AzureQueue.ConnectionString,
+                QueueName = settings.SlackNotifications.AzureQueue.QueueName
+            }, log);
+
+            // Finally, setting slack notification for azure storage log, which will forward necessary message to slack service
+            logToAzureStorage?.SetSlackNotification(slackService);
+
+            return log;
         }
     }
 }

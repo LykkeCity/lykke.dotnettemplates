@@ -1,19 +1,24 @@
 ﻿using Autofac;
-using AzureStorage.Tables;
+using Autofac.Extensions.DependencyInjection;
 using Common.Log;
-using Lykke.Logs;
 using Lykke.Service.LykkeService.Core;
-using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Lykke.Service.LykkeService.Modules
 {
     public class ServiceModule : Module
     {
         private readonly LykkeServiceSettings _settings;
+        private readonly ILog _log;
+        // NOTE: you can remove it if you don't need to use IServiceCollection extensions to register service specific dependencies
+        private readonly IServiceCollection _services;
 
-        public ServiceModule(LykkeServiceSettings settings)
+        public ServiceModule(LykkeServiceSettings settings, ILog log)
         {
             _settings = settings;
+            _log = log;
+
+            _services = new ServiceCollection();
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -21,12 +26,13 @@ namespace Lykke.Service.LykkeService.Modules
             builder.RegisterInstance(_settings)
                 .SingleInstance();
 
-            var log = new LykkeLogToAzureStorage(PlatformServices.Default.Application.ApplicationName,
-                new AzureTableStorage<LogEntity>(_settings.Db.LogsConnString, "LykkeServiceLog", null));
-
-            builder.RegisterInstance(log)
+            builder.RegisterInstance(_log)
                 .As<ILog>()
                 .SingleInstance();
+
+            // TODO: Add your dependencies here
+
+            builder.Populate(_services);
         }
     }
 }

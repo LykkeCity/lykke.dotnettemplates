@@ -1,6 +1,7 @@
 ﻿using System;
 using Lykke.Service.LykkeService.Models;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.SwaggerGen.Annotations;
 
 namespace Lykke.Service.LykkeService.Controllers
 {
@@ -12,6 +13,7 @@ namespace Lykke.Service.LykkeService.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [SwaggerOperation("IsAlive")]
         public IsAliveResponse Get()
         {
             return new IsAliveResponse
