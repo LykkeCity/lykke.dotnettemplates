@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lykke.Service.LykkeService.Core\Lykke.Service.LykkeService.Core.csproj" />
-    <ProjectReference Include="..\Lykke.Service.LykkeService\Lykke.Service.LykkeService.csproj" />
   </ItemGroup>
 
 </Project>

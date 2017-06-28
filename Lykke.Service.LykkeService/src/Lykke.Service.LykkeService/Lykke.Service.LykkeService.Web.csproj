@@ -35,7 +35,6 @@
     <ProjectReference Include="..\Lykke.Service.LykkeService.AzureRepositories\Lykke.Service.LykkeService.AzureRepositories.csproj" />
     <ProjectReference Include="..\Lykke.Service.LykkeService.Core\Lykke.Service.LykkeService.Core.csproj" />
     <ProjectReference Include="..\Lykke.Service.LykkeService.Services\Lykke.Service.LykkeService.Services.csproj" />
-    <ProjectReference Include="..\Lykke.Service.LykkeService\Lykke.Service.LykkeService.csproj" />
   </ItemGroup>
 
 </Project>
