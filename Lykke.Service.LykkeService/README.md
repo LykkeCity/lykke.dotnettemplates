@@ -10,12 +10,12 @@ Install template:
 ```sh
 $ dotnet new --install ${path}
 ```
-where `${path}` is the path to the clonned directory (where folder .template.config)
+where `${path}` is the path to the clonned directory (where folder .template.config placed) without trailing slash
 
 Now new template can be used in dotnet cli:
 
 ```sh
-dotnet new lkeservice -n ${ServiceName}
+dotnet new lkeservice -n ${ServiceName} -o Lykke.Service.${ServiceName}
 ```
 This will create a solution in the current folder, where `${ServiceName}` is the service name without Lykke.Service. prefix. 
 Optionally -o output-folder parameter can be used to create solution in provided folder
@@ -26,7 +26,7 @@ When temlate has changed, to update installed template run again command:
 $ dotnet new --install ${path}
 ```
 
-To remove installed custom temlates run command:
+To remove all installed custom temlates run command:
 
 ```sh
 $ dotnet new --debug:reinit 
