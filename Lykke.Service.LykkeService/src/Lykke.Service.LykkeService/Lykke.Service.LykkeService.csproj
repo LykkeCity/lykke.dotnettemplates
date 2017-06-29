@@ -8,6 +8,13 @@
     <RootNamespace>Lykke.Service.LykkeService</RootNamespace>
   </PropertyGroup>
 
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
   <ItemGroup>
     <None Update="Dockerfile">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

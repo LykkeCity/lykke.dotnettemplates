@@ -1,6 +1,6 @@
 # Lykke.Service template #
 
-dotnet cli template for generating a solution for the service Lykke.Service.ServiceName
+dotnet cli template for generating a solution for the job Lykke.Job.JobName
 
 ### How to use? ###
 
@@ -15,9 +15,9 @@ where `${path}` is the path to the clonned directory (where folder .template.con
 Now new template can be used in dotnet cli:
 
 ```sh
-dotnet new lkeservice -n ${ServiceName} -o Lykke.Service.${ServiceName}
+dotnet new lkejob -n ${JobName} -o Lykke.Service.${JobName}
 ```
-This will create a solution in the current folder, where `${ServiceName}` is the service name without Lykke.Service. prefix. 
+This will create a solution in the current folder, where `${JobName}` is the job name without Lykke.Job. prefix.
 
 When temlate has changed, to update installed template run again command:
 

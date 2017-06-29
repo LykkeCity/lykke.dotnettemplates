@@ -53,7 +53,7 @@ namespace Lykke.Service.LykkeService
             var builder = new ContainerBuilder();
             var appSettings = Environment.IsDevelopment()
                 ? Configuration.Get<AppSettings>()
-                : HttpSettingsLoader.Load<AppSettings>();
+                : HttpSettingsLoader.Load<AppSettings>(Configuration.GetValue<string>("SettingsUrl"));
             var log = CreateLogWithSlack(services, appSettings);
 
             builder.RegisterModule(new ServiceModule(appSettings.LykkeServiceService, log));
@@ -97,7 +97,7 @@ namespace Lykke.Service.LykkeService
             if (!string.IsNullOrEmpty(dbLogConnectionString) && !(dbLogConnectionString.StartsWith("${") && dbLogConnectionString.EndsWith("}")))
             {
                 logToAzureStorage = new LykkeLogToAzureStorage("Lykke.Service.LykkeService", new AzureTableStorage<LogEntity>(
-                    settings.LykkeServiceService.Db.LogsConnString, "LykkeServiceLog", logToConsole));
+                    dbLogConnectionString, "LykkeServiceLog", logToConsole));
 
                 logAggregate.AddLogger(logToAzureStorage);
             }
