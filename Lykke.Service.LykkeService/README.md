@@ -30,3 +30,7 @@ To remove all installed custom temlates run command:
 ```sh
 $ dotnet new --debug:reinit 
 ```
+
+### Developing notes ###
+
+See this [link](https://github.com/KonstantinRyazantsev/lykke.dotnettemplates/blob/master/Lykke.Service.LykkeService/src/Lykke.Service.LykkeService/Readme.md)
