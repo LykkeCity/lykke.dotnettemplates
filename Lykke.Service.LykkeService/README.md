@@ -18,7 +18,6 @@ Now new template can be used in dotnet cli:
 dotnet new lkeservice -n ${ServiceName} -o Lykke.Service.${ServiceName}
 ```
 This will create a solution in the current folder, where `${ServiceName}` is the service name without Lykke.Service. prefix. 
-Optionally -o output-folder parameter can be used to create solution in provided folder
 
 When temlate has changed, to update installed template run again command:
 
