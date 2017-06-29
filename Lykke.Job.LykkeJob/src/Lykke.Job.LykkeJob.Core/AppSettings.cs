@@ -8,6 +8,7 @@
         public class LykkeJobSettings
         {
             public DbSettings Db { get; set; }
+            public string TriggerQueueConnectionString { get; set; }
         }
 
         public class DbSettings

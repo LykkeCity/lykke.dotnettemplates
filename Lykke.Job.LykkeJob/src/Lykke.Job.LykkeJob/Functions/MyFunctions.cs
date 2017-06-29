@@ -8,11 +8,9 @@ namespace Lykke.Job.LykkeJob.Functions
     // NOTE: This is the example functions class
     public class MyFunctions
     {
-        private readonly AppSettings _appSettings;
-
-        public MyFunctions(AppSettings appSettings)
+        // NOTE: The object is instantiated using DI container, so registered dependencies are injected well
+        public MyFunctions(AppSettings.LykkeJobSettings appSettings)
         {
-            _appSettings = appSettings;
         }
 
         [TimerTrigger("00:00:10")]

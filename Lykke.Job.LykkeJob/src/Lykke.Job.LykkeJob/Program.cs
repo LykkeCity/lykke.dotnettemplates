@@ -1,4 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using Lykke.JobTriggers.Triggers;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Lykke.Job.LykkeJob
 {
@@ -6,15 +11,38 @@ namespace Lykke.Job.LykkeJob
     {
         static void Main(string[] args)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(System.IO.Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
-                .AddJsonFile($"appsettings.{AppHost.HostingEnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-            var configuration = builder.Build();
-            var host = new AppHost(configuration);
+            var webHostCancellationTokenSource = new CancellationTokenSource();
+            IWebHost webHost = null;
+            TriggerHost triggerHost = null;
+            Task webHostTask = null;
+            Task triggerHostTask = null;
 
-            host.Run();
+            try
+            {
+                webHost = new WebHostBuilder()
+                    .UseKestrel()
+                    .UseUrls("http://*:5000")
+                    .UseContentRoot(Directory.GetCurrentDirectory())
+                    .UseStartup<Startup>()
+                    .UseApplicationInsights()
+                    .Build();
+
+                triggerHost = new TriggerHost(webHost.Services);
+
+                webHostTask = Task.Factory.StartNew(() => webHost.Run(webHostCancellationTokenSource.Token));
+                triggerHostTask = triggerHost.Start();
+                
+                Task.WhenAny(webHostTask, triggerHostTask).Wait();
+            }
+            finally
+            {
+                Console.WriteLine("Terminating...");
+
+                webHostCancellationTokenSource.Cancel();
+                webHostTask?.Wait();
+                triggerHost?.Cancel();
+                triggerHostTask?.Wait();
+            }
         }
     }
 }

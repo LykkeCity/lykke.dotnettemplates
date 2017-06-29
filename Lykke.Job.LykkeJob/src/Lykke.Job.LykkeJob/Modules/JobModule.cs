@@ -2,6 +2,7 @@
 using Autofac.Extensions.DependencyInjection;
 using Common.Log;
 using Lykke.Job.LykkeJob.Core;
+using Lykke.JobTriggers.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lykke.Job.LykkeJob.Modules
@@ -29,6 +30,9 @@ namespace Lykke.Job.LykkeJob.Modules
             builder.RegisterInstance(_log)
                 .As<ILog>()
                 .SingleInstance();
+
+            // NOTE: You can implement your own poison queue notifier. See https://github.com/LykkeCity/JobTriggers/blob/master/readme.md
+            // builder.Register<PoisionQueueNotifierImplementation>().As<IPoisionQueueNotifier>();
 
             // TODO: Add your dependencies here
 

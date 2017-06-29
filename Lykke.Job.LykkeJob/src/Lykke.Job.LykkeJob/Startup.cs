@@ -5,9 +5,11 @@ using AzureStorage.Tables;
 using Common.Log;
 using Lykke.Common.ApiLibrary.Middleware;
 using Lykke.Common.ApiLibrary.Swagger;
+using Lykke.Job.LykkeJob.Core;
+using Lykke.Job.LykkeJob.Models;
+using Lykke.Job.LykkeJob.Modules;
+using Lykke.JobTriggers.Extenstions;
 using Lykke.Logs;
-using Lykke.Service.LykkeService.Core;
-using Lykke.Service.LykkeService.Modules;
 using Lykke.SettingsReader;
 using Lykke.SlackNotification.AzureQueue;
 using Microsoft.AspNetCore.Builder;
@@ -15,7 +17,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Lykke.Service.LykkeService
+namespace Lykke.Job.LykkeJob
 {
     public class Startup
     {
@@ -30,8 +32,8 @@ namespace Lykke.Service.LykkeService
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
-            Configuration = builder.Build();
 
+            Configuration = builder.Build();
             Environment = env;
         }
 
@@ -40,12 +42,13 @@ namespace Lykke.Service.LykkeService
             services.AddMvc()
                 .AddJsonOptions(options =>
                 {
-                    options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+                    options.SerializerSettings.ContractResolver =
+                        new Newtonsoft.Json.Serialization.DefaultContractResolver();
                 });
 
             services.AddSwaggerGen(options =>
             {
-                options.DefaultLykkeConfiguration("v1", "LykkeService API");
+                options.DefaultLykkeConfiguration("v1", "LykkeJob API");
             });
 
             var builder = new ContainerBuilder();
@@ -54,8 +57,22 @@ namespace Lykke.Service.LykkeService
                 : HttpSettingsLoader.Load<AppSettings>(Configuration.GetValue<string>("SettingsUrl"));
             var log = CreateLogWithSlack(services, appSettings);
 
-            builder.RegisterModule(new ServiceModule(appSettings.LykkeServiceService, log));
+            builder.RegisterModule(new JobModule(appSettings.LykkeJobJob, log));
+
+            if (string.IsNullOrWhiteSpace(appSettings.LykkeJobJob.TriggerQueueConnectionString))
+            {
+                builder.AddTriggers();
+            }
+            else
+            {
+                builder.AddTriggers(pool =>
+                {
+                    pool.AddDefaultConnection(appSettings.LykkeJobJob.TriggerQueueConnectionString);
+                });
+            }
+
             builder.Populate(services);
+
             ApplicationContainer = builder.Build();
 
             return new AutofacServiceProvider(ApplicationContainer);
@@ -68,7 +85,7 @@ namespace Lykke.Service.LykkeService
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseLykkeMiddleware("LykkeService", ex => new {Message = "Technical problem"});
+            app.UseLykkeMiddleware("LykkeJob", ex => new ErrorResponse { ErrorMessage = "Technical problem" });
 
             app.UseMvc();
             app.UseSwagger();
@@ -89,13 +106,13 @@ namespace Lykke.Service.LykkeService
 
             logAggregate.AddLogger(logToConsole);
 
-            var dbLogConnectionString = settings.LykkeServiceService.Db.LogsConnString;
+            var dbLogConnectionString = settings.LykkeJobJob.Db.LogsConnString;
 
             // Creating azure storage logger, which logs own messages to concole log
             if (!string.IsNullOrEmpty(dbLogConnectionString) && !(dbLogConnectionString.StartsWith("${") && dbLogConnectionString.EndsWith("}")))
             {
-                logToAzureStorage = new LykkeLogToAzureStorage("Lykke.Service.LykkeService", new AzureTableStorage<LogEntity>(
-                    dbLogConnectionString, "LykkeServiceLog", logToConsole));
+                logToAzureStorage = new LykkeLogToAzureStorage("Lykke.Job.LykkeJob", new AzureTableStorage<LogEntity>(
+                    dbLogConnectionString, "LykkeJobLog", logToConsole));
 
                 logAggregate.AddLogger(logToAzureStorage);
             }

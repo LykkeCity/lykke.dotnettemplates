@@ -33,3 +33,32 @@ Default launchSettings.json is:
 ## Job triggers
 
 See [Job Triggers read me](https://github.com/LykkeCity/JobTriggers/blob/master/readme.md)
+
+## Health monitoring
+
+Job should provides it's health status by responding to HTTP /api/isAlive request. 
+If job health is ok, it should respond IsAliveResponse with status code 200, if job health is bad, it should respond ErrorResponse with status code 500.
+You can extend IsAliveResponse to  provide all necessary job health information.
+
+*Job shouldn't receive any other HTTP requests*
+
+Typical IsAlive action looks like:
+
+```cs
+    public IActionResult Get()
+    {
+        if (!IsHealthy())
+        {
+            return StatusCode((int) HttpStatusCode.InternalServerError, new ErrorResponse
+            {
+                ErrorMessage = GetHealthProblemDescription()
+            });
+        }
+
+        return Ok(new IsAliveResponse
+        {
+            Version = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion,
+            Env = Environment.GetEnvironmentVariable("Env")
+        });
+    }
+```
