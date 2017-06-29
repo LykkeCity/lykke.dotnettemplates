@@ -33,4 +33,4 @@ $ dotnet new --debug:reinit
 
 ### Developing notes ###
 
-See this [link](https://github.com/KonstantinRyazantsev/lykke.dotnettemplates/tree/master/Lykke.Job.LykkeJob/src/Lykke.Job.LykkeJob)
+See this [link](https://github.com/KonstantinRyazantsev/lykke.dotnettemplates/blob/master/Lykke.Job.LykkeJob/src/Lykke.Job.LykkeJob/Readme.md)
