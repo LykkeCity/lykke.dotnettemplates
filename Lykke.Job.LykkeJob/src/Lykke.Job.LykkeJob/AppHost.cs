@@ -41,7 +41,7 @@ namespace Lykke.Job.LykkeJob
             var services = new ServiceCollection();
             var log = CreateLogWithSlack(services, appSettings);
             
-            builder.RegisterModule(new JobModule(appSettings.AssetsService, log));
+            builder.RegisterModule(new JobModule(appSettings.LykkeJobJob, log));
             builder.Populate(services);
 
             using (var jobContainer = builder.Build())
@@ -61,7 +61,7 @@ namespace Lykke.Job.LykkeJob
 
             logAggregate.AddLogger(logToConsole);
 
-            var dbLogConnectionString = settings.AssetsService.Db.LogsConnString;
+            var dbLogConnectionString = settings.LykkeJobJob.Db.LogsConnString;
 
             // Creating azure storage logger, which logs own messages to concole log
             if (!string.IsNullOrEmpty(dbLogConnectionString) && !(dbLogConnectionString.StartsWith("${") && dbLogConnectionString.EndsWith("}")))
