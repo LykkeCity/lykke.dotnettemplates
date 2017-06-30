@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "LykkeJob Development": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "LykkeJob Remote Settings": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "SettingsUrl": ""
+      }
+    }
+  }
+}

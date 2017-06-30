@@ -1,0 +1,19 @@
+{
+  "author": "Lykke",
+  "classifications": ["LykkeJob"],
+  "name": "LykkeJob",
+  "identity": "LykkeJob",
+  "shortName": "lkejob",
+  "preferNameDirectory" : "true",
+  "tags": {
+    "language": "C#"
+  },
+  "sourceName": "LykkeJob",
+  "symbols":{
+        "serviceName": {
+            "type": "parameter",
+            "defaultValue": "LykkeJob",
+            "replaces":"LykkeJob"
+        }
+    }
+}
