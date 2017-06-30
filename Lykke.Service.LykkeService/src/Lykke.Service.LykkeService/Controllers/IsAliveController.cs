@@ -19,7 +19,7 @@ namespace Lykke.Service.LykkeService.Controllers
             return new IsAliveResponse
             {
                 Version = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion,
-                Env = Environment.GetEnvironmentVariable("Env")
+                Env = Environment.GetEnvironmentVariable("ENV_INFO")
             };
         }
     }

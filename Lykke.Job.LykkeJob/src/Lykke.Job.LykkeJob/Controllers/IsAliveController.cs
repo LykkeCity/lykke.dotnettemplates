@@ -40,7 +40,7 @@ namespace Lykke.Job.LykkeJob.Controllers
             return Ok(new IsAliveResponse
             {
                 Version = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion,
-                Env = Environment.GetEnvironmentVariable("Env"),
+                Env = Environment.GetEnvironmentVariable("ENV_INFO"),
 #if (examples)
 
                 // NOTE: Health status information example: 

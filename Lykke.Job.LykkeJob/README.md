@@ -156,7 +156,7 @@ Typical IsAlive action looks like:
         return Ok(new IsAliveResponse
         {
             Version = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion,
-            Env = Environment.GetEnvironmentVariable("Env"),
+            Env = Environment.GetEnvironmentVariable("ENV_INFO"),
 
             // NOTE: Health status information example: 
             LastFooStartedMoment = _healthService.LastFooStartedMoment,
