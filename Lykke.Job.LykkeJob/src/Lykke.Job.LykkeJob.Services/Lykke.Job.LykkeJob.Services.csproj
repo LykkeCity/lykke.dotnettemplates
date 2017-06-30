@@ -8,4 +8,8 @@
     <PackageReference Include="Lykke.Common" Version="1.1.76" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Lykke.Job.LykkeJob.Core\Lykke.Job.LykkeJob.Core.csproj" />
+  </ItemGroup>
+
 </Project>
