@@ -5,7 +5,6 @@ using Common.Log;
 using Lykke.Job.LykkeJob.Core;
 using Lykke.Job.LykkeJob.Core.Services;
 using Lykke.Job.LykkeJob.Services;
-using Lykke.JobTriggers.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lykke.Job.LykkeJob.Modules
@@ -38,15 +37,16 @@ namespace Lykke.Job.LykkeJob.Modules
                 .As<IHealthService>()
                 .SingleInstance()
                 .WithParameter(TypedParameter.From(TimeSpan.FromSeconds(30)));
+#if (examples)
 
             // NOTE: Service registrations example:
 
             builder.RegisterType<MyFooService>()
-                .As<IMyFooService>()
-                .WithParameter(TypedParameter.From(10));
+                .As<IMyFooService>();
 
             builder.RegisterType<MyBooService>()
                 .As<IMyBooService>();
+#endif
 
             // NOTE: You can implement your own poison queue notifier. See https://github.com/LykkeCity/JobTriggers/blob/master/readme.md
             // builder.Register<PoisionQueueNotifierImplementation>().As<IPoisionQueueNotifier>();

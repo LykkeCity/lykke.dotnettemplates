@@ -2,7 +2,7 @@
 
 dotnet cli template for generating a solution for the service Lykke.Service.ServiceName
 
-### How to use? ###
+## How to use? ##
 
 Clone repo to some directory
 
@@ -31,6 +31,34 @@ To remove all installed custom temlates run command:
 $ dotnet new --debug:reinit 
 ```
 
-### Developing notes ###
+## Developing ##
 
-See this [link](https://github.com/KonstantinRyazantsev/lykke.dotnettemplates/blob/master/Lykke.Service.LykkeService/src/Lykke.Service.LykkeService/Readme.md)
+### Environment variables ###
+
+To define your own environment variables, see [Working with multiple environments](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/environments)
+
+* *ASPNETCORE_ENVIRONMENT* - defines environment name, the value can be: Development, Staging, Production. When value is Development, 
+AppSettings will be loaded from appsettings.Development.json (which overrides appsettings.json), 
+otherwise, AppSettings will be loaded from URL defined by SettingsUrl env variable.
+* *SettingsUrl* - defines URL of remote settings. 
+
+Default launchSettings.json is:
+
+```json
+{
+  "profiles": {
+    "LykkeService Development": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "LykkeService Remote Settings": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "SettingsUrl": ""
+      }
+    }
+  }
+}
+```

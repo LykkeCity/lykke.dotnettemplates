@@ -41,11 +41,13 @@ namespace Lykke.Job.LykkeJob.Controllers
             {
                 Version = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion,
                 Env = Environment.GetEnvironmentVariable("Env"),
+#if (examples)
 
                 // NOTE: Health status information example: 
                 LastFooStartedMoment = _healthService.LastFooStartedMoment,
                 LastFooDuration = _healthService.LastFooDuration,
                 MaxHealthyFooDuration = _healthService.MaxHealthyFooDuration
+#endif
             });
         }
     }

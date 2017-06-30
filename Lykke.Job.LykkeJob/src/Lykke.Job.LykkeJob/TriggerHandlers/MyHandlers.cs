@@ -1,19 +1,21 @@
-﻿using System.Threading.Tasks;
+﻿#if (examples)
+using System.Threading.Tasks;
 using Lykke.Job.LykkeJob.Contract;
-using Lykke.Job.LykkeJob.Core;
 using Lykke.Job.LykkeJob.Core.Services;
 using Lykke.JobTriggers.Triggers.Attributes;
+#endif
 
 namespace Lykke.Job.LykkeJob.TriggerHandlers
 {
-    // NOTE: This is the example trigger handlers class
+#if (examples)
+    // NOTE: This is the trigger handlers class example
     public class MyHandlers
     {
         private readonly IMyFooService _myFooService;
         private readonly IMyBooService _myBooService;
         private readonly IHealthService _healthService;
 
-        // NOTE: The object is instantiated using DI container, so registered dependencies are injected well
+        // NOTE: The object is instantiated using DI container, so registered dependencies are injects well
         public MyHandlers(IMyFooService myFooService, IMyBooService myBooService, IHealthService healthService)
         {
             _myFooService = myFooService;
@@ -55,4 +57,5 @@ namespace Lykke.Job.LykkeJob.TriggerHandlers
             }
         }
     }
+#endif
 }
