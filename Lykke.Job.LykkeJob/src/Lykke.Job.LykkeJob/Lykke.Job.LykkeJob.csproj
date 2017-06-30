@@ -16,6 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Dockerfile">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Lykke.Common" Version="1.1.76" />
     <PackageReference Include="Lykke.Common.ApiLibrary" Version="1.0.7" />
     <PackageReference Include="Lykke.JobTriggers" Version="1.1.9" />
@@ -36,5 +42,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Lykke.Job.LykkeJob.Core\Lykke.Job.LykkeJob.Core.csproj" />
   </ItemGroup>
-
 </Project>
