@@ -3,7 +3,7 @@ using Lykke.Job.LykkeJob.Contract;
 using Lykke.Job.LykkeJob.Core;
 using Lykke.JobTriggers.Triggers.Attributes;
 
-namespace Lykke.Job.LykkeJob.Functions
+namespace Lykke.Job.LykkeJob.TriggerHandlers
 {
     // NOTE: This is the example trigger handlers class
     public class MyHandlers
