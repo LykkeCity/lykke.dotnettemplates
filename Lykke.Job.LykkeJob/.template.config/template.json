@@ -37,10 +37,15 @@
         },
         {
           "condition": "(examples)",
-            "exclude": [ 
+          "exclude": [ 
               "src/Lykke.Job.LykkeJob/TriggerHandlers/Readme.md",
               "src/Lykke.Job.LykkeJob/Contract/Readme.md"            
-            ]
+          ]
+        },
+        {
+          "exclude": [
+            "README.md"
+          ]
         }
       ]
     }
