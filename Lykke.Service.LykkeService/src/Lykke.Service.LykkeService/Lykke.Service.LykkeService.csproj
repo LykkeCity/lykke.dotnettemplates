@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <OutputType>Exe</OutputType>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <AssemblyName>Lykke.Service.LykkeService</AssemblyName>
     <RootNamespace>Lykke.Service.LykkeService</RootNamespace>
   </PropertyGroup>
