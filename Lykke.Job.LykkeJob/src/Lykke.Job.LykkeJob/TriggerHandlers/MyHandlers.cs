@@ -8,7 +8,9 @@ using Lykke.JobTriggers.Triggers.Attributes;
 namespace Lykke.Job.LykkeJob.TriggerHandlers
 {
 #if (examples)
-    // NOTE: This is the trigger handlers class example
+    // NOTE: This is the trigger handlers class example.
+    // All triger's handlers are founded and added to container by JobTriggers infrastructure, 
+    // when you call builder.AddTriggers() in Startup. Further, JobTriggers infrastructure manages handlers execution.
     public class MyHandlers
     {
         private readonly IMyFooService _myFooService;
