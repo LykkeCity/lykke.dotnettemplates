@@ -15,7 +15,7 @@ where `${path}` is the path to the clonned directory (where folder .template.con
 Now new template can be used in dotnet cli:
 
 ```sh
-dotnet new lkejob -n ${JobName} -o Lykke.Service.${JobName} [-e {true|false}]
+dotnet new lkejob -n ${JobName} -o Lykke.Job.${JobName} [-e {true|false}]
 ```
 This will create a solution in the current folder, where `${JobName}` is the job name without Lykke.Job. prefix. 
 Switches:
