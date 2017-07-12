@@ -34,7 +34,15 @@ namespace Lykke.Job.LykkeJob.Services
             {
                 return "Last foo was failed";
             }
+#else
+            // TODO: Check gathered health statistics, and return appropriate health violation message, or NULL if job hasn't critical errors
+#endif
+            return null;
+        }
 
+        public string GetHealthWarningMessage()
+        {
+#if (examples)
             if (!WasLastFooCompleted && !WasLastFooFailed && !WasClientsFooEverStarted)
             {
                 return "Waiting for first foo execution started";
@@ -50,10 +58,11 @@ namespace Lykke.Job.LykkeJob.Services
                 return $"Last foo was lasted for {LastFooDuration}, which is too long";
             }
 #else
-            // TODO: Check gathered health statistics, and return appropriate health violation message, or NULL if job is ok
+            // TODO: Check gathered health statistics, and return appropriate health warning message, or NULL if job is ok
 #endif
             return null;
         }
+
 #if (examples)
 
         // NOTE: These are example methods

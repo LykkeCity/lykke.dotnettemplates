@@ -8,6 +8,8 @@ namespace Lykke.Job.LykkeJob.Models
     {
         public string Version { get; set; }
         public string Env { get; set; }
+        public string HealthWarning { get; set; }
+
 #if (examples)
 
         // NOTE: Health status information example: 

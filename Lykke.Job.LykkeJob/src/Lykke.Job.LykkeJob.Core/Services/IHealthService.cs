@@ -15,6 +15,7 @@ namespace Lykke.Job.LykkeJob.Core.Services
         // NOTE: This method probably would stay in the real job, but will be modified
 #endif
         string GetHealthViolationMessage();
+        string GetHealthWarningMessage();
 #if (examples)
 
         // NOTE: These are example methods
