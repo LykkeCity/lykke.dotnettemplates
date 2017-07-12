@@ -1,9 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-    <AssemblyName>Lykke.Service.LykkeService.Client</AssemblyName>
-    <RootNamespace>Lykke.Service.LykkeService.Client</RootNamespace>
+    <TargetFramework>netstandard1.6</TargetFramework>
     <Version>1.0.1</Version>
     <Authors>Lykke</Authors>
     <Company>Lykke</Company>
