@@ -9,11 +9,22 @@
     "language": "C#"
   },
   "sourceName": "LykkeService",
-  "symbols":{
-        "serviceName": {
-            "type": "parameter",
-            "defaultValue": "LykkeService",
-            "replaces":"LykkeService"
-        }
+  "symbols": {
+    "serviceName": {
+      "type": "parameter",
+      "defaultValue": "LykkeService",
+      "replaces":"LykkeService"
     }
+  },
+  "sources": [
+    {
+      "modifiers": [
+        {
+          "exclude": [
+            "README.md"
+          ]
+        }
+      ]
+    }
+  ]
 }

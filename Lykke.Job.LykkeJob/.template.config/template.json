@@ -10,10 +10,44 @@
   },
   "sourceName": "LykkeJob",
   "symbols":{
-        "serviceName": {
-            "type": "parameter",
-            "defaultValue": "LykkeJob",
-            "replaces":"LykkeJob"
-        }
+    "serviceName": {
+      "type": "parameter",
+      "defaultValue": "LykkeJob",
+      "replaces":"LykkeJob"
+  },
+  "examples":{
+    "type": "parameter",
+    "dataType":"bool",
+    "defaultValue": "true"
     }
+  },
+  "sources": [
+    {
+      "modifiers": [
+        {
+          "condition": "(!examples)",
+          "exclude": [ 
+            "src/Lykke.Job.LykkeJob.Core/Services/IMyFooService.cs",
+            "src/Lykke.Job.LykkeJob.Core/Services/IMyBooService.cs",
+            "src/Lykke.Job.LykkeJob.Services/MyFooService.cs",
+            "src/Lykke.Job.LykkeJob.Services/MyBooService.cs",
+            "src/Lykke.Job.LykkeJob/TriggerHandlers/MyHandlers.cs",
+            "src/Lykke.Job.LykkeJob/Contract/MyMessage.cs"            
+          ]
+        },
+        {
+          "condition": "(examples)",
+          "exclude": [ 
+              "src/Lykke.Job.LykkeJob/TriggerHandlers/Readme.md",
+              "src/Lykke.Job.LykkeJob/Contract/Readme.md"            
+          ]
+        },
+        {
+          "exclude": [
+            "README.md"
+          ]
+        }
+      ]
+    }
+  ]
 }
