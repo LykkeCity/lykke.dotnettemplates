@@ -29,20 +29,18 @@ namespace Lykke.Job.LykkeJob.Services
 #endif
         public string GetHealthViolationMessage()
         {
-#if (examples)
-            if (WasLastFooFailed)
-            {
-                return "Last foo was failed";
-            }
-#else
             // TODO: Check gathered health statistics, and return appropriate health violation message, or NULL if job hasn't critical errors
-#endif
             return null;
         }
 
         public string GetHealthWarningMessage()
         {
 #if (examples)
+            if (WasLastFooFailed)
+            {
+                return "Last foo was failed";
+            }
+
             if (!WasLastFooCompleted && !WasLastFooFailed && !WasClientsFooEverStarted)
             {
                 return "Waiting for first foo execution started";

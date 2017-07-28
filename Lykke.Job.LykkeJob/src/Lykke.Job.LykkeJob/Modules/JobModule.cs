@@ -32,12 +32,11 @@ namespace Lykke.Job.LykkeJob.Modules
             builder.RegisterInstance(_log)
                 .As<ILog>()
                 .SingleInstance();
-
+#if (examples)
             builder.RegisterType<HealthService>()
                 .As<IHealthService>()
                 .SingleInstance()
                 .WithParameter(TypedParameter.From(TimeSpan.FromSeconds(30)));
-#if (examples)
 
             // NOTE: Service registrations example:
 
@@ -46,6 +45,10 @@ namespace Lykke.Job.LykkeJob.Modules
 
             builder.RegisterType<MyBooService>()
                 .As<IMyBooService>();
+#else
+            builder.RegisterType<HealthService>()
+                .As<IHealthService>()
+                .SingleInstance();
 #endif
 
             // NOTE: You can implement your own poison queue notifier. See https://github.com/LykkeCity/JobTriggers/blob/master/readme.md

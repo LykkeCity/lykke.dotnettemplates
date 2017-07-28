@@ -41,7 +41,7 @@ namespace Lykke.Job.LykkeJob.Controllers
             {
                 Version = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion,
                 Env = Environment.GetEnvironmentVariable("ENV_INFO"),
-                HealthWarning = _healthService.GetHealthWarningMessage() ?? "No"
+                HealthWarning = _healthService.GetHealthWarningMessage() ?? "No",
 #if (examples)
 
                 // NOTE: Health status information example: 
