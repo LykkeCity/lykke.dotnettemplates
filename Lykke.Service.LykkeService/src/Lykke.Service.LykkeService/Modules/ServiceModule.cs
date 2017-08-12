@@ -2,6 +2,8 @@
 using Autofac.Extensions.DependencyInjection;
 using Common.Log;
 using Lykke.Service.LykkeService.Core;
+using Lykke.Service.LykkeService.Core.Services;
+using Lykke.Service.LykkeService.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lykke.Service.LykkeService.Modules
@@ -28,6 +30,10 @@ namespace Lykke.Service.LykkeService.Modules
 
             builder.RegisterInstance(_log)
                 .As<ILog>()
+                .SingleInstance();
+
+            builder.RegisterType<HealthService>()
+                .As<IHealthService>()
                 .SingleInstance();
 
             // TODO: Add your dependencies here

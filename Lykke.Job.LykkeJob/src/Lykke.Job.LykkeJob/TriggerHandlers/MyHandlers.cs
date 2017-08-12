@@ -47,15 +47,18 @@ namespace Lykke.Job.LykkeJob.TriggerHandlers
         {
             try
             {
-                _healthService.TraceBooStarted();
+                // TODO: See Foo
+                //_healthService.TraceBooStarted();
 
                 await _myBooService.BooAsync();
 
-                _healthService.TraceBooCompleted();
+                // TODO: See Foo
+                //_healthService.TraceBooCompleted();
             }
             catch
             {
-                _healthService.TraceBooFailed();
+                // TODO: See Foo
+                //_healthService.TraceBooFailed();
             }
         }
     }

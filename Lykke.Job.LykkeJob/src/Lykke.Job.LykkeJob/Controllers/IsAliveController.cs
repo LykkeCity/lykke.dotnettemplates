@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using Lykke.Job.LykkeJob.Core.Services;
 using Lykke.Job.LykkeJob.Models;
@@ -7,6 +8,7 @@ using Swashbuckle.SwaggerGen.Annotations;
 
 namespace Lykke.Job.LykkeJob.Controllers
 {
+    // NOTE: See https://lykkex.atlassian.net/wiki/spaces/LKEWALLET/pages/35755585/Add+your+app+to+Monitoring
     [Route("api/[controller]")]
     public class IsAliveController : Controller
     {
@@ -36,19 +38,17 @@ namespace Lykke.Job.LykkeJob.Controllers
                 });
             }
 
-            // NOTE: Feel free to extend IsAliveResponse, to display job-specific health status
+            // NOTE: Feel free to extend IsAliveResponse, to display job-specific indicators
             return Ok(new IsAliveResponse
             {
                 Version = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion,
                 Env = Environment.GetEnvironmentVariable("ENV_INFO"),
-                HealthWarning = _healthService.GetHealthWarningMessage() ?? "No",
-#if (examples)
-
-                // NOTE: Health status information example: 
-                LastFooStartedMoment = _healthService.LastFooStartedMoment,
-                LastFooDuration = _healthService.LastFooDuration,
-                MaxHealthyFooDuration = _healthService.MaxHealthyFooDuration
-#endif
+                IssueIndicators = _healthService.GetHealthIssues()
+                    .Select(i => new IsAliveResponse.IssueIndicator
+                    {
+                        Type = i.Type,
+                        Value = i.Value
+                    })
             });
         }
     }

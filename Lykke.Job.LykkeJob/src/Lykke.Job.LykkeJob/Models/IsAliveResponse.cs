@@ -1,6 +1,4 @@
-﻿#if (examples)
-using System;
-#endif
+﻿using System.Collections.Generic;
 
 namespace Lykke.Job.LykkeJob.Models
 {
@@ -8,14 +6,12 @@ namespace Lykke.Job.LykkeJob.Models
     {
         public string Version { get; set; }
         public string Env { get; set; }
-        public string HealthWarning { get; set; }
+        public IEnumerable<IssueIndicator> IssueIndicators { get; set; }
 
-#if (examples)
-
-        // NOTE: Health status information example: 
-        public DateTime LastFooStartedMoment { get; set; }
-        public TimeSpan LastFooDuration { get; set; }
-        public TimeSpan MaxHealthyFooDuration { get; set; }
-#endif
+        public class IssueIndicator
+        {
+            public string Type { get; set; }
+            public string Value { get; set; }
+        }
     }
 }

@@ -1,19 +1,20 @@
 ﻿#if (examples)
 using System;
 #endif
+using System.Collections.Generic;
+using Lykke.Job.LykkeJob.Core.Domain.Health;
 using Lykke.Job.LykkeJob.Core.Services;
 
 namespace Lykke.Job.LykkeJob.Services
 {
+    // NOTE: See https://lykkex.atlassian.net/wiki/spaces/LKEWALLET/pages/35755585/Add+your+app+to+Monitoring
     public class HealthService : IHealthService
     {
 #if (examples)
         // NOTE: These are example properties
-        public DateTime LastFooStartedMoment { get; private set; }
-        public TimeSpan LastFooDuration { get; private set; }
-        public TimeSpan MaxHealthyFooDuration { get; }
-
-        // NOTE: These are example properties
+        private DateTime LastFooStartedMoment { get; set; }
+        private TimeSpan LastFooDuration { get; set; }
+        private TimeSpan MaxHealthyFooDuration { get; }
         private bool WasLastFooFailed { get; set; }
         private bool WasLastFooCompleted { get; set; }
         private bool WasClientsFooEverStarted { get; set; }
@@ -25,7 +26,7 @@ namespace Lykke.Job.LykkeJob.Services
             MaxHealthyFooDuration = maxHealthyFooDuration;
         }
 
-        // NOTE: This method probably would stay in the real job, but will be modified
+        // NOTE: This method could stay in the real job, but will be modified
 #endif
         public string GetHealthViolationMessage()
         {
@@ -33,34 +34,36 @@ namespace Lykke.Job.LykkeJob.Services
             return null;
         }
 
-        public string GetHealthWarningMessage()
+        public IEnumerable<HealthIssue> GetHealthIssues()
         {
+            var issues = new HealthIssuesCollection();
+
 #if (examples)
             if (WasLastFooFailed)
             {
-                return "Last foo was failed";
+                issues.Add("LykkeJobFooProcessing", "Last foo was failed");
             }
 
             if (!WasLastFooCompleted && !WasLastFooFailed && !WasClientsFooEverStarted)
             {
-                return "Waiting for first foo execution started";
+                issues.Add("LykkeJobFooProcessingNotStartedYet", "Waiting for first foo execution started");
             }
 
             if (!WasLastFooCompleted && !WasLastFooFailed && WasClientsFooEverStarted)
             {
-                return $"Waiting {DateTime.UtcNow - LastFooStartedMoment} for first foo execution completed";
+                issues.Add("LykkeJobFooProcessingNotCompletedYet", $"Waiting {DateTime.UtcNow - LastFooStartedMoment} for first foo execution completed");
             }
 
             if (LastFooDuration > MaxHealthyFooDuration)
             {
-                return $"Last foo was lasted for {LastFooDuration}, which is too long";
+                issues.Add("LykkeJobFooProcessingLastedForToLong", $"Last foo was lasted for {LastFooDuration}, which is too long");
             }
-#else
-            // TODO: Check gathered health statistics, and return appropriate health warning message, or NULL if job is ok
-#endif
-            return null;
-        }
 
+#else
+            // TODO: Check gathered health statistics, and add appropriate health issues message to issues
+#endif
+            return issues;
+        }
 #if (examples)
 
         // NOTE: These are example methods
@@ -81,21 +84,6 @@ namespace Lykke.Job.LykkeJob.Services
         {
             WasLastFooCompleted = false;
             WasLastFooFailed = true;
-        }
-
-        public void TraceBooStarted()
-        {
-            // TODO: See Foo
-        }
-
-        public void TraceBooCompleted()
-        {
-            // TODO: See Foo
-        }
-
-        public void TraceBooFailed()
-        {
-            // TODO: See Foo
         }
 #endif
     }
