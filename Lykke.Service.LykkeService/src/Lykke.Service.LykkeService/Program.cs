@@ -10,6 +10,11 @@ namespace Lykke.Service.LykkeService
     {
         public static void Main(string[] args)
         {
+#if DEBUG
+            Console.WriteLine("Is DEBUG");
+#else
+            Console.WriteLine("Is RELEASE");
+#endif
             var webHostCancellationTokenSource = new CancellationTokenSource();
             var end = new ManualResetEvent(false);
 

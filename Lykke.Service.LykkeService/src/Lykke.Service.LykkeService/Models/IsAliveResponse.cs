@@ -6,6 +6,7 @@ namespace Lykke.Service.LykkeService.Models
     {
         public string Version { get; set; }
         public string Env { get; set; }
+        public bool IsDebug { get; set; }
         public IEnumerable<IssueIndicator> IssueIndicators { get; set; }
 
         public class IssueIndicator
