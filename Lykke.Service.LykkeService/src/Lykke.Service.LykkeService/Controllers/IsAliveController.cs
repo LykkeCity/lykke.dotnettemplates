@@ -42,11 +42,11 @@ namespace Lykke.Service.LykkeService.Controllers
             {
                 Version = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion,
                 Env = Environment.GetEnvironmentVariable("ENV_INFO"),
-#if DEBUG
+//#$if DEBUG
                 IsDebug = true,
-#else
-                IsDebug = false
-#endif
+//#$else
+                //$#$//IsDebug = false,
+//#$endif
                 IssueIndicators = _healthService.GetHealthIssues()
                     .Select(i => new IsAliveResponse.IssueIndicator
                     {

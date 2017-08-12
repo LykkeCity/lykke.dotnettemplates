@@ -14,11 +14,27 @@
       "type": "parameter",
       "defaultValue": "LykkeJob",
       "replaces":"LykkeJob"
-  },
-  "examples":{
-    "type": "parameter",
-    "dataType":"bool",
-    "defaultValue": "true"
+    },
+    "examples":{
+      "type": "parameter",
+      "dataType":"bool",
+      "defaultValue": "true"
+    },
+    "ifdef": {
+      "type": "generated",
+      "generator": "constant",
+      "parameters": {
+        "value":"#"
+      },
+      "replaces":"//#$"
+    },
+    "ifdefUncomment": {
+      "type": "generated",
+      "generator": "constant",
+      "parameters": {
+        "value":""
+      },
+      "replaces":"//$#$//"
     }
   },
   "sources": [

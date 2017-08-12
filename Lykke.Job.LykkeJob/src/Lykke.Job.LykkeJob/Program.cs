@@ -12,11 +12,11 @@ namespace Lykke.Job.LykkeJob
     {
         static void Main(string[] args)
         {
-#if DEBUG
+//#$if DEBUG
             Console.WriteLine("Is DEBUG");
-#else
-            Console.WriteLine("Is RELEASE");
-#endif
+//#$else
+            //$#$//Console.WriteLine("Is RELEASE");
+//#$endif
 
             var webHostCancellationTokenSource = new CancellationTokenSource();
             IWebHost webHost = null;
