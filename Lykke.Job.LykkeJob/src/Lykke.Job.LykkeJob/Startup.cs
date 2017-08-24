@@ -127,38 +127,44 @@ namespace Lykke.Job.LykkeJob
 
         private static ILog CreateLogWithSlack(IServiceCollection services, AppSettings settings)
         {
-            LykkeLogToAzureStorage logToAzureStorage = null;
+            var consoleLogger = new LogToConsole();
+            var aggregateLogger = new AggregateLogger();
 
-            var logToConsole = new LogToConsole();
-            var logAggregate = new LogAggregate();
-
-            logAggregate.AddLogger(logToConsole);
-
-            var dbLogConnectionString = settings.LykkeJobJob.Db.LogsConnString;
-
-            // Creating azure storage logger, which logs own messages to concole log
-            if (!string.IsNullOrEmpty(dbLogConnectionString) && !(dbLogConnectionString.StartsWith("${") && dbLogConnectionString.EndsWith("}")))
-            {
-                logToAzureStorage = new LykkeLogToAzureStorage("Lykke.Job.LykkeJob", new AzureTableStorage<LogEntity>(
-                    dbLogConnectionString, "LykkeJobLog", logToConsole));
-
-                logAggregate.AddLogger(logToAzureStorage);
-            }
-
-            // Creating aggregate log, which logs to console and to azure storage, if last one specified
-            var log = logAggregate.CreateLogger();
+            aggregateLogger.AddLog(consoleLogger);
 
             // Creating slack notification service, which logs own azure queue processing messages to aggregate log
             var slackService = services.UseSlackNotificationsSenderViaAzureQueue(new AzureQueueIntegration.AzureQueueSettings
             {
                 ConnectionString = settings.SlackNotifications.AzureQueue.ConnectionString,
                 QueueName = settings.SlackNotifications.AzureQueue.QueueName
-            }, log);
+            }, aggregateLogger);
 
-            // Finally, setting slack notification for azure storage log, which will forward necessary message to slack service
-            logToAzureStorage?.SetSlackNotification(slackService);
+            var dbLogConnectionString = settings.LykkeJobJob.Db.LogsConnString;
 
-            return log;
+            // Creating azure storage logger, which logs own messages to concole log
+            if (!string.IsNullOrEmpty(dbLogConnectionString) && !(dbLogConnectionString.StartsWith("${") && dbLogConnectionString.EndsWith("}")))
+            {
+                const string appName = "Lykke.Job.LykkeJob";
+
+                var persistenceManager = new LykkeLogToAzureStoragePersistenceManager(
+                    appName,
+                    AzureTableStorage<LogEntity>.Create(() => dbLogConnectionString, "LykkeJobLog", consoleLogger),
+                    consoleLogger);
+
+                var slackNotificationsManager = new LykkeLogToAzureSlackNotificationsManager(appName, slackService, consoleLogger);
+
+                var azureStorageLogger = new LykkeLogToAzureStorage(
+                    appName,
+                    persistenceManager,
+                    slackNotificationsManager,
+                    consoleLogger);
+
+                azureStorageLogger.Start();
+
+                aggregateLogger.AddLog(azureStorageLogger);
+            }
+
+            return aggregateLogger;
         }
     }
 }
