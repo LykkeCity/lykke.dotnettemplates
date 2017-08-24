@@ -40,6 +40,8 @@ namespace Lykke.Job.LykkeJob
 
             Configuration = builder.Build();
             Environment = env;
+
+            Console.WriteLine($"ENV_INFO: {System.Environment.GetEnvironmentVariable("ENV_INFO")}");
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
