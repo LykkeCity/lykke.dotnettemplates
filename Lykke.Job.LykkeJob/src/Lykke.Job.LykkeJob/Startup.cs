@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AzureStorage.Tables;
@@ -9,6 +10,7 @@ using Lykke.Job.LykkeJob.Core;
 using Lykke.Job.LykkeJob.Models;
 using Lykke.Job.LykkeJob.Modules;
 using Lykke.JobTriggers.Extenstions;
+using Lykke.JobTriggers.Triggers;
 using Lykke.Logs;
 using Lykke.SettingsReader;
 using Lykke.SlackNotification.AzureQueue;
@@ -24,6 +26,9 @@ namespace Lykke.Job.LykkeJob
         public IHostingEnvironment Environment { get; }
         public IContainer ApplicationContainer { get; set; }
         public IConfigurationRoot Configuration { get; }
+
+        private TriggerHost _triggerHost;
+        private Task _triggerHostTask;
 
         public Startup(IHostingEnvironment env)
         {
@@ -91,10 +96,33 @@ namespace Lykke.Job.LykkeJob
             app.UseSwagger();
             app.UseSwaggerUi();
 
-            appLifetime.ApplicationStopped.Register(() =>
-            {
-                ApplicationContainer.Dispose();
-            });
+            appLifetime.ApplicationStarted.Register(Start);
+            appLifetime.ApplicationStopping.Register(StopApplication);
+            appLifetime.ApplicationStopped.Register(CleanUp);
+        }
+
+        private void Start()
+        {
+            _triggerHost = new TriggerHost(new AutofacServiceProvider(ApplicationContainer));
+
+            _triggerHostTask = _triggerHost.Start();
+        }
+
+        private void StopApplication()
+        {
+            // TODO: Implement your shutdown logic here. 
+            // Job still can recieve and process IsAlive requests here, so take care about it.
+
+            _triggerHost?.Cancel();
+            _triggerHostTask?.Wait();
+        }
+
+        private void CleanUp()
+        {
+            // TODO: Implement your clean up logic here.
+            // Job can't recieve and process IsAlive requests here, so you can destroy all resources
+
+            ApplicationContainer.Dispose();
         }
 
         private static ILog CreateLogWithSlack(IServiceCollection services, AppSettings settings)

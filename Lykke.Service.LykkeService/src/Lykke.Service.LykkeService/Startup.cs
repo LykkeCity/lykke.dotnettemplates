@@ -74,10 +74,22 @@ namespace Lykke.Service.LykkeService
             app.UseSwagger();
             app.UseSwaggerUi();
 
-            appLifetime.ApplicationStopped.Register(() =>
-            {
-                ApplicationContainer.Dispose();
-            });
+            appLifetime.ApplicationStopping.Register(StopApplication);
+            appLifetime.ApplicationStopped.Register(CleanUp);
+        }
+
+        private void StopApplication()
+        {
+            // TODO: Implement your shutdown logic here. 
+            // Service still can recieve and process requests here, so take care about it.
+        }
+
+        private void CleanUp()
+        {
+            // TODO: Implement your clean up logic here.
+            // Service can't recieve and process requests here, so you can destroy all resources
+
+            ApplicationContainer.Dispose();
         }
 
         private static ILog CreateLogWithSlack(IServiceCollection services, AppSettings settings)
