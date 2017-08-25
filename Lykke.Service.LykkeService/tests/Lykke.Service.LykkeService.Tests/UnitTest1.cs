@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace Lykke.Service.IpGeoLocation.Tests
+namespace Lykke.Service.LykkeService.Tests
 {
     public class UnitTest1
     {
