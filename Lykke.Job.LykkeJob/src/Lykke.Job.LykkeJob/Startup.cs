@@ -97,6 +97,7 @@ namespace Lykke.Job.LykkeJob
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUi();
+            app.UseStaticFiles();
 
             appLifetime.ApplicationStarted.Register(Start);
             appLifetime.ApplicationStopping.Register(StopApplication);
