@@ -19,10 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Lykke.Common" Version="1.1.86" />
+    <PackageReference Include="Lykke.Common" Version="1.1.94" />
     <PackageReference Include="Lykke.Common.ApiLibrary" Version="1.0.11" />
     <PackageReference Include="Lykke.JobTriggers" Version="1.1.11" />
-    <PackageReference Include="Lykke.Logs" Version="1.0.29" />
+    <PackageReference Include="Lykke.Logs" Version="1.0.30" />
     <PackageReference Include="Lykke.SettingsReader" Version="1.0.38" />
     <PackageReference Include="Lykke.SlackNotification.AzureQueue" Version="1.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.0.0" />
