@@ -38,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Lykke.Job.LykkeJob.AzureRepositories\Lykke.Job.LykkeJob.AzureRepositories.csproj" />
     <ProjectReference Include="..\Lykke.Job.LykkeJob.Core\Lykke.Job.LykkeJob.Core.csproj" />
     <ProjectReference Include="..\Lykke.Job.LykkeJob.Services\Lykke.Job.LykkeJob.Services.csproj" />
   </ItemGroup>
