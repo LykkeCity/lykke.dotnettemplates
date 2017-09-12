@@ -1,15 +1,23 @@
 {
   "profiles": {
-    "LykkeService Development": {
+    "LykkeService local dev settings": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "SettingsUrl": "appsettings.Development.json"
       }
     },
-    "LykkeService Remote Settings": {
+    "LykkeService local test settings": {
       "commandName": "Project",
       "environmentVariables": {
-        "SettingsUrl": ""
+        "ASPNETCORE_ENVIRONMENT": "Staging",
+        "SettingsUrl": "appsettings.Testing.json"
+      }
+    },
+    "LykkeService remote settings": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "SettingsUrl": "http://settings.lykke-settings.svc.cluster.local/your_token_LykkeServiceJob"
       }
     }
   }

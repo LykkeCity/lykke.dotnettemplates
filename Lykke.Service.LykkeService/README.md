@@ -37,26 +37,34 @@ $ dotnet new --debug:reinit
 
 To define your own environment variables, see [Working with multiple environments](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/environments)
 
-* *ASPNETCORE_ENVIRONMENT* - defines environment name, the value can be: Development, Staging, Production. When value is Development, 
-AppSettings will be loaded from appsettings.Development.json (which overrides appsettings.json), 
-otherwise, AppSettings will be loaded from URL defined by SettingsUrl env variable.
-* *SettingsUrl* - defines URL of remote settings. 
+* *ASPNETCORE_ENVIRONMENT* - defines environment name, the value can be: Development, Staging, Production.
+* *SettingsUrl* - defines URL of remote settings or path for local settings.
+
+Reflect your settings structure in appsettings.json - leave all of field blank, or just show value's format. Fill appsettings.XXX.json with real settings data. Ensure that appsettings.XXX.json is ignored in git.
 
 Default launchSettings.json is:
 
 ```json
 {
   "profiles": {
-    "LykkeService Development": {
+    "LykkeService local dev settings": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "SettingsUrl": "appsettings.Development.json"
       }
     },
-    "LykkeService Remote Settings": {
+    "LykkeService local test settings": {
       "commandName": "Project",
       "environmentVariables": {
-        "SettingsUrl": ""
+        "ASPNETCORE_ENVIRONMENT": "Staging",
+        "SettingsUrl": "appsettings.Testing.json"
+      }
+    },
+    "LykkeService remote settings": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "SettingsUrl": "http://settings.lykke-settings.svc.cluster.local/your_token_LykkeServiceJob"
       }
     }
   }
