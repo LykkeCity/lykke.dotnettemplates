@@ -60,7 +60,8 @@
         },
         {
           "exclude": [
-            "README.md"
+            "README.md",
+            "src/Lykke.Job.LykkeJob/Readme.md"
           ]
         }
       ]

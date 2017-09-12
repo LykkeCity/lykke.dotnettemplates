@@ -37,7 +37,8 @@
       "modifiers": [
         {
           "exclude": [
-            "README.md"
+            "README.md",
+            "src/Lykke.Service.LykkeService/Readme.md"
           ]
         }
       ]

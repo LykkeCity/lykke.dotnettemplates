@@ -1,24 +1,27 @@
-﻿using System;
+﻿#if (examples)
+using System;
+#endif
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Common.Log;
 using Lykke.Job.LykkeJob.Core;
 using Lykke.Job.LykkeJob.Core.Services;
 using Lykke.Job.LykkeJob.Services;
+using Lykke.SettingsReader;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lykke.Job.LykkeJob.Modules
 {
     public class JobModule : Module
     {
-        private readonly AppSettings.LykkeJobSettings _settings;
+        private readonly IReloadingManager<AppSettings.LykkeJobSettings> _settingsManager;
         private readonly ILog _log;
         // NOTE: you can remove it if you don't need to use IServiceCollection extensions to register service specific dependencies
         private readonly IServiceCollection _services;
 
-        public JobModule(AppSettings.LykkeJobSettings settings, ILog log)
+        public JobModule(IReloadingManager<AppSettings.LykkeJobSettings> settingsManager, ILog log)
         {
-            _settings = settings;
+            _settingsManager = settingsManager;
             _log = log;
 
             _services = new ServiceCollection();
@@ -26,8 +29,11 @@ namespace Lykke.Job.LykkeJob.Modules
 
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterInstance(_settings)
-                .SingleInstance();
+            // TODO: Do not register entire settings in container, pass necessary settings to services which requires them
+            // ex:
+            //  builder.RegisterType<QuotesPublisher>()
+            //      .As<IQuotesPublisher>()
+            //      .WithParameter(TypedParameter.From(_settings.CurrentValue.QuotesPublication))
 
             builder.RegisterInstance(_log)
                 .As<ILog>()
