@@ -20,8 +20,9 @@ namespace Lykke.Service.LykkeService
     public class Startup
     {
         public IHostingEnvironment Environment { get; }
-        public IContainer ApplicationContainer { get; set; }
+        public IContainer ApplicationContainer { get; private set; }
         public IConfigurationRoot Configuration { get; }
+        public ILog Log { get; private set; }
 
         public Startup(IHostingEnvironment env)
         {
@@ -50,9 +51,9 @@ namespace Lykke.Service.LykkeService
 
             var builder = new ContainerBuilder();
             var appSettings = Configuration.LoadSettings<AppSettings>();
-            var log = CreateLogWithSlack(services, appSettings);
+            Log = CreateLogWithSlack(services, appSettings);
 
-            builder.RegisterModule(new ServiceModule(appSettings.Nested(x => x.LykkeServiceService), log));
+            builder.RegisterModule(new ServiceModule(appSettings.Nested(x => x.LykkeServiceService), Log));
             builder.Populate(services);
             ApplicationContainer = builder.Build();
 
@@ -73,22 +74,49 @@ namespace Lykke.Service.LykkeService
             app.UseSwaggerUi();
             app.UseStaticFiles();
 
+            appLifetime.ApplicationStarted.Register(StartApplication);
             appLifetime.ApplicationStopping.Register(StopApplication);
             appLifetime.ApplicationStopped.Register(CleanUp);
         }
 
+        private void StartApplication()
+        {
+            try
+            {
+                // TODO: Implement your startup logic here. 
+            }
+            catch (Exception ex)
+            {
+                Log.WriteFatalErrorAsync(nameof(Startup), nameof(StartApplication), "", ex);
+            }
+        }
+
         private void StopApplication()
         {
-            // TODO: Implement your shutdown logic here. 
-            // Service still can recieve and process requests here, so take care about it.
+            try
+            {
+                // TODO: Implement your shutdown logic here. 
+                // Service still can recieve and process requests here, so take care about it.
+            }
+            catch (Exception ex)
+            {
+                Log.WriteFatalErrorAsync(nameof(Startup), nameof(StopApplication), "", ex);
+            }
         }
 
         private void CleanUp()
         {
-            // TODO: Implement your clean up logic here.
-            // Service can't recieve and process requests here, so you can destroy all resources
+            try
+            {
+                // TODO: Implement your clean up logic here.
+                // Service can't recieve and process requests here, so you can destroy all resources
 
-            ApplicationContainer.Dispose();
+                ApplicationContainer.Dispose();
+            }
+            catch (Exception ex)
+            {
+                Log.WriteFatalErrorAsync(nameof(Startup), nameof(CleanUp), "", ex);
+            }
         }
 
         private static ILog CreateLogWithSlack(IServiceCollection services, IReloadingManager<AppSettings> settings)

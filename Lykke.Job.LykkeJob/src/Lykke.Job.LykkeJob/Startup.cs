@@ -24,8 +24,9 @@ namespace Lykke.Job.LykkeJob
     public class Startup
     {
         public IHostingEnvironment Environment { get; }
-        public IContainer ApplicationContainer { get; set; }
+        public IContainer ApplicationContainer { get; private set; }
         public IConfigurationRoot Configuration { get; }
+        public ILog Log { get; private set; }
 
         private TriggerHost _triggerHost;
         private Task _triggerHostTask;
@@ -58,9 +59,9 @@ namespace Lykke.Job.LykkeJob
 
             var builder = new ContainerBuilder();
             var appSettings = Configuration.LoadSettings<AppSettings>();
-            var log = CreateLogWithSlack(services, appSettings);
+            Log = CreateLogWithSlack(services, appSettings);
 
-            builder.RegisterModule(new JobModule(appSettings.Nested(x => x.LykkeJobJob), log));
+            builder.RegisterModule(new JobModule(appSettings.Nested(x => x.LykkeJobJob), Log));
 
             RegisterJobTriggers(appSettings.ConnectionString(x => x.LykkeJobJob.TriggerQueueConnectionString).CurrentValue, builder);
 
@@ -85,33 +86,54 @@ namespace Lykke.Job.LykkeJob
             app.UseSwaggerUi();
             app.UseStaticFiles();
 
-            appLifetime.ApplicationStarted.Register(Start);
+            appLifetime.ApplicationStarted.Register(StartApplication);
             appLifetime.ApplicationStopping.Register(StopApplication);
             appLifetime.ApplicationStopped.Register(CleanUp);
         }
 
-        private void Start()
+        private void StartApplication()
         {
-            _triggerHost = new TriggerHost(new AutofacServiceProvider(ApplicationContainer));
+            try
+            {
+                _triggerHost = new TriggerHost(new AutofacServiceProvider(ApplicationContainer));
 
-            _triggerHostTask = _triggerHost.Start();
+                _triggerHostTask = _triggerHost.Start();
+            }
+            catch (Exception ex)
+            {
+                Log.WriteFatalErrorAsync(nameof(Startup), nameof(StartApplication), "", ex);
+            }
         }
 
         private void StopApplication()
         {
-            // TODO: Implement your shutdown logic here. 
-            // Job still can recieve and process IsAlive requests here, so take care about it.
+            try
+            {
+                // TODO: Implement your shutdown logic here. 
+                // Job still can recieve and process IsAlive requests here, so take care about it.
 
-            _triggerHost?.Cancel();
-            _triggerHostTask?.Wait();
+                _triggerHost?.Cancel();
+                _triggerHostTask?.Wait();
+            }
+            catch (Exception ex)
+            {
+                Log.WriteFatalErrorAsync(nameof(Startup), nameof(StopApplication), "", ex);
+            }
         }
 
         private void CleanUp()
         {
-            // TODO: Implement your clean up logic here.
-            // Job can't recieve and process IsAlive requests here, so you can destroy all resources
+            try
+            {
+                // TODO: Implement your clean up logic here.
+                // Job can't recieve and process IsAlive requests here, so you can destroy all resources
 
-            ApplicationContainer.Dispose();
+                ApplicationContainer.Dispose();
+            }
+            catch (Exception ex)
+            {
+                Log.WriteFatalErrorAsync(nameof(Startup), nameof(CleanUp), "", ex);
+            }
         }
 
         private static void RegisterJobTriggers(string connectionString, ContainerBuilder builder)
