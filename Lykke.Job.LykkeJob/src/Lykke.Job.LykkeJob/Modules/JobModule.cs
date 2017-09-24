@@ -57,6 +57,12 @@ namespace Lykke.Job.LykkeJob.Modules
             builder.RegisterType<HealthService>()
                 .As<IHealthService>()
                 .SingleInstance();
+
+            builder.RegisterType<StartupManager>()
+                .As<IStartupManager>();
+
+            builder.RegisterType<ShutdownManager>()
+                .As<IShutdownManager>();
 #if azurequeuesub
 
             RegisterAzureQueueHandlers(builder);
