@@ -1,8 +1,8 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Common.Log;
-using Lykke.Service.LykkeService.Core;
 using Lykke.Service.LykkeService.Core.Services;
+using Lykke.Service.LykkeService.Core.Settings.ServiceSettings;
 using Lykke.Service.LykkeService.Services;
 using Lykke.SettingsReader;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +39,12 @@ namespace Lykke.Service.LykkeService.Modules
             builder.RegisterType<HealthService>()
                 .As<IHealthService>()
                 .SingleInstance();
+
+            builder.RegisterType<StartupManager>()
+                .As<IStartupManager>();
+
+            builder.RegisterType<ShutdownManager>()
+                .As<IShutdownManager>();
 
             // TODO: Add your dependencies here
 

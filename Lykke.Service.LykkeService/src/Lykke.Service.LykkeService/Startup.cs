@@ -6,7 +6,8 @@ using Common.Log;
 using Lykke.Common.ApiLibrary.Middleware;
 using Lykke.Common.ApiLibrary.Swagger;
 using Lykke.Logs;
-using Lykke.Service.LykkeService.Core;
+using Lykke.Service.LykkeService.Core.Services;
+using Lykke.Service.LykkeService.Core.Settings;
 using Lykke.Service.LykkeService.Modules;
 using Lykke.SettingsReader;
 using Lykke.SlackNotification.AzureQueue;
@@ -32,7 +33,6 @@ namespace Lykke.Service.LykkeService
             Configuration = builder.Build();
 
             Environment = env;
-
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -64,11 +64,6 @@ namespace Lykke.Service.LykkeService
             catch (Exception ex)
             {
                 Log?.WriteFatalErrorAsync(nameof(Startup), nameof(ConfigureServices), "", ex);
-                if (Log == null)
-                {
-                    Console.WriteLine(ex);
-                }
-
                 throw;
             }
         }
@@ -96,10 +91,7 @@ namespace Lykke.Service.LykkeService
             catch (Exception ex)
             {
                 Log?.WriteFatalErrorAsync(nameof(Startup), nameof(ConfigureServices), "", ex);
-                if (Log == null)
-                {
-                    Console.WriteLine(ex);
-                }
+                throw;
             }
         }
 
@@ -107,15 +99,14 @@ namespace Lykke.Service.LykkeService
         {
             try
             {
-                // TODO: Implement your startup logic here. 
+                // NOTE: Service not yet recieve and process requests here
+
+                ApplicationContainer.Resolve<IStartupManager>().StartAsync().Wait();
             }
             catch (Exception ex)
             {
                 Log?.WriteFatalErrorAsync(nameof(Startup), nameof(StartApplication), "", ex);
-                if (Log == null)
-                {
-                    Console.WriteLine(ex);
-                }
+                throw;
             }
         }
 
@@ -123,16 +114,14 @@ namespace Lykke.Service.LykkeService
         {
             try
             {
-                // TODO: Implement your shutdown logic here. 
-                // Service still can recieve and process requests here, so take care about it.
+                // NOTE: Service still can recieve and process requests here, so take care about it if you add logic here.
+
+                ApplicationContainer.Resolve<IShutdownManager>().StopAsync().Wait();
             }
             catch (Exception ex)
             {
                 Log?.WriteFatalErrorAsync(nameof(Startup), nameof(StopApplication), "", ex);
-                if (Log == null)
-                {
-                    Console.WriteLine(ex);
-                }
+                throw;
             }
         }
 
@@ -140,18 +129,14 @@ namespace Lykke.Service.LykkeService
         {
             try
             {
-                // TODO: Implement your clean up logic here.
-                // Service can't recieve and process requests here, so you can destroy all resources
+                // NOTE: Service can't recieve and process requests here, so you can destroy all resources
 
                 ApplicationContainer.Dispose();
             }
             catch (Exception ex)
             {
                 Log?.WriteFatalErrorAsync(nameof(Startup), nameof(CleanUp), "", ex);
-                if (Log == null)
-                {
-                    Console.WriteLine(ex);
-                }
+                throw;
             }
         }
 
