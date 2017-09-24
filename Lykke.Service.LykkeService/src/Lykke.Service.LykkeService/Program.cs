@@ -14,6 +14,8 @@ namespace Lykke.Service.LykkeService
 //#$else
             //$#$//Console.WriteLine("Is RELEASE");
 //#$endif           
+            Console.WriteLine($"ENV_INFO: {Environment.GetEnvironmentVariable("ENV_INFO")}");
+
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseUrls("http://*:5000")

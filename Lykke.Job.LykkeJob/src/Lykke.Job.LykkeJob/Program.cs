@@ -14,6 +14,7 @@ namespace Lykke.Job.LykkeJob
 //#$else
             //$#$//Console.WriteLine("Is RELEASE");
 //#$endif
+            Console.WriteLine($"ENV_INFO: {Environment.GetEnvironmentVariable("ENV_INFO")}");
 
             var webHost = new WebHostBuilder()
                 .UseKestrel()

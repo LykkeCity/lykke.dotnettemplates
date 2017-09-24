@@ -39,56 +39,78 @@ namespace Lykke.Job.LykkeJob
 
             Configuration = builder.Build();
             Environment = env;
-
-            Console.WriteLine($"ENV_INFO: {System.Environment.GetEnvironmentVariable("ENV_INFO")}");
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc()
-                .AddJsonOptions(options =>
+            try
+            {
+                services.AddMvc()
+                    .AddJsonOptions(options =>
+                    {
+                        options.SerializerSettings.ContractResolver =
+                            new Newtonsoft.Json.Serialization.DefaultContractResolver();
+                    });
+
+                services.AddSwaggerGen(options =>
                 {
-                    options.SerializerSettings.ContractResolver =
-                        new Newtonsoft.Json.Serialization.DefaultContractResolver();
+                    options.DefaultLykkeConfiguration("v1", "LykkeJob API");
                 });
 
-            services.AddSwaggerGen(options =>
+                var builder = new ContainerBuilder();
+                var appSettings = Configuration.LoadSettings<AppSettings>();
+                Log = CreateLogWithSlack(services, appSettings);
+
+                builder.RegisterModule(new JobModule(appSettings.Nested(x => x.LykkeJobJob), Log));
+
+                RegisterJobTriggers(appSettings.ConnectionString(x => x.LykkeJobJob.TriggerQueueConnectionString).CurrentValue, builder);
+
+                builder.Populate(services);
+
+                ApplicationContainer = builder.Build();
+
+                return new AutofacServiceProvider(ApplicationContainer);
+            }
+            catch (Exception ex)
             {
-                options.DefaultLykkeConfiguration("v1", "LykkeJob API");
-            });
+                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(ConfigureServices), "", ex);
+                if (Log == null)
+                {
+                    Console.WriteLine(ex);
+                }
 
-            var builder = new ContainerBuilder();
-            var appSettings = Configuration.LoadSettings<AppSettings>();
-            Log = CreateLogWithSlack(services, appSettings);
-
-            builder.RegisterModule(new JobModule(appSettings.Nested(x => x.LykkeJobJob), Log));
-
-            RegisterJobTriggers(appSettings.ConnectionString(x => x.LykkeJobJob.TriggerQueueConnectionString).CurrentValue, builder);
-
-            builder.Populate(services);
-
-            ApplicationContainer = builder.Build();
-
-            return new AutofacServiceProvider(ApplicationContainer);
+                throw;
+            }
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime appLifetime)
         {
-            if (env.IsDevelopment())
+            try
             {
-                app.UseDeveloperExceptionPage();
+                if (env.IsDevelopment())
+                {
+                    app.UseDeveloperExceptionPage();
+                }
+
+                app.UseLykkeMiddleware("LykkeJob", ex => new ErrorResponse {ErrorMessage = "Technical problem"});
+
+                app.UseMvc();
+                app.UseSwagger();
+                app.UseSwaggerUi();
+                app.UseStaticFiles();
+
+                appLifetime.ApplicationStarted.Register(StartApplication);
+                appLifetime.ApplicationStopping.Register(StopApplication);
+                appLifetime.ApplicationStopped.Register(CleanUp);
             }
-
-            app.UseLykkeMiddleware("LykkeJob", ex => new ErrorResponse { ErrorMessage = "Technical problem" });
-
-            app.UseMvc();
-            app.UseSwagger();
-            app.UseSwaggerUi();
-            app.UseStaticFiles();
-
-            appLifetime.ApplicationStarted.Register(StartApplication);
-            appLifetime.ApplicationStopping.Register(StopApplication);
-            appLifetime.ApplicationStopped.Register(CleanUp);
+            catch (Exception ex)
+            {
+                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(ConfigureServices), "", ex);
+                if (Log == null)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
         }
 
         private void StartApplication()
@@ -101,7 +123,11 @@ namespace Lykke.Job.LykkeJob
             }
             catch (Exception ex)
             {
-                Log.WriteFatalErrorAsync(nameof(Startup), nameof(StartApplication), "", ex);
+                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(StartApplication), "", ex);
+                if (Log == null)
+                {
+                    Console.WriteLine(ex);
+                }
             }
         }
 
@@ -117,7 +143,11 @@ namespace Lykke.Job.LykkeJob
             }
             catch (Exception ex)
             {
-                Log.WriteFatalErrorAsync(nameof(Startup), nameof(StopApplication), "", ex);
+                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(StopApplication), "", ex);
+                if (Log == null)
+                {
+                    Console.WriteLine(ex);
+                }
             }
         }
 
@@ -132,7 +162,11 @@ namespace Lykke.Job.LykkeJob
             }
             catch (Exception ex)
             {
-                Log.WriteFatalErrorAsync(nameof(Startup), nameof(CleanUp), "", ex);
+                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(CleanUp), "", ex);
+                if (Log == null)
+                {
+                    Console.WriteLine(ex);
+                }
             }
         }
 
