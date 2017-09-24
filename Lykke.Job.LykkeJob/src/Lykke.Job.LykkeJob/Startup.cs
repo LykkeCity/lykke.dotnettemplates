@@ -1,19 +1,21 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AzureStorage.Tables;
 using Common.Log;
 using Lykke.Common.ApiLibrary.Middleware;
 using Lykke.Common.ApiLibrary.Swagger;
-using Lykke.Job.LykkeJob.Core;
+using Lykke.Job.LykkeJob.Core.Services;
+using Lykke.Job.LykkeJob.Core.Settings;
 using Lykke.Job.LykkeJob.Models;
 using Lykke.Job.LykkeJob.Modules;
-using Lykke.JobTriggers.Extenstions;
-using Lykke.JobTriggers.Triggers;
 using Lykke.Logs;
 using Lykke.SettingsReader;
 using Lykke.SlackNotification.AzureQueue;
+#if azurequeuesub
+using Lykke.JobTriggers.Triggers;
+using System.Threading.Tasks;
+#endif
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -27,9 +29,11 @@ namespace Lykke.Job.LykkeJob
         public IContainer ApplicationContainer { get; private set; }
         public IConfigurationRoot Configuration { get; }
         public ILog Log { get; private set; }
-
+#if azurequeuesub
+        
         private TriggerHost _triggerHost;
         private Task _triggerHostTask;
+#endif
 
         public Startup(IHostingEnvironment env)
         {
@@ -59,11 +63,10 @@ namespace Lykke.Job.LykkeJob
 
                 var builder = new ContainerBuilder();
                 var appSettings = Configuration.LoadSettings<AppSettings>();
+
                 Log = CreateLogWithSlack(services, appSettings);
 
-                builder.RegisterModule(new JobModule(appSettings.Nested(x => x.LykkeJobJob), Log));
-
-                RegisterJobTriggers(appSettings.ConnectionString(x => x.LykkeJobJob.TriggerQueueConnectionString).CurrentValue, builder);
+                builder.RegisterModule(new JobModule(appSettings.CurrentValue.LykkeJobJob, appSettings.Nested(x => x.LykkeJobJob.Db), Log));
 
                 builder.Populate(services);
 
@@ -74,11 +77,6 @@ namespace Lykke.Job.LykkeJob
             catch (Exception ex)
             {
                 Log?.WriteFatalErrorAsync(nameof(Startup), nameof(ConfigureServices), "", ex);
-                if (Log == null)
-                {
-                    Console.WriteLine(ex);
-                }
-
                 throw;
             }
         }
@@ -106,10 +104,7 @@ namespace Lykke.Job.LykkeJob
             catch (Exception ex)
             {
                 Log?.WriteFatalErrorAsync(nameof(Startup), nameof(ConfigureServices), "", ex);
-                if (Log == null)
-                {
-                    Console.WriteLine(ex);
-                }
+                throw;
             }
         }
 
@@ -117,17 +112,20 @@ namespace Lykke.Job.LykkeJob
         {
             try
             {
+                // NOTE: Job not yet recieve and process IsAlive requests here
+
+                ApplicationContainer.Resolve<IStartupManager>().StartAsync().Wait();
+#if azurequeuesub
+
                 _triggerHost = new TriggerHost(new AutofacServiceProvider(ApplicationContainer));
 
                 _triggerHostTask = _triggerHost.Start();
+#endif
             }
             catch (Exception ex)
             {
                 Log?.WriteFatalErrorAsync(nameof(Startup), nameof(StartApplication), "", ex);
-                if (Log == null)
-                {
-                    Console.WriteLine(ex);
-                }
+                throw;
             }
         }
 
@@ -135,19 +133,19 @@ namespace Lykke.Job.LykkeJob
         {
             try
             {
-                // TODO: Implement your shutdown logic here. 
-                // Job still can recieve and process IsAlive requests here, so take care about it.
+                // NOTE: Job still can recieve and process IsAlive requests here, so take care about it if you add logic here.
+
+                ApplicationContainer.Resolve<IShutdownManager>().StopAsync().Wait();
+#if azurequeuesub
 
                 _triggerHost?.Cancel();
                 _triggerHostTask?.Wait();
+#endif
             }
             catch (Exception ex)
             {
                 Log?.WriteFatalErrorAsync(nameof(Startup), nameof(StopApplication), "", ex);
-                if (Log == null)
-                {
-                    Console.WriteLine(ex);
-                }
+                throw;
             }
         }
 
@@ -155,34 +153,14 @@ namespace Lykke.Job.LykkeJob
         {
             try
             {
-                // TODO: Implement your clean up logic here.
-                // Job can't recieve and process IsAlive requests here, so you can destroy all resources
+                // NOTE: Job can't recieve and process IsAlive requests here, so you can destroy all resources
 
                 ApplicationContainer.Dispose();
             }
             catch (Exception ex)
             {
                 Log?.WriteFatalErrorAsync(nameof(Startup), nameof(CleanUp), "", ex);
-                if (Log == null)
-                {
-                    Console.WriteLine(ex);
-                }
-            }
-        }
-
-        private static void RegisterJobTriggers(string connectionString, ContainerBuilder builder)
-        {
-            if (string.IsNullOrWhiteSpace(connectionString))
-            {
-                builder.AddTriggers();
-            }
-            else
-            {
-                builder.AddTriggers(
-                    pool =>
-                    {
-                        pool.AddDefaultConnection(connectionString);
-                    });
+                throw;
             }
         }
 

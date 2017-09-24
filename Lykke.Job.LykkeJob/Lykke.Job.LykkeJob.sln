@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.12
+VisualStudioVersion = 15.0.26730.8
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Job.LykkeJob", "src\Lykke.Job.LykkeJob\Lykke.Job.LykkeJob.csproj", "{5566FD3E-0DB6-4BF3-A98D-4A1181B3E02C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Job.LykkeJob", "src\Lykke.Job.LykkeJob\Lykke.Job.LykkeJob.csproj", "{5566FD3E-0DB6-4BF3-A98D-4A1181B3E02C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Job.LykkeJob.Core", "src\Lykke.Job.LykkeJob.Core\Lykke.Job.LykkeJob.Core.csproj", "{0415D4B4-5275-4B5C-AFD5-644572CD91CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Job.LykkeJob.Core", "src\Lykke.Job.LykkeJob.Core\Lykke.Job.LykkeJob.Core.csproj", "{0415D4B4-5275-4B5C-AFD5-644572CD91CD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Infrastructure", "1. Infrastructure", "{68994F01-8220-4B7C-9AB8-14E137C44AE5}"
 EndProject
@@ -13,11 +13,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Repositories", "2. Repos
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Tests", "3. Tests", "{AB790991-CEB2-44A5-9C0C-A2D26DB86D41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Job.LykkeJob.Services", "src\Lykke.Job.LykkeJob.Services\Lykke.Job.LykkeJob.Services.csproj", "{D42134F9-A73E-4890-966D-746FE732934E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Job.LykkeJob.Services", "src\Lykke.Job.LykkeJob.Services\Lykke.Job.LykkeJob.Services.csproj", "{D42134F9-A73E-4890-966D-746FE732934E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Job.LykkeJob.AzureRepositories", "src\Lykke.Job.LykkeJob.AzureRepositories\Lykke.Job.LykkeJob.AzureRepositories.csproj", "{1322B569-1032-4276-B86E-69F8BE3DC1F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Job.LykkeJob.AzureRepositories", "src\Lykke.Job.LykkeJob.AzureRepositories\Lykke.Job.LykkeJob.AzureRepositories.csproj", "{1322B569-1032-4276-B86E-69F8BE3DC1F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Job.LykkeJob.Tests", "tests\Lykke.Job.LykkeJob.Tests\Lykke.Job.LykkeJob.Tests.csproj", "{AAC9F450-14D7-4482-BC12-7C55006864E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Job.LykkeJob.Tests", "tests\Lykke.Job.LykkeJob.Tests\Lykke.Job.LykkeJob.Tests.csproj", "{AAC9F450-14D7-4482-BC12-7C55006864E2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Contract", "4. Contract", "{579F7EFC-B394-4D2B-9F42-C1A4293F5C2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Job.LykkeJob.Contract", "contract\Lykke.Job.LykkeJob.Contract\Lykke.Job.LykkeJob.Contract.csproj", "{58FEDF76-9CC9-4B3B-877F-0795CE7C50F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,10 @@ Global
 		{AAC9F450-14D7-4482-BC12-7C55006864E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAC9F450-14D7-4482-BC12-7C55006864E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAC9F450-14D7-4482-BC12-7C55006864E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58FEDF76-9CC9-4B3B-877F-0795CE7C50F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58FEDF76-9CC9-4B3B-877F-0795CE7C50F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58FEDF76-9CC9-4B3B-877F-0795CE7C50F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58FEDF76-9CC9-4B3B-877F-0795CE7C50F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,5 +62,9 @@ Global
 		{D42134F9-A73E-4890-966D-746FE732934E} = {68994F01-8220-4B7C-9AB8-14E137C44AE5}
 		{1322B569-1032-4276-B86E-69F8BE3DC1F7} = {AA5ECC48-14C3-4BE7-AF0C-D59FCA2742C2}
 		{AAC9F450-14D7-4482-BC12-7C55006864E2} = {AB790991-CEB2-44A5-9C0C-A2D26DB86D41}
+		{58FEDF76-9CC9-4B3B-877F-0795CE7C50F9} = {579F7EFC-B394-4D2B-9F42-C1A4293F5C2B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D2419990-C093-4EE2-AFE9-80857ECBB147}
 	EndGlobalSection
 EndGlobal

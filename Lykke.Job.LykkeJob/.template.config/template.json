@@ -15,10 +15,29 @@
       "defaultValue": "LykkeJob",
       "replaces":"LykkeJob"
     },
-    "examples":{
+    "azurequeuesub":{
       "type": "parameter",
       "dataType":"bool",
-      "defaultValue": "true"
+      "defaultValue": "true",
+      "description": "Enables incoming Azure Queue messages processing"
+    },
+    "rabbitsub":{
+      "type": "parameter",
+      "dataType":"bool",
+      "defaultValue": "true",
+      "description": "Enables incoming RabbitMQ messages processing"
+    },
+    "rabbitpub":{
+      "type": "parameter",
+      "dataType":"bool",
+      "defaultValue": "true",
+      "description": "Enables outcoming RabbitMQ messages sending"
+    },
+    "timeperiod":{
+      "type": "parameter",
+      "dataType":"bool",
+      "defaultValue": "true",
+      "description": "Enables periodical work execution"
     },
     "ifdef": {
       "type": "generated",
@@ -41,21 +60,40 @@
     {
       "modifiers": [
         {
-          "condition": "(!examples)",
+          "condition": "(!azurequeuesub)",
           "exclude": [ 
-            "src/Lykke.Job.LykkeJob.Core/Services/IMyFooService.cs",
-            "src/Lykke.Job.LykkeJob.Core/Services/IMyBooService.cs",
-            "src/Lykke.Job.LykkeJob.Services/MyFooService.cs",
-            "src/Lykke.Job.LykkeJob.Services/MyBooService.cs",
-            "src/Lykke.Job.LykkeJob/TriggerHandlers/MyHandlers.cs",
-            "src/Lykke.Job.LykkeJob/Contract/MyMessage.cs"            
+            "src/Lykke.Job.LykkeJob.Core/Settings/JobSettings/AzureQueueSettings.cs",
+            "src/Lykke.Job.LykkeJob/AzureQueueHandlers/*.*",
           ]
         },
         {
-          "condition": "(examples)",
+          "condition": "(!(rabbitsub || azurequeuesub))",
           "exclude": [ 
-              "src/Lykke.Job.LykkeJob/TriggerHandlers/Readme.md",
-              "src/Lykke.Job.LykkeJob/Contract/Readme.md"            
+              "src/Lykke.Job.LykkeJob/IncomingMessages/*.*"
+          ]
+        },
+        {
+          "condition": "(!(rabbitsub || rabbitpub))",
+          "exclude": [ 
+              "src/Lykke.Job.LykkeJob.Core/Settings/JobSettings/RabbitMqSettings.cs"
+          ]
+        },
+        {
+          "condition": "(!rabbitsub)",
+          "exclude": [ 
+              "src/Lykke.Job.LykkeJob/RabbitSubscribers/*.*"
+          ]
+        },
+        {
+          "condition": "(!rabbitpub)",
+          "exclude": [ 
+              "src/Lykke.Job.LykkeJob/RabbitPublishers/*.*"
+          ]
+        },
+        {
+          "condition": "(!timeperiod)",
+          "exclude": [ 
+              "src/Lykke.Job.LykkeJob/PeriodicalHandlers/*.*"
           ]
         },
         {

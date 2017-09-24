@@ -1,1 +1,0 @@
-﻿Place your QueueTrigger messages here

@@ -6,11 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\" />
+    <PackageReference Include="Lykke.Common" Version="1.1.97" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Lykke.Common" Version="1.1.97" />
+    <ProjectReference Include="..\..\contract\Lykke.Job.LykkeJob.Contract\Lykke.Job.LykkeJob.Contract.csproj" />
   </ItemGroup>
 
 </Project>

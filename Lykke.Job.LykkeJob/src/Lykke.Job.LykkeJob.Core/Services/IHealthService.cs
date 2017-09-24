@@ -8,12 +8,7 @@ namespace Lykke.Job.LykkeJob.Core.Services
     {
         string GetHealthViolationMessage();
         IEnumerable<HealthIssue> GetHealthIssues();
-#if (examples)
 
-        // NOTE: These are example methods
-        void TraceFooStarted();
-        void TraceFooCompleted();
-        void TraceFooFailed();
-#endif
+        // TODO: Place health tracing methods declarations here
     }
 }
