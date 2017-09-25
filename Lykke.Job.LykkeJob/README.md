@@ -15,13 +15,16 @@ where `${path}` is the path to the clonned directory (where folder .template.con
 Now new template can be used in dotnet cli:
 
 ```sh
-dotnet new lkejob -n ${JobName} -o Lykke.Job.${JobName} [-e {true|false}]
+dotnet new lkejob -n ${JobName} -o Lykke.Job.${JobName} [-az {true|false} -r {true|false} -ra {true|false} -t {true|false}]
 ```
 This will create a solution in the current folder, where `${JobName}` is the job name without Lykke.Job. prefix. 
 Switches:
-* -n: JobName
-* -o: Output directory name
-* -e: Includes code snippets examples. Default value is `true`, specify `false` if you familar with project's structure
+* **-n|--name**: JobName
+* **-o|--output**: Output directory name
+* **-az|--azurequeuesub**: Enables incoming Azure Queue messages processing, using Lykke.JobTriggers package. Default is **true**
+* **-r|--rabbitsub**: Enables incoming RabbitMQ messages processing. Default is **true**
+* **-ra|---rabbitpub**: Enables outcoming RabbitMQ messages sending. Default is **true**
+* **-t|--timeperiod**: Enables periodical work execution, using TimerPeriod class from Lykke.Common package. Default is **true**
 
 When temlate has changed, to update installed template run again command:
 
@@ -85,32 +88,13 @@ Consider trigger handler class as controller, it responsible to control executio
     public class MyHandlers
     {
         private readonly IMyFooService _myFooService;
-        private readonly IMyBooService _myBooService;
         private readonly IHealthService _healthService;
 
         // NOTE: The object is instantiated using DI container, so registered dependencies are injects well
-        public MyHandlers(IMyFooService myFooService, IMyBooService myBooService, IHealthService healthService)
+        public MyHandlers(IMyFooService myFooService, IHealthService healthService)
         {
             _myFooService = myFooService;
-            _myBooService = myBooService;
             _healthService = healthService;
-        }
-
-        [TimerTrigger("00:00:10")]
-        public async Task TimeTriggeredHandler()
-        {
-            try
-            {
-                _healthService.TraceFooStarted();
-
-                await _myFooService.FooAsync();
-
-                _healthService.TraceFooCompleted();
-            }
-            catch
-            {
-                _healthService.TraceFooFailed();
-            }
         }
 
         [QueueTrigger("queue-name")]
@@ -120,7 +104,7 @@ Consider trigger handler class as controller, it responsible to control executio
             {
                 _healthService.TraceBooStarted();
 
-                await _myBooService.BooAsync();
+                await _myFooService.BooAsync();
 
                 _healthService.TraceBooCompleted();
             }
