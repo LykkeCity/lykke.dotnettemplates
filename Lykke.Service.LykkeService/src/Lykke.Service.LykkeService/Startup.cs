@@ -167,7 +167,7 @@ namespace Lykke.Service.LykkeService
                     AzureTableStorage<LogEntity>.Create(dbLogConnectionStringManager, "LykkeServiceLog", consoleLogger),
                     consoleLogger);
 
-                var slackNotificationsManager = new LykkeLogToAzureSlackNotificationsManager(appName, slackService, consoleLogger);
+                var slackNotificationsManager = new LykkeLogToAzureSlackNotificationsManager(slackService, consoleLogger);
 
                 var azureStorageLogger = new LykkeLogToAzureStorage(
                     appName,
