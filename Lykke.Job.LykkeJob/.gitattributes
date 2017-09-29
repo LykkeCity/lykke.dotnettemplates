@@ -2,7 +2,7 @@
 
 * text=auto encoding=UTF-8
 
-# Alwats LF line-endings
+# Always LF line-endings
 
 *.sh text eol=lf
 
