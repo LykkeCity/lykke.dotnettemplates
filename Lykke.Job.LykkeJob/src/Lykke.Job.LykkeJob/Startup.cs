@@ -160,6 +160,7 @@ namespace Lykke.Job.LykkeJob
             catch (Exception ex)
             {
                 Log?.WriteFatalErrorAsync(nameof(Startup), nameof(CleanUp), "", ex);
+                (Log as IDisposable)?.Dispose();
                 throw;
             }
         }
