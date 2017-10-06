@@ -1,6 +1,6 @@
 # Auto normalize line-endings
 
-* text=auto encoding=UTF-8
+* text eol=lf encoding=UTF-8
 
 # Always LF line-endings
 
