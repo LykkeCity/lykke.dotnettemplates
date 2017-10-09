@@ -98,9 +98,9 @@ namespace Lykke.Job.LykkeJob
                 app.UseSwaggerUi();
                 app.UseStaticFiles();
 
-                appLifetime.ApplicationStarted.Register(async () => await StartApplication());
-                appLifetime.ApplicationStopping.Register(async () => await StopApplication());
-                appLifetime.ApplicationStopped.Register(async () => await CleanUp());
+                appLifetime.ApplicationStarted.Register(() => StartApplication().Wait());
+                appLifetime.ApplicationStopping.Register(() => StopApplication().Wait());
+                appLifetime.ApplicationStopped.Register(() => CleanUp().Wait());
             }
             catch (Exception ex)
             {
