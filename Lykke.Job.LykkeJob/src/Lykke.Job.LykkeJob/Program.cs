@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace Lykke.Job.LykkeJob
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Console.WriteLine($"LykkeJob version {Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion}");
 //#$if DEBUG
