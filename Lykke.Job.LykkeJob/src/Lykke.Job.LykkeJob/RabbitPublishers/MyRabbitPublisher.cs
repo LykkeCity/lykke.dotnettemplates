@@ -11,14 +11,12 @@ namespace Lykke.Job.LykkeJob.RabbitPublishers
     {
         private readonly ILog _log;
         private readonly string _connectionString;
-        private readonly IPublishingQueueRepository<MyPublishedMessage> _publishingQueueRepository;
         private RabbitMqPublisher<MyPublishedMessage> _publisher;
 
-        public MyRabbitPublisher(ILog log, string connectionString, IPublishingQueueRepository<MyPublishedMessage> publishingQueueRepository)
+        public MyRabbitPublisher(ILog log, string connectionString)
         {
             _log = log;
             _connectionString = connectionString;
-            _publishingQueueRepository = publishingQueueRepository;
         }
 
         public void Start()
@@ -34,7 +32,7 @@ namespace Lykke.Job.LykkeJob.RabbitPublishers
             _publisher = new RabbitMqPublisher<MyPublishedMessage>(settings)
                 .SetSerializer(new JsonMessageSerializer<MyPublishedMessage>())
                 .SetPublishStrategy(new DefaultFanoutPublishStrategy(settings))
-                .SetQueueRepository(_publishingQueueRepository)
+                .PublishSynchronously()
                 .SetLogger(_log)
                 .Start();
         }

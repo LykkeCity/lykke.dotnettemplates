@@ -132,10 +132,7 @@ namespace Lykke.Job.LykkeJob.Modules
                 .As<IMyRabbitPublisher>()
                 .As<IStartable>()
                 .SingleInstance()
-                .WithParameter(TypedParameter.From(_settings.Rabbit.ConnectionString))
-                .WithParameter(TypedParameter.From<IPublishingQueueRepository<MyPublishedMessage>>(
-                    new BlobPublishingQueueRepository<MyPublishedMessage, MyPublishedMessage>(
-                        AzureBlobStorage.Create(_dbSettingsManager.ConnectionString(x => x.SnapshotsConnectionString)))));
+                .WithParameter(TypedParameter.From(_settings.Rabbit.ConnectionString));
         }
 #endif
     }
