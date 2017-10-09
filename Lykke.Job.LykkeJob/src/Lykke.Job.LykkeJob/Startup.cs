@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AzureStorage.Tables;
@@ -76,7 +77,7 @@ namespace Lykke.Job.LykkeJob
             }
             catch (Exception ex)
             {
-                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(ConfigureServices), "", ex);
+                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(ConfigureServices), "", ex).Wait();
                 throw;
             }
         }
@@ -97,70 +98,82 @@ namespace Lykke.Job.LykkeJob
                 app.UseSwaggerUi();
                 app.UseStaticFiles();
 
-                appLifetime.ApplicationStarted.Register(StartApplication);
-                appLifetime.ApplicationStopping.Register(StopApplication);
-                appLifetime.ApplicationStopped.Register(CleanUp);
+                appLifetime.ApplicationStarted.Register(async () => await StartApplication());
+                appLifetime.ApplicationStopping.Register(async () => await StopApplication());
+                appLifetime.ApplicationStopped.Register(async () => await CleanUp());
             }
             catch (Exception ex)
             {
-                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(ConfigureServices), "", ex);
+                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(ConfigureServices), "", ex).Wait();
                 throw;
             }
         }
 
-        private void StartApplication()
+        private async Task StartApplication()
         {
             try
             {
                 // NOTE: Job not yet recieve and process IsAlive requests here
 
-                ApplicationContainer.Resolve<IStartupManager>().StartAsync().Wait();
+                await ApplicationContainer.Resolve<IStartupManager>().StartAsync();
 #if azurequeuesub
 
                 _triggerHost = new TriggerHost(new AutofacServiceProvider(ApplicationContainer));
 
                 _triggerHostTask = _triggerHost.Start();
 #endif
+                await Log.WriteMonitorAsync("", "", "Started");
             }
             catch (Exception ex)
             {
-                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(StartApplication), "", ex);
+                await Log.WriteFatalErrorAsync(nameof(Startup), nameof(StartApplication), "", ex);
                 throw;
             }
         }
 
-        private void StopApplication()
+        private async Task StopApplication()
         {
             try
             {
                 // NOTE: Job still can recieve and process IsAlive requests here, so take care about it if you add logic here.
 
-                ApplicationContainer.Resolve<IShutdownManager>().StopAsync().Wait();
+                await ApplicationContainer.Resolve<IShutdownManager>().StopAsync();
 #if azurequeuesub
 
                 _triggerHost?.Cancel();
-                _triggerHostTask?.Wait();
+                await _triggerHostTask;
 #endif
             }
             catch (Exception ex)
             {
-                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(StopApplication), "", ex);
+                if (Log != null)
+                {
+                    await Log.WriteFatalErrorAsync(nameof(Startup), nameof(StopApplication), "", ex);
+                }
                 throw;
             }
         }
 
-        private void CleanUp()
+        private async Task CleanUp()
         {
             try
             {
                 // NOTE: Job can't recieve and process IsAlive requests here, so you can destroy all resources
-
+                
+                if (Log != null)
+                {
+                    await Log.WriteMonitorAsync("", "", "Terminating");
+                }
+                
                 ApplicationContainer.Dispose();
             }
             catch (Exception ex)
             {
-                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(CleanUp), "", ex);
-                (Log as IDisposable)?.Dispose();
+                if (Log != null)
+                {
+                    await Log.WriteFatalErrorAsync(nameof(Startup), nameof(CleanUp), "", ex);
+                    (Log as IDisposable)?.Dispose();
+                }
                 throw;
             }
         }

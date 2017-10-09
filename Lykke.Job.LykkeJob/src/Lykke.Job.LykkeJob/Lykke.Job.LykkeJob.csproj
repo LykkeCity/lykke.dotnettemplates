@@ -19,17 +19,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Lykke.Common" Version="1.1.99" />
+    <PackageReference Include="Lykke.Common" Version="3.0.0" />
     <PackageReference Include="Lykke.Common.ApiLibrary" Version="1.0.13" />
     <!-- #if azurequeuesub -->
     <PackageReference Include="Lykke.JobTriggers" Version="1.1.19" />
     <!-- #endif -->
-    <PackageReference Include="Lykke.Logs" Version="3.1.0" />
+    <PackageReference Include="Lykke.Logs" Version="3.2.0" />
     <!-- #if rabbitpub -->
-    <PackageReference Include="Lykke.RabbitMq.Azure" Version="2.0.2" />
+    <PackageReference Include="Lykke.RabbitMq.Azure" Version="3.1.0" />
     <!-- #endif -->
     <!-- #if rabbitpub || rabbitsub -->
-    <PackageReference Include="Lykke.RabbitMqBroker" Version="2.2.2" />
+    <PackageReference Include="Lykke.RabbitMqBroker" Version="3.0.3" />
     <!-- #endif -->
     <PackageReference Include="Lykke.SettingsReader" Version="1.0.41" />
     <PackageReference Include="Lykke.SlackNotification.AzureQueue" Version="1.0.5" />
