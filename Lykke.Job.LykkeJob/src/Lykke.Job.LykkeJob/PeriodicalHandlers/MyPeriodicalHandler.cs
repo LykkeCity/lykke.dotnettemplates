@@ -8,8 +8,8 @@ namespace Lykke.Job.LykkeJob.PeriodicalHandlers
     public class MyPeriodicalHandler : TimerPeriod
     {
         public MyPeriodicalHandler(ILog log) :
-            // TODO: Sometimes, is enought to hardcode the period right here, but sometimes it's better to move it to the settings.
-            // Do the simplest and enought decision
+            // TODO: Sometimes, it is enough to hardcode the period right here, but sometimes it's better to move it to the settings.
+            // Choose the simplest and sufficient solution
             base(nameof(MyPeriodicalHandler), (int)TimeSpan.FromSeconds(10).TotalMilliseconds, log)
         {
         }
