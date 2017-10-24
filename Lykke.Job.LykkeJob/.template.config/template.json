@@ -18,25 +18,25 @@
     "azurequeuesub":{
       "type": "parameter",
       "dataType":"bool",
-      "defaultValue": "true",
+      "defaultValue": "false",
       "description": "Enables incoming Azure Queue messages processing"
     },
     "rabbitsub":{
       "type": "parameter",
       "dataType":"bool",
-      "defaultValue": "true",
+      "defaultValue": "false",
       "description": "Enables incoming RabbitMQ messages processing"
     },
     "rabbitpub":{
       "type": "parameter",
       "dataType":"bool",
-      "defaultValue": "true",
+      "defaultValue": "false",
       "description": "Enables outcoming RabbitMQ messages sending"
     },
     "timeperiod":{
       "type": "parameter",
       "dataType":"bool",
-      "defaultValue": "true",
+      "defaultValue": "false",
       "description": "Enables periodical work execution"
     },
     "ifdef": {
@@ -87,7 +87,9 @@
         {
           "condition": "(!rabbitpub)",
           "exclude": [ 
-              "src/Lykke.Job.LykkeJob/RabbitPublishers/*.*"
+              "src/Lykke.Job.LykkeJob/RabbitPublishers/*.*",
+              "src/Lykke.Job.LykkeJob.Core/Services/IMyRabbitPublisher.cs",
+              "contract/Lykke.Job.LykkeJob.Contract/MyPublishedMessage.cs"
           ]
         },
         {

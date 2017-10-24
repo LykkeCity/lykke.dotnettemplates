@@ -21,10 +21,10 @@ This will create a solution in the current folder, where `${JobName}` is the job
 Switches:
 * **-n|--name**: JobName
 * **-o|--output**: Output directory name
-* **-az|--azurequeuesub**: Enables incoming Azure Queue messages processing, using Lykke.JobTriggers package. Default is **true**
-* **-r|--rabbitsub**: Enables incoming RabbitMQ messages processing. Default is **true**
-* **-ra|---rabbitpub**: Enables outcoming RabbitMQ messages sending. Default is **true**
-* **-t|--timeperiod**: Enables periodical work execution, using TimerPeriod class from Lykke.Common package. Default is **true**
+* **-az|--azurequeuesub**: Enables incoming Azure Queue messages processing, using Lykke.JobTriggers package. Default is **false**
+* **-r|--rabbitsub**: Enables incoming RabbitMQ messages processing. Default is **false**
+* **-ra|---rabbitpub**: Enables outcoming RabbitMQ messages sending. Default is **false**
+* **-t|--timeperiod**: Enables periodical work execution, using TimerPeriod class from Lykke.Common package. Default is **false**
 
 When temlate has changed, to update installed template run again command:
 
