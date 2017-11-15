@@ -16,6 +16,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.PlatformAbstractions;
+using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace Lykke.Service.LykkeService
 {
@@ -49,7 +53,7 @@ namespace Lykke.Service.LykkeService
 
                 services.AddSwaggerGen(options =>
                 {
-                    options.DefaultLykkeConfiguration("v1", "LykkeService API");
+                    options.DefaultLykkeConfiguration("v1", $"{PlatformServices.Default.Application.ApplicationName} API");
                 });
 
                 var builder = new ContainerBuilder();
@@ -82,7 +86,7 @@ namespace Lykke.Service.LykkeService
 
                 app.UseMvc();
                 app.UseSwagger();
-                app.UseSwaggerUi();
+                app.UseSwaggerUI(x => { });
                 app.UseStaticFiles();
 
                 appLifetime.ApplicationStarted.Register(() => StartApplication().Wait());
