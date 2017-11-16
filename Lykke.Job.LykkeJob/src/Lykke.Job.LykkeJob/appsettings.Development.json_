@@ -1,0 +1,25 @@
+﻿{
+  // NOTE: Please, modify this settings only to reflect AppSettings structure.
+  // If you want to use local settings, add appsettings.Development.json file, which not version controlled
+  "LykkeJobJob": {
+    "Db": {
+      "LogsConnString": "UseDevelopmentStorage=true"
+    },
+    //#if azurequeuesub
+    "AzureQueue": {
+      "ConnectionString": "UseDevelopmentStorage=true" 
+    },
+    //#endif
+    //#if (rabbitsub || rabbitpub)
+    "Rabbit": {
+      "ConnectionString": "amqp://guest:guest@localhost:5672"
+    }
+    //#endif
+  },
+  "SlackNotifications": {
+    "AzureQueue": {
+      "ConnectionString": "UseDevelopmentStorage=true",
+      "QueueName": "slack-notifications"
+    }
+  }
+}

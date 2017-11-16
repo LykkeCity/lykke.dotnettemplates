@@ -4,7 +4,7 @@ using System.Net;
 using Lykke.Job.LykkeJob.Core.Services;
 using Lykke.Job.LykkeJob.Models;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.SwaggerGen.Annotations;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Lykke.Job.LykkeJob.Controllers
 {
