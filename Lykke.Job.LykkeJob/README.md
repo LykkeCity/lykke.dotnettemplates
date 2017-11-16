@@ -10,7 +10,7 @@ Install template:
 ```sh
 $ dotnet new --install ${path}
 ```
-where `${path}` is the path to the clonned directory (where folder .template.config placed) without trailing slash
+where `${path}` is the **full** path to the clonned directory (where folder .template.config placed) without trailing slash
 
 Now new template can be used in dotnet cli:
 
