@@ -53,7 +53,7 @@ namespace Lykke.Service.LykkeService
 
                 services.AddSwaggerGen(options =>
                 {
-                    options.DefaultLykkeConfiguration("v1", $"{PlatformServices.Default.Application.ApplicationName} API");
+                    options.DefaultLykkeConfiguration("v1", "LykkeService API");
                 });
 
                 var builder = new ContainerBuilder();
@@ -86,7 +86,11 @@ namespace Lykke.Service.LykkeService
 
                 app.UseMvc();
                 app.UseSwagger();
-                app.UseSwaggerUI(x => { });
+                app.UseSwaggerUI(x =>
+                {
+                    x.RoutePrefix = "swagger/ui";
+                    x.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                });
                 app.UseStaticFiles();
 
                 appLifetime.ApplicationStarted.Register(() => StartApplication().Wait());
