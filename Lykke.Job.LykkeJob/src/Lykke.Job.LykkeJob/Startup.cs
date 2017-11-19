@@ -126,7 +126,7 @@ namespace Lykke.Job.LykkeJob
 
                 _triggerHostTask = _triggerHost.Start();
 #endif
-                await Log.WriteMonitorAsync("", "", "Started");
+                await Log.WriteMonitorAsync("", Program.EnvInfo, "Started");
             }
             catch (Exception ex)
             {
@@ -145,7 +145,11 @@ namespace Lykke.Job.LykkeJob
 #if azurequeuesub
 
                 _triggerHost?.Cancel();
-                await _triggerHostTask;
+
+                if(_triggerHostTask != null)
+                {
+                    await _triggerHostTask;
+                }
 #endif
             }
             catch (Exception ex)
@@ -166,7 +170,7 @@ namespace Lykke.Job.LykkeJob
                 
                 if (Log != null)
                 {
-                    await Log.WriteMonitorAsync("", "", "Terminating");
+                    await Log.WriteMonitorAsync("", Program.EnvInfo, "Terminating");
                 }
                 
                 ApplicationContainer.Dispose();

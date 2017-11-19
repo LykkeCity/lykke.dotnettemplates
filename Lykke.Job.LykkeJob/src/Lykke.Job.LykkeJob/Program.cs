@@ -7,6 +7,8 @@ namespace Lykke.Job.LykkeJob
 {
     public class Program
     {
+        public static string EnvInfo => Environment.GetEnvironmentVariable("ENV_INFO");
+
         public static void Main(string[] args)
         {
             Console.WriteLine($"LykkeJob version {Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion}");
@@ -15,7 +17,7 @@ namespace Lykke.Job.LykkeJob
 //#$else
             //$#$//Console.WriteLine("Is RELEASE");
 //#$endif
-            Console.WriteLine($"ENV_INFO: {Environment.GetEnvironmentVariable("ENV_INFO")}");
+            Console.WriteLine($"ENV_INFO: {EnvInfo}");
 
             try
             {

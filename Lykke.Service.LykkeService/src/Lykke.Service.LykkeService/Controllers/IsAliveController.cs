@@ -42,7 +42,7 @@ namespace Lykke.Service.LykkeService.Controllers
             {
                 Name = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationName,
                 Version = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion,
-                Env = Environment.GetEnvironmentVariable("ENV_INFO"),
+                Env = Program.EnvInfo,
 //#$if DEBUG
                 IsDebug = true,
 //#$else

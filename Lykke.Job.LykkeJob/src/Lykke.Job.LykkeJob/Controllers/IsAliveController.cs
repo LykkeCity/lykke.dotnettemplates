@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using Lykke.Job.LykkeJob.Core.Services;
 using Lykke.Job.LykkeJob.Models;
@@ -43,7 +42,7 @@ namespace Lykke.Job.LykkeJob.Controllers
             {
                 Name = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationName,
                 Version = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion,
-                Env = Environment.GetEnvironmentVariable("ENV_INFO"),
+                Env = Program.EnvInfo,
 //#$if DEBUG
                 IsDebug = true,
 //#$else

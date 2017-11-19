@@ -7,6 +7,8 @@ namespace Lykke.Service.LykkeService
 {
     public class Program
     {
+        public static string EnvInfo => Environment.GetEnvironmentVariable("ENV_INFO");
+
         public static void Main(string[] args)
         {
             Console.WriteLine($"LykkeService version {Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion}");
@@ -15,7 +17,7 @@ namespace Lykke.Service.LykkeService
 //#$else
             //$#$//Console.WriteLine("Is RELEASE");
 //#$endif           
-            Console.WriteLine($"ENV_INFO: {Environment.GetEnvironmentVariable("ENV_INFO")}");
+            Console.WriteLine($"ENV_INFO: {EnvInfo}");
 
             try
             {
