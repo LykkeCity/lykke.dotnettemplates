@@ -16,5 +16,10 @@ namespace Lykke.Service.LykkeService.Client
 
             builder.RegisterInstance(new LykkeServiceClient(serviceUrl, log)).As<ILykkeServiceClient>().SingleInstance();
         }
+
+        public static void RegisterLykkeServiceClient(this ContainerBuilder builder, LykkeServiceServiceClientSettings settings, ILog log)
+        {
+            builder.RegisterLykkeServiceClient(settings?.ServiceUrl, log);
+        }
     }
 }
