@@ -5,18 +5,18 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace Lykke.Job.LykkeJob
 {
-    public class Program
+    internal sealed class Program
     {
         public static string EnvInfo => Environment.GetEnvironmentVariable("ENV_INFO");
 
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             Console.WriteLine($"LykkeJob version {Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion}");
-//#$if DEBUG
+            //#$if DEBUG
             Console.WriteLine("Is DEBUG");
-//#$else
+            //#$else
             //$#$//Console.WriteLine("Is RELEASE");
-//#$endif
+            //#$endif
             Console.WriteLine($"ENV_INFO: {EnvInfo}");
 
             try
@@ -29,7 +29,7 @@ namespace Lykke.Job.LykkeJob
                     .UseApplicationInsights()
                     .Build();
 
-                webHost.Run();
+                await webHost.RunAsync();
             }
             catch (Exception ex)
             {
@@ -42,13 +42,12 @@ namespace Lykke.Job.LykkeJob
                 Console.WriteLine();
                 Console.WriteLine($"Process will be terminated in {delay}. Press any key to terminate immediately.");
 
-                Task.WhenAny(
-                        Task.Delay(delay),
-                        Task.Run(() =>
-                        {
-                            Console.ReadKey(true);
-                        }))
-                    .Wait();
+                await Task.WhenAny(
+                            Task.Delay(delay),
+                            Task.Run(() =>
+                            {
+                                Console.ReadKey(true);
+                            }));
             }
 
             Console.WriteLine("Terminated");
