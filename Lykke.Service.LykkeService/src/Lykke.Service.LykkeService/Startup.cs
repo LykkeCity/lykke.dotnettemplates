@@ -64,7 +64,7 @@ namespace Lykke.Service.LykkeService
             }
             catch (Exception ex)
             {
-                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(ConfigureServices), "", ex).Wait();
+                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(ConfigureServices), "", ex).GetAwaiter().GetResult();
                 throw;
             }
         }
@@ -78,10 +78,13 @@ namespace Lykke.Service.LykkeService
                     app.UseDeveloperExceptionPage();
                 }
 
-                app.UseLykkeMiddleware("LykkeService", ex => new {Message = "Technical problem"});
+                app.UseLykkeMiddleware("LykkeService", ex => new { Message = "Technical problem" });
 
                 app.UseMvc();
-                app.UseSwagger();
+                app.UseSwagger(c =>
+                {
+                    c.PreSerializeFilters.Add((swagger, httpReq) => swagger.Host = httpReq.Host.Value);
+                });
                 app.UseSwaggerUI(x =>
                 {
                     x.RoutePrefix = "swagger/ui";
@@ -89,13 +92,13 @@ namespace Lykke.Service.LykkeService
                 });
                 app.UseStaticFiles();
 
-                appLifetime.ApplicationStarted.Register(() => StartApplication().Wait());
-                appLifetime.ApplicationStopping.Register(() => StopApplication().Wait());
-                appLifetime.ApplicationStopped.Register(() => CleanUp().Wait());
+                appLifetime.ApplicationStarted.Register(() => StartApplication().GetAwaiter().GetResult());
+                appLifetime.ApplicationStopping.Register(() => StopApplication().GetAwaiter().GetResult());
+                appLifetime.ApplicationStopped.Register(() => CleanUp().GetAwaiter().GetResult());
             }
             catch (Exception ex)
             {
-                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(Configure), "", ex).Wait();
+                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(Configure), "", ex).GetAwaiter().GetResult();
                 throw;
             }
         }
@@ -140,12 +143,12 @@ namespace Lykke.Service.LykkeService
             try
             {
                 // NOTE: Service can't recieve and process requests here, so you can destroy all resources
-                
+
                 if (Log != null)
                 {
                     await Log.WriteMonitorAsync("", $"Env: {Program.EnvInfo}", "Terminating");
                 }
-                
+
                 ApplicationContainer.Dispose();
             }
             catch (Exception ex)

@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace Lykke.Service.LykkeService
 {
-    public class Program
+    internal sealed class Program
     {
         public static string EnvInfo => Environment.GetEnvironmentVariable("ENV_INFO");
 
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             Console.WriteLine($"LykkeService version {Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion}");
 //#$if DEBUG
@@ -29,7 +29,7 @@ namespace Lykke.Service.LykkeService
                     .UseApplicationInsights()
                     .Build();
 
-                host.Run();
+                await host.RunAsync();
             }
             catch (Exception ex)
             {
@@ -42,13 +42,12 @@ namespace Lykke.Service.LykkeService
                 Console.WriteLine();
                 Console.WriteLine($"Process will be terminated in {delay}. Press any key to terminate immediately.");
 
-                Task.WhenAny(
-                        Task.Delay(delay),
-                        Task.Run(() =>
-                        {
-                            Console.ReadKey(true);
-                        }))
-                    .Wait();
+                await Task.WhenAny(
+                               Task.Delay(delay),
+                               Task.Run(() =>
+                               {
+                                   Console.ReadKey(true);
+                               }));
             }
 
             Console.WriteLine("Terminated");

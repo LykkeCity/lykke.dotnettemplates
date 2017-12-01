@@ -6,4 +6,4 @@
 # NPM version >= 3.10.10 - https://www.npmjs.com/get-npm
 # Autorest version >= 1.2.2 - https://www.npmjs.com/package/autorest
 
-autorest -Input http://localhost:5000/swagger/v1/swagger.json -CodeGenerator CSharp -OutputDirectory AutorestClient -Namespace Lykke.Service.LykkeService.AutorestClient
+autorest --input-file=http://localhost:5000/swagger/v1/swagger.json --csharp --output-folder=AutorestClient --namespace=Lykke.Service.LykkeService.AutorestClient

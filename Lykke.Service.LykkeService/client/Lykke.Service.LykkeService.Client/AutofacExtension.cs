@@ -14,7 +14,10 @@ namespace Lykke.Service.LykkeService.Client
             if (string.IsNullOrWhiteSpace(serviceUrl))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(serviceUrl));
 
-            builder.RegisterInstance(new LykkeServiceClient(serviceUrl, log)).As<ILykkeServiceClient>().SingleInstance();
+            builder.RegisterType<LykkeServiceClient>()
+                .WithParameter("serviceUrl", serviceUrl)
+                .As<ILykkeServiceClient>()
+                .SingleInstance();
         }
 
         public static void RegisterLykkeServiceClient(this ContainerBuilder builder, LykkeServiceServiceClientSettings settings, ILog log)

@@ -77,7 +77,7 @@ namespace Lykke.Job.LykkeJob
             }
             catch (Exception ex)
             {
-                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(ConfigureServices), "", ex).Wait();
+                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(ConfigureServices), "", ex).GetAwaiter().GetResult();
                 throw;
             }
         }
@@ -94,7 +94,10 @@ namespace Lykke.Job.LykkeJob
                 app.UseLykkeMiddleware("LykkeJob", ex => new ErrorResponse {ErrorMessage = "Technical problem"});
 
                 app.UseMvc();
-                app.UseSwagger();
+                app.UseSwagger(c =>
+                {
+                    c.PreSerializeFilters.Add((swagger, httpReq) => swagger.Host = httpReq.Host.Value);
+                });
                 app.UseSwaggerUI(x =>
                 {
                     x.RoutePrefix = "swagger/ui";
@@ -102,13 +105,13 @@ namespace Lykke.Job.LykkeJob
                 });
                 app.UseStaticFiles();
 
-                appLifetime.ApplicationStarted.Register(() => StartApplication().Wait());
-                appLifetime.ApplicationStopping.Register(() => StopApplication().Wait());
-                appLifetime.ApplicationStopped.Register(() => CleanUp().Wait());
+                appLifetime.ApplicationStarted.Register(() => StartApplication().GetAwaiter().GetResult());
+                appLifetime.ApplicationStopping.Register(() => StopApplication().GetAwaiter().GetResult());
+                appLifetime.ApplicationStopped.Register(() => CleanUp().GetAwaiter().GetResult());
             }
             catch (Exception ex)
             {
-                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(Configure), "", ex).Wait();
+                Log?.WriteFatalErrorAsync(nameof(Startup), nameof(Configure), "", ex).GetAwaiter().GetResult();
                 throw;
             }
         }
