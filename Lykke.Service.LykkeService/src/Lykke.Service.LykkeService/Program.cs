@@ -12,11 +12,11 @@ namespace Lykke.Service.LykkeService
         public static async Task Main(string[] args)
         {
             Console.WriteLine($"LykkeService version {Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion}");
-            //#$if DEBUG
+//#$if DEBUG
             Console.WriteLine("Is DEBUG");
-            //#$else
+//#$else
             //$#$//Console.WriteLine("Is RELEASE");
-            //#$endif           
+//#$endif           
             Console.WriteLine($"ENV_INFO: {EnvInfo}");
 
             try
