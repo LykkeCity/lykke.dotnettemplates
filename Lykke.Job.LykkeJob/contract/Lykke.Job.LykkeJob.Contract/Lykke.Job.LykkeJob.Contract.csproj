@@ -2,7 +2,33 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.0.1</Version>
+    <Version>1.0.0</Version>
+    <Authors>Lykke</Authors>
+    <Company>Lykke</Company>
+    <Description>Contract for the Lykke.Job.LykkeJob</Description>
+    <PackageLicenseUrl>https://github.com/LykkeCity/Lykke.Job.LykkeJob/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/LykkeCity/Lykke.Job.LykkeJob</PackageProjectUrl>
+    <PackageIconUrl>https://avatars3.githubusercontent.com/u/14153330?v=3&amp;amp;s=200</PackageIconUrl>
+    <RepositoryUrl>https://github.com/LykkeCity/Lykke.Job.LykkeJob.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Lykke;LykkeJob</PackageTags>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\Lykke.Job.LykkeJob.Contract.xml</DocumentationFile>
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\Lykke.Job.LykkeJob.Contract.xml</DocumentationFile>
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup Label="dotnet pack instructions">
+    <Content Include="$(OutputPath)Lykke.Job.LykkeJob.Contract.pdb">
+      <Pack>true</Pack>
+      <PackagePath>lib/netstandard2.0</PackagePath>
+    </Content>
+  </ItemGroup>
 
 </Project>
