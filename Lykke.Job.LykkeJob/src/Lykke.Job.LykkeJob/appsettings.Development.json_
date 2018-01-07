@@ -5,9 +5,10 @@
     "Db": {
       "LogsConnString": "UseDevelopmentStorage=true"
     },
+    "InstrumentationKey": "",
     //#if azurequeuesub
     "AzureQueue": {
-      "ConnectionString": "UseDevelopmentStorage=true" 
+      "ConnectionString": "UseDevelopmentStorage=true"
     },
     //#endif
     //#if (rabbitsub || rabbitpub)

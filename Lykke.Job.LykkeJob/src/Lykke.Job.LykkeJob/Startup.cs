@@ -13,6 +13,7 @@ using Lykke.Job.LykkeJob.Modules;
 using Lykke.Logs;
 using Lykke.SettingsReader;
 using Lykke.SlackNotification.AzureQueue;
+using Microsoft.ApplicationInsights.Extensibility;
 #if azurequeuesub
 using Lykke.JobTriggers.Triggers;
 using System.Threading.Tasks;
@@ -64,6 +65,8 @@ namespace Lykke.Job.LykkeJob
 
                 var builder = new ContainerBuilder();
                 var appSettings = Configuration.LoadSettings<AppSettings>();
+
+                TelemetryConfiguration.Active.InstrumentationKey = appSettings.CurrentValue.LykkeJobJob.InstrumentationKey;
 
                 Log = CreateLogWithSlack(services, appSettings);
 
