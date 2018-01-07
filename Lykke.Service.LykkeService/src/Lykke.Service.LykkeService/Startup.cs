@@ -12,6 +12,7 @@ using Lykke.Service.LykkeService.Core.Settings;
 using Lykke.Service.LykkeService.Modules;
 using Lykke.SettingsReader;
 using Lykke.SlackNotification.AzureQueue;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -54,6 +55,9 @@ namespace Lykke.Service.LykkeService
 
                 var builder = new ContainerBuilder();
                 var appSettings = Configuration.LoadSettings<AppSettings>();
+
+                TelemetryConfiguration.Active.InstrumentationKey = appSettings.CurrentValue.LykkeServiceService.InstrumentationKey;
+
                 Log = CreateLogWithSlack(services, appSettings);
 
                 builder.RegisterModule(new ServiceModule(appSettings.Nested(x => x.LykkeServiceService), Log));

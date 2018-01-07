@@ -58,7 +58,7 @@ namespace Lykke.Job.LykkeJob.RabbitSubscribers
 
         public void Stop()
         {
-            _subscriber.Stop();
+            _subscriber?.Stop();
         }
     }
 }
