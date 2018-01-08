@@ -2,8 +2,7 @@
   "LykkeServiceService": {
     "Db": {
       "LogsConnString": "UseDevelopmentStorage=true"
-    },
-    "InstrumentationKey": "" 
+    }
   },
   "SlackNotifications": {
     "AzureQueue": {

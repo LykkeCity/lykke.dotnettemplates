@@ -3,7 +3,6 @@
         public class LykkeJobSettings
         {
             public DbSettings Db { get; set; }
-            public string InstrumentationKey { get; set; }
 #if azurequeuesub
             public AzureQueueSettings AzureQueue { get; set; }
 #endif
