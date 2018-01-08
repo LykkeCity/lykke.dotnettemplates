@@ -66,8 +66,6 @@ namespace Lykke.Job.LykkeJob
                 var builder = new ContainerBuilder();
                 var appSettings = Configuration.LoadSettings<AppSettings>();
 
-                TelemetryConfiguration.Active.InstrumentationKey = appSettings.CurrentValue.LykkeJobJob.InstrumentationKey;
-
                 Log = CreateLogWithSlack(services, appSettings);
 
                 builder.RegisterModule(new JobModule(appSettings.CurrentValue.LykkeJobJob, appSettings.Nested(x => x.LykkeJobJob.Db), Log));

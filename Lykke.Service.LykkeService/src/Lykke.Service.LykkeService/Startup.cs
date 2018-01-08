@@ -56,8 +56,6 @@ namespace Lykke.Service.LykkeService
                 var builder = new ContainerBuilder();
                 var appSettings = Configuration.LoadSettings<AppSettings>();
 
-                TelemetryConfiguration.Active.InstrumentationKey = appSettings.CurrentValue.LykkeServiceService.InstrumentationKey;
-
                 Log = CreateLogWithSlack(services, appSettings);
 
                 builder.RegisterModule(new ServiceModule(appSettings.Nested(x => x.LykkeServiceService), Log));

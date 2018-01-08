@@ -1,11 +1,8 @@
 ﻿{
-  // NOTE: Please, modify this settings only to reflect AppSettings structure.
-  // If you want to use local settings, add appsettings.Development.json file, which not version controlled
   "LykkeJobJob": {
     "Db": {
       "LogsConnString": "UseDevelopmentStorage=true"
     },
-    "InstrumentationKey": "",
     //#if azurequeuesub
     "AzureQueue": {
       "ConnectionString": "UseDevelopmentStorage=true"

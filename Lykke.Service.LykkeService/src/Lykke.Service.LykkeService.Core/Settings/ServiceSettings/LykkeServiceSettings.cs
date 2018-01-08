@@ -3,6 +3,5 @@
     public class LykkeServiceSettings
     {
         public DbSettings Db { get; set; }
-        public string InstrumentationKey { get; set; }
     }
 }
