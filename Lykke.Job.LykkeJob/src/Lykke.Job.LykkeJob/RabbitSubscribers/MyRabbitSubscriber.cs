@@ -36,7 +36,6 @@ namespace Lykke.Job.LykkeJob.RabbitSubscribers
                         retryTimeout: TimeSpan.FromSeconds(10),
                         next: new DeadQueueErrorHandlingStrategy(_log, settings)))
                 .SetMessageDeserializer(new JsonMessageDeserializer<MySubscribedMessage>())
-                .SetMessageReadStrategy(new MessageReadQueueStrategy())
                 .Subscribe(ProcessMessageAsync)
                 .CreateDefaultBinding()
                 .SetLogger(_log)
