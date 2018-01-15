@@ -41,6 +41,7 @@
     <!-- #endif -->
     <PackageReference Include="Lykke.SettingsReader" Version="1.0.45" />
     <PackageReference Include="Lykke.SlackNotification.AzureQueue" Version="2.0.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.0.1" />
