@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 #endif
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -91,6 +92,17 @@ namespace Lykke.Job.LykkeJob
                 {
                     app.UseDeveloperExceptionPage();
                 }
+
+                var forwardingOptions = new ForwardedHeadersOptions
+                {
+                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost
+                };
+
+                forwardingOptions.KnownNetworks.Clear(); // its loopback by default
+                forwardingOptions.KnownProxies.Clear();
+
+                app.UseForwardedHeaders(forwardingOptions);
+
 
                 app.UseLykkeMiddleware("LykkeJob", ex => new ErrorResponse {ErrorMessage = "Technical problem"});
 
