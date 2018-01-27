@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 #endif
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -92,6 +93,7 @@ namespace Lykke.Job.LykkeJob
                     app.UseDeveloperExceptionPage();
                 }
 
+                app.UseLykkeForwardedHeaders();
                 app.UseLykkeMiddleware("LykkeJob", ex => new ErrorResponse {ErrorMessage = "Technical problem"});
 
                 app.UseMvc();

@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Lykke.Common" Version="4.0.0" />
+    <PackageReference Include="Lykke.Common" Version="4.2.0" />
   </ItemGroup>
 
 </Project>

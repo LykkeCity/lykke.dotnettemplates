@@ -12,9 +12,9 @@ using Lykke.Service.LykkeService.Core.Settings;
 using Lykke.Service.LykkeService.Modules;
 using Lykke.SettingsReader;
 using Lykke.SlackNotification.AzureQueue;
-using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -80,6 +80,7 @@ namespace Lykke.Service.LykkeService
                     app.UseDeveloperExceptionPage();
                 }
 
+                app.UseLykkeForwardedHeaders();
                 app.UseLykkeMiddleware("LykkeService", ex => new { Message = "Technical problem" });
 
                 app.UseMvc();
