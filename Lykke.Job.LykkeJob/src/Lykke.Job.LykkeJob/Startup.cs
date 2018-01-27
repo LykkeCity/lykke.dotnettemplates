@@ -93,17 +93,7 @@ namespace Lykke.Job.LykkeJob
                     app.UseDeveloperExceptionPage();
                 }
 
-                var forwardingOptions = new ForwardedHeadersOptions
-                {
-                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost
-                };
-
-                forwardingOptions.KnownNetworks.Clear(); // its loopback by default
-                forwardingOptions.KnownProxies.Clear();
-
-                app.UseForwardedHeaders(forwardingOptions);
-
-
+                app.UseLykkeForwardedHeaders();
                 app.UseLykkeMiddleware("LykkeJob", ex => new ErrorResponse {ErrorMessage = "Technical problem"});
 
                 app.UseMvc();

@@ -80,16 +80,7 @@ namespace Lykke.Service.LykkeService
                     app.UseDeveloperExceptionPage();
                 }
 
-                var forwardingOptions = new ForwardedHeadersOptions
-                {
-                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost
-                };
-
-                forwardingOptions.KnownNetworks.Clear(); // its loopback by default
-                forwardingOptions.KnownProxies.Clear();
-
-                app.UseForwardedHeaders(forwardingOptions);
-
+                app.UseLykkeForwardedHeaders();
                 app.UseLykkeMiddleware("LykkeService", ex => new { Message = "Technical problem" });
 
                 app.UseMvc();
