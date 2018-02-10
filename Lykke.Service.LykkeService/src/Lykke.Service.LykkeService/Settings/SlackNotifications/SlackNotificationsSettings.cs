@@ -1,4 +1,4 @@
-namespace Lykke.Service.LykkeService.Core.Settings.SlackNotifications
+﻿namespace Lykke.Service.LykkeService.Settings.SlackNotifications
 {
     public class SlackNotificationsSettings
     {
