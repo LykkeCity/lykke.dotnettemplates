@@ -4,14 +4,14 @@
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "SettingsUrl": "appsettings.Development.json"
+        "SettingsUrl": "token_to_dev_settings"
       }
     },
     "LykkeJob local test settings": {
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Staging",
-        "SettingsUrl": "appsettings.Testing.json"
+        "SettingsUrl": "token_to_test_settings"
       }
     },
     "LykkeJob remote settings": {

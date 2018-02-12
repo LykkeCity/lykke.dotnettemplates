@@ -1,4 +1,4 @@
-namespace Lykke.Job.LykkeJob.Core.Settings.SlackNotifications
+﻿namespace Lykke.Job.LykkeJob.Settings.SlackNotifications
 {
     public class AzureQueuePublicationSettings
     {

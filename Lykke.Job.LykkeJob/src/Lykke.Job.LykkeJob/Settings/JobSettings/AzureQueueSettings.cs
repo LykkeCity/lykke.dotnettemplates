@@ -1,4 +1,4 @@
-namespace Lykke.Job.LykkeJob.Core.Settings.JobSettings
+﻿namespace Lykke.Job.LykkeJob.Settings.JobSettings
 {
     public class AzureQueueSettings
     {

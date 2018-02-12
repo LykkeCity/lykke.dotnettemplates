@@ -1,4 +1,4 @@
-﻿namespace Lykke.Service.LykkeService.Core.Settings.ServiceSettings
+﻿namespace Lykke.Service.LykkeService.Settings.ServiceSettings
 {
     public class LykkeServiceSettings
     {

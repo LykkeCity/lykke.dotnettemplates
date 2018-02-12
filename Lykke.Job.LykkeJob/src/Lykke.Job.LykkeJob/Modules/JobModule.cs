@@ -2,7 +2,7 @@
 using Autofac.Extensions.DependencyInjection;
 using Common.Log;
 using Lykke.Job.LykkeJob.Core.Services;
-using Lykke.Job.LykkeJob.Core.Settings.JobSettings;
+using Lykke.Job.LykkeJob.Settings.JobSettings;
 using Lykke.Job.LykkeJob.Services;
 using Lykke.SettingsReader;
 #if azurequeuesub
