@@ -34,8 +34,7 @@ namespace Lykke.Job.LykkeJob.RabbitSubscribers
             _subscriber = new RabbitMqSubscriber<MySubscribedMessage>(settings,
                     new ResilientErrorHandlingStrategy(_log, settings,
                         retryTimeout: TimeSpan.FromSeconds(10),
-                        next: new DeadQueueErrorHandlingStrategy(_log, settings)),
-                    submitTelemetry: true)
+                        next: new DeadQueueErrorHandlingStrategy(_log, settings)))
                 .SetMessageDeserializer(new JsonMessageDeserializer<MySubscribedMessage>())
                 .Subscribe(ProcessMessageAsync)
                 .CreateDefaultBinding()
