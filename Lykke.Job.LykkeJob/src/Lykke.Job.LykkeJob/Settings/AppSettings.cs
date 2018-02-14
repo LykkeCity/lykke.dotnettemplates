@@ -1,7 +1,7 @@
 ﻿using Lykke.Job.LykkeJob.Settings.JobSettings;
 using Lykke.Job.LykkeJob.Settings.SlackNotifications;
 
-namespace Lykke.Job.LykkeJob.Core.Settings
+namespace Lykke.Job.LykkeJob.Settings
 {
     public class AppSettings
     {

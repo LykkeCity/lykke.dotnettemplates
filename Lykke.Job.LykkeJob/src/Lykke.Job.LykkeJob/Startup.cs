@@ -7,7 +7,7 @@ using Common.Log;
 using Lykke.Common.ApiLibrary.Middleware;
 using Lykke.Common.ApiLibrary.Swagger;
 using Lykke.Job.LykkeJob.Core.Services;
-using Lykke.Job.LykkeJob.Core.Settings;
+using Lykke.Job.LykkeJob.Settings;
 using Lykke.Job.LykkeJob.Models;
 using Lykke.Job.LykkeJob.Modules;
 using Lykke.Logs;
