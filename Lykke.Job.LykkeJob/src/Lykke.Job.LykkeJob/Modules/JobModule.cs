@@ -118,7 +118,8 @@ namespace Lykke.Job.LykkeJob.Modules
                 .As<IStartable>()
                 .AutoActivate()
                 .SingleInstance()
-                .WithParameter(TypedParameter.From(_settings.Rabbit.ConnectionString));
+                .WithParameter("connectionString", _settings.Rabbit.ConnectionString)
+                .WithParameter("exchangeName", _settings.Rabbit.ExchangeName);
         }
 
 #endif

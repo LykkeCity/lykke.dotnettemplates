@@ -13,12 +13,17 @@ namespace Lykke.Job.LykkeJob.RabbitSubscribers
     {
         private readonly ILog _log;
         private readonly string _connectionString;
+        private readonly string _exchangeName;
         private RabbitMqSubscriber<MySubscribedMessage> _subscriber;
 
-        public MyRabbitSubscriber(ILog log, string connectionString)
+        public MyRabbitSubscriber(
+            ILog log,
+            string connectionString,
+            string exchangeName)
         {
             _log = log;
             _connectionString = connectionString;
+            _exchangeName = exchangeName;
         }
 
         public void Start()
@@ -27,7 +32,7 @@ namespace Lykke.Job.LykkeJob.RabbitSubscribers
             // about RabbitMq subscriber configuration
 
             var settings = RabbitMqSubscriptionSettings
-                .CreateForSubscriber(_connectionString, "exchange-name", "lykkejob");
+                .CreateForSubscriber(_connectionString, _exchangeName, "lykkejob");
             // TODO: Make additional configuration, using fluent API here:
             // ex: .MakeDurable()
 

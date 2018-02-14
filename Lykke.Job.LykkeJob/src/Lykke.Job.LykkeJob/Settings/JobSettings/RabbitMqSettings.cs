@@ -6,5 +6,9 @@ namespace Lykke.Job.LykkeJob.Settings.JobSettings
     {
         [AmqpCheck]
         public string ConnectionString { get; set; }
+#if (rabbitsub)
+
+        public string ExchangeName { get; set; }
+#endif
     }
 }
