@@ -13,14 +13,12 @@ using Lykke.Job.LykkeJob.Modules;
 using Lykke.Logs;
 using Lykke.SettingsReader;
 using Lykke.SlackNotification.AzureQueue;
-using Microsoft.ApplicationInsights.Extensibility;
 #if azurequeuesub
 using Lykke.JobTriggers.Triggers;
 using System.Threading.Tasks;
 #endif
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
