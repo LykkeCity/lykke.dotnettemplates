@@ -40,6 +40,7 @@ namespace Lykke.Job.LykkeJob.RabbitSubscribers
                 .Subscribe(ProcessMessageAsync)
                 .CreateDefaultBinding()
                 .SetLogger(_log)
+                .SetConsole(new LogToConsole())
                 .Start();
         }
 
