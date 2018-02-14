@@ -62,7 +62,7 @@
         {
           "condition": "(!azurequeuesub)",
           "exclude": [ 
-            "src/Lykke.Job.LykkeJob.Core/Settings/JobSettings/AzureQueueSettings.cs",
+            "src/Lykke.Job.LykkeJob/Settings/JobSettings/AzureQueueSettings.cs",
             "src/Lykke.Job.LykkeJob/AzureQueueHandlers/*.*",
           ]
         },
@@ -75,7 +75,7 @@
         {
           "condition": "(!(rabbitsub || rabbitpub))",
           "exclude": [ 
-              "src/Lykke.Job.LykkeJob.Core/Settings/JobSettings/RabbitMqSettings.cs"
+              "src/Lykke.Job.LykkeJob/Settings/JobSettings/RabbitMqSettings.cs"
           ]
         },
         {
