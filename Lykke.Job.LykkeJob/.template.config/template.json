@@ -89,7 +89,9 @@
           "exclude": [ 
               "src/Lykke.Job.LykkeJob/RabbitPublishers/*.*",
               "src/Lykke.Job.LykkeJob.Core/Services/IMyRabbitPublisher.cs",
-              "contract/Lykke.Job.LykkeJob.Contract/MyPublishedMessage.cs"
+              "contract/Lykke.Job.LykkeJob.Contract/MyPublishedMessage.cs",
+              "contract/Lykke.Job.LykkeJob.Contract/Lykke.Job.LykkeJob.Contract.csproj",
+              "contract/Lykke.Job.LykkeJob.Contract/Readme.md"
           ]
         },
         {
