@@ -68,12 +68,15 @@ namespace Lykke.Job.LykkeJob.Modules
             RegisterAzureQueueHandlers(builder);
 #endif
 #if timeperiod
+
             RegisterPeriodicalHandlers(builder);
 #endif
 #if rabbitsub
+
             RegisterRabbitMqSubscribers(builder);
 #endif
 #if rabbitpub
+
             RegisterRabbitMqPublishers(builder);
 #endif
 
@@ -81,8 +84,8 @@ namespace Lykke.Job.LykkeJob.Modules
 
             builder.Populate(_services);
         }
-
 #if azurequeuesub
+
         private void RegisterAzureQueueHandlers(ContainerBuilder builder)
         {
             // NOTE: You can implement your own poison queue notifier for azure queue subscription.
@@ -95,9 +98,9 @@ namespace Lykke.Job.LykkeJob.Modules
                     pool.AddDefaultConnection(_settings.AzureQueue.ConnectionString);
                 });
         }
-
 #endif
 #if timeperiod
+
         private void RegisterPeriodicalHandlers(ContainerBuilder builder)
         {
             // TODO: You should register each periodical handler in DI container as IStartable singleton and autoactivate it
@@ -107,9 +110,9 @@ namespace Lykke.Job.LykkeJob.Modules
                 .AutoActivate()
                 .SingleInstance();
         }
-
 #endif
 #if rabbitsub
+
         private void RegisterRabbitMqSubscribers(ContainerBuilder builder)
         {
             // TODO: You should register each subscriber in DI container as IStartable singleton and autoactivate it
@@ -121,9 +124,9 @@ namespace Lykke.Job.LykkeJob.Modules
                 .WithParameter("connectionString", _settings.Rabbit.ConnectionString)
                 .WithParameter("exchangeName", _settings.Rabbit.ExchangeName);
         }
-
 #endif
 #if rabbitpub
+
         private void RegisterRabbitMqPublishers(ContainerBuilder builder)
         {
             // TODO: You should register each publisher in DI container as publisher specific interface and as IStartable,
