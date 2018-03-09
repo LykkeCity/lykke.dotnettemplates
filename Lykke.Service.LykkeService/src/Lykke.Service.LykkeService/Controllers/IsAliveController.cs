@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
-using Lykke.Service.LykkeService.Core.Services;
-using Lykke.Service.LykkeService.Models;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Lykke.Common.Api.Contract.Responses;
+using Lykke.Service.LykkeService.Core.Services;
 
 namespace Lykke.Service.LykkeService.Controllers
 {
