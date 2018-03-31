@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Common;
 using Common.Log;
@@ -10,20 +11,16 @@ namespace Lykke.Service.LykkeService.Services
     // If this is your case, use this class to manage shutdown.
     // For example, sometimes some state should be saved only after all incoming message processing and 
     // all periodical handler was stopped, and so on.
-    
+
     public class ShutdownManager : IShutdownManager
     {
         private readonly ILog _log;
-        private readonly List<IStopable> _items = new List<IStopable>();
+        private readonly IEnumerable<IStopable> _items;
 
-        public ShutdownManager(ILog log)
+        public ShutdownManager(ILog log, IEnumerable<IStopable> items)
         {
             _log = log;
-        }
-
-        public void Register(IStopable stopable)
-        {
-            _items.Add(stopable);
+            _items = items;
         }
 
         public async Task StopAsync()
@@ -31,7 +28,14 @@ namespace Lykke.Service.LykkeService.Services
             // TODO: Implement your shutdown logic here. Good idea is to log every step
             foreach (var item in _items)
             {
-                item.Stop();
+                try
+                {
+                    item.Stop();
+                }
+                catch (Exception ex)
+                {
+                    _log.WriteWarning(nameof(StopAsync), null, $"Unable to stop {item.GetType().Name}", ex);
+                }
             }
 
             await Task.CompletedTask;
