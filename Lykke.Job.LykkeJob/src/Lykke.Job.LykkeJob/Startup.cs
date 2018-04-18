@@ -67,7 +67,7 @@ namespace Lykke.Job.LykkeJob
 
                 Log = CreateLogWithSlack(services, appSettings);
 
-                builder.RegisterModule(new JobModule(appSettings.CurrentValue.LykkeJobJob, appSettings.Nested(x => x.LykkeJobJob.Db), Log));
+                builder.RegisterModule(new JobModule(appSettings.CurrentValue.LykkeJobJob, appSettings.Nested(x => x.LykkeJobJob), Log));
 
                 builder.Populate(services);
 
