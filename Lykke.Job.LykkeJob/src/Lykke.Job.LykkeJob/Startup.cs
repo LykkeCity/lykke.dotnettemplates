@@ -12,6 +12,7 @@ using Lykke.Job.LykkeJob.Settings;
 using Lykke.Job.LykkeJob.Modules;
 using Lykke.Logs;
 using Lykke.SettingsReader;
+using Lykke.MonitoringServiceApiCaller;
 using Lykke.SlackNotification.AzureQueue;
 #if azurequeuesub
 using Lykke.JobTriggers.Triggers;
@@ -26,6 +27,8 @@ namespace Lykke.Job.LykkeJob
 {
     public class Startup
     {
+        private string _monitoringServiceUrl;
+
         public IHostingEnvironment Environment { get; }
         public IContainer ApplicationContainer { get; private set; }
         public IConfigurationRoot Configuration { get; }
@@ -64,6 +67,7 @@ namespace Lykke.Job.LykkeJob
 
                 var builder = new ContainerBuilder();
                 var appSettings = Configuration.LoadSettings<AppSettings>();
+                _monitoringServiceUrl = appSettings.CurrentValue.MonitoringServiceClient.MonitoringServiceUrl;
 
                 Log = CreateLogWithSlack(services, appSettings);
 
@@ -131,6 +135,8 @@ namespace Lykke.Job.LykkeJob
                 _triggerHostTask = _triggerHost.Start();
 #endif
                 await Log.WriteMonitorAsync("", Program.EnvInfo, "Started");
+
+                await AutoRegistrationInMonitoring.RegisterAsync(Configuration, _monitoringServiceUrl, Log);
             }
             catch (Exception ex)
             {

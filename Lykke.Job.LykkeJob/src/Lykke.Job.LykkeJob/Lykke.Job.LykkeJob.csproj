@@ -27,6 +27,7 @@
     <PackageReference Include="Lykke.JobTriggers" Version="2.1.0" />
     <!--#endif -->
     <PackageReference Include="Lykke.Logs" Version="4.2.1" />
+    <PackageReference Include="Lykke.MonitoringServiceApiCaller" Version="1.1.1" />
     <!--#if (rabbitpub) -->
     <PackageReference Include="Lykke.RabbitMq.Azure" Version="5.0.1" />
     <!--#endif -->
