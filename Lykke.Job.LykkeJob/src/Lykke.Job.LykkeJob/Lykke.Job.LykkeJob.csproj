@@ -21,13 +21,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Lykke.Common" Version="6.5.0" />
+    <PackageReference Include="Lykke.Common" Version="6.6.0" />
     <PackageReference Include="Lykke.Common.ApiLibrary" Version="1.7.0" />
     <!--#if (azurequeuesub) -->
     <PackageReference Include="Lykke.JobTriggers" Version="2.1.0" />
     <!--#endif -->
-    <PackageReference Include="Lykke.Logs" Version="4.2.1" />
-    <PackageReference Include="Lykke.MonitoringServiceApiCaller" Version="1.1.1" />
+    <PackageReference Include="Lykke.Logs" Version="4.3.0" />
+    <PackageReference Include="Lykke.MonitoringServiceApiCaller" Version="1.2.1" />
     <!--#if (rabbitpub) -->
     <PackageReference Include="Lykke.RabbitMq.Azure" Version="5.0.1" />
     <!--#endif -->
