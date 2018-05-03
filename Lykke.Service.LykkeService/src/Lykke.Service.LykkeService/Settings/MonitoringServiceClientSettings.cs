@@ -4,7 +4,7 @@ namespace Lykke.Service.LykkeService.Settings
 {
     public class MonitoringServiceClientSettings
     {
-        [HttpCheck("api/isalive")]
+        [HttpCheck("api/isalive", false)]
         public string MonitoringServiceUrl { get; set; }
     }
 }
