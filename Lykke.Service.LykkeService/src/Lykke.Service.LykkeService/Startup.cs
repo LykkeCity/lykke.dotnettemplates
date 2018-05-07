@@ -119,7 +119,9 @@ namespace Lykke.Service.LykkeService
 
                 await Log.WriteMonitorAsync("", $"Env: {Program.EnvInfo}", "Started");
 
+#if (!DEBUG)
                 await AutoRegistrationInMonitoring.RegisterAsync(Configuration, _monitoringServiceUrl, Log);
+#endif
             }
             catch (Exception ex)
             {
