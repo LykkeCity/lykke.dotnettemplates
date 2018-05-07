@@ -1,6 +1,7 @@
 ﻿using JetBrains.Annotations;
 using Lykke.Service.LykkeService.Settings.ServiceSettings;
 using Lykke.Service.LykkeService.Settings.SlackNotifications;
+using Lykke.SettingsReader.Attributes;
 
 namespace Lykke.Service.LykkeService.Settings
 {
@@ -11,6 +12,7 @@ namespace Lykke.Service.LykkeService.Settings
 
         public SlackNotificationsSettings SlackNotifications { get; set; }
 
+        [Optional]
         public MonitoringServiceClientSettings MonitoringServiceClient { get; set; }
     }
 }
