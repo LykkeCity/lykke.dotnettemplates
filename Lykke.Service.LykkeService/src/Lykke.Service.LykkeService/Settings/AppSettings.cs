@@ -1,18 +1,11 @@
 ﻿using JetBrains.Annotations;
-using Lykke.Service.LykkeService.Settings.ServiceSettings;
-using Lykke.Service.LykkeService.Settings.SlackNotifications;
-using Lykke.SettingsReader.Attributes;
+using Lykke.Sdk.Settings;
 
 namespace Lykke.Service.LykkeService.Settings
 {
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-    public class AppSettings
+    public class AppSettings : BaseAppSettings
     {
-        public LykkeServiceSettings LykkeServiceService { get; set; }
-
-        public SlackNotificationsSettings SlackNotifications { get; set; }
-
-        [Optional]
-        public MonitoringServiceClientSettings MonitoringServiceClient { get; set; }
+        public LykkeServiceSettings LykkeServiceService { get; set; }        
     }
 }

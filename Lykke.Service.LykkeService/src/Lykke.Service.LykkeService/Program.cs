@@ -17,9 +17,7 @@ namespace Lykke.Service.LykkeService
             Console.WriteLine("Is DEBUG");
 //#$else
             //$#$//Console.WriteLine("Is RELEASE");
-//#$endif           
-            Console.WriteLine($"ENV_INFO: {EnvInfo}");
-
+//#$endif                       
             try
             {
                 var host = new WebHostBuilder()

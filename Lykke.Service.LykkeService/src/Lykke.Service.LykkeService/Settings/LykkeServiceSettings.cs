@@ -1,6 +1,7 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 
-namespace Lykke.Service.LykkeService.Settings.ServiceSettings
+namespace Lykke.Service.LykkeService.Settings
 {
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
     public class LykkeServiceSettings
