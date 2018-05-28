@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using Lykke.Sdk;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.PlatformAbstractions;
 
@@ -23,7 +24,7 @@ namespace Lykke.Service.LykkeService
                 var host = new WebHostBuilder()
                     .UseKestrel()
                     .UseUrls("http://*:5000")
-                    .UseContentRoot(Directory.GetCurrentDirectory())
+                    .UseContentRoot(Directory.GetCurrentDirectory())                              
                     .UseStartup<Startup>()
                     .UseApplicationInsights()
                     .Build();

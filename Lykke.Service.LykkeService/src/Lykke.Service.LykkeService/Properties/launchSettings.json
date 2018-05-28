@@ -3,7 +3,7 @@
     "LykkeService local dev settings": {
       "commandName": "Project",
       "environmentVariables": {
-        "SettingsUrl": "appsettings.Development.json",
+        "SettingsUrl": "token_to_dev_settings",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
