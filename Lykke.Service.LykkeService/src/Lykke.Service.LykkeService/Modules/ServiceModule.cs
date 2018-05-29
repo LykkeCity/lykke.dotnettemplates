@@ -1,9 +1,6 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
 using Lykke.Sdk;
 using Lykke.Service.LykkeService.Settings;
-using Lykke.SettingsReader;
-using Newtonsoft.Json.Linq;
 
 namespace Lykke.Service.LykkeService.Modules
 {    
