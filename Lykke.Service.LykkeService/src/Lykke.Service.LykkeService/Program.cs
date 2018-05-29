@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using Lykke.Sdk;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.PlatformAbstractions;
 
@@ -17,15 +18,13 @@ namespace Lykke.Service.LykkeService
             Console.WriteLine("Is DEBUG");
 //#$else
             //$#$//Console.WriteLine("Is RELEASE");
-//#$endif           
-            Console.WriteLine($"ENV_INFO: {EnvInfo}");
-
+//#$endif                       
             try
             {
                 var host = new WebHostBuilder()
                     .UseKestrel()
                     .UseUrls("http://*:5000")
-                    .UseContentRoot(Directory.GetCurrentDirectory())
+                    .UseContentRoot(Directory.GetCurrentDirectory())                              
                     .UseStartup<Startup>()
                     .UseApplicationInsights()
                     .Build();
