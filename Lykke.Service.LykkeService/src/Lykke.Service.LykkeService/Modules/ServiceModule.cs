@@ -9,8 +9,7 @@ namespace Lykke.Service.LykkeService.Modules
         protected override void Load(ContainerBuilder builder)
         {
             // Do not register entire settings in container, pass necessary settings to services which requires them
-
-            builder.RegisterSettings<ChaosKittySettings>("LykkeServiceService.ChaosKitty");
+            // example: builder.RegisterSettings<ChaosKittySettings>("LykkeServiceService.ChaosKitty");
         }
     }
 }
