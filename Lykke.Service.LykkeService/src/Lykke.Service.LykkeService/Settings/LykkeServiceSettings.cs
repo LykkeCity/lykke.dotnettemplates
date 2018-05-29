@@ -7,5 +7,7 @@ namespace Lykke.Service.LykkeService.Settings
     public class LykkeServiceSettings
     {
         public DbSettings Db { get; set; }
+
+        public ChaosKittySettings ChaosKitty { get; set; }
     }
 }

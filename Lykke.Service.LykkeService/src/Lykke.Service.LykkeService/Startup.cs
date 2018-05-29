@@ -23,12 +23,7 @@ namespace Lykke.Service.LykkeService
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseLykkeConfiguration(options =>
-            {
-#if (DEBUG)
-                options.IsDebug = true;
-#endif
-            });
+            app.UseLykkeConfiguration();
         }
     }
 }
