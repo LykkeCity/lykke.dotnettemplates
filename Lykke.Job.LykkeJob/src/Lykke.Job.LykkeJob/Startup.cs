@@ -18,6 +18,7 @@ using Lykke.SlackNotification.AzureQueue;
 using Lykke.JobTriggers.Triggers;
 using System.Threading.Tasks;
 #endif
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -98,6 +99,10 @@ namespace Lykke.Job.LykkeJob
 
                 app.UseLykkeForwardedHeaders();
                 app.UseLykkeMiddleware("LykkeJob", ex => new ErrorResponse {ErrorMessage = "Technical problem"});
+
+#if DEBUG
+                TelemetryConfiguration.Active.DisableTelemetry = true;
+#endif
 
                 app.UseMvc();
                 app.UseSwagger(c =>
