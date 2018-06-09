@@ -2,6 +2,7 @@
 using Lykke.Sdk;
 using Lykke.Service.LykkeService.Settings;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lykke.Service.LykkeService
@@ -20,6 +21,10 @@ namespace Lykke.Service.LykkeService
         public void Configure(IApplicationBuilder app)
         {
             app.UseLykkeConfiguration();
+
+#if DEBUG
+            TelemetryConfiguration.Active.DisableTelemetry = true;
+#endif
         }
     }
 }
