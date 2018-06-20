@@ -39,6 +39,7 @@ To define your own environment variables, see [Working with multiple environment
 
 * *ASPNETCORE_ENVIRONMENT* - defines environment name, the value can be: Development, Staging, Production.
 * *SettingsUrl* - defines URL of remote settings or path for local settings.
+* *APP_INFO* - define your name. This will help another developers to determine who runs service locally. Consider to define this variable in machine-wide or user-wide configuration to spread out this variable across all of the projects.
 
 Reflect your settings structure in appsettings.json - leave all of field blank, or just show value's format. Fill appsettings.XXX.json with real settings data. Ensure that appsettings.XXX.json is ignored in git.
 
