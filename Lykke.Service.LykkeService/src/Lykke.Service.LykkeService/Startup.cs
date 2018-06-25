@@ -1,10 +1,12 @@
 ﻿using System;
 using JetBrains.Annotations;
+using Lykke.Logs.Loggers.LykkeSlack;
 using Lykke.Sdk;
 using Lykke.Service.LykkeService.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Lykke.Service.LykkeService
 {
@@ -24,10 +26,10 @@ namespace Lykke.Service.LykkeService
 
                     // TODO: You could add extended logging configuration here:
                     /* 
-                    logging.Extended = extendedLogging =>
+                    logs.Extended = extendedLogs =>
                     {
                         // For example, you could add additional slack channel like this:
-                        extendedLogging.AddAdditionalSlackChannel("LykkeService", channelOptions =>
+                        extendedLogs.AddAdditionalSlackChannel("LykkeService", channelOptions =>
                         {
                             channelOptions.MinLogLevel = LogLevel.Information;
                         });
@@ -40,7 +42,7 @@ namespace Lykke.Service.LykkeService
                 options.Swagger = swagger =>
                 {
                     swagger.IgnoreObsoleteActions();
-                }
+                };
                 */
             });
         }
