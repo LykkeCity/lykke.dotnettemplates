@@ -20,11 +20,15 @@
     <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Lykke.Common" Version="7.0.1" />
-    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.11" />
+    <None Remove="Lykke.Service.LykkeService.Client.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AutorestClient\" />
+    <PackageReference Include="Lykke.Common" Version="7.0.1" />
+    <PackageReference Include="Lykke.HttpClientGenerator" Version="2.0.0" />
+    <PackageReference Include="Lykke.SettingsReader" Version="2.4.0" />
+    <PackageReference Include="Refit" Version="4.6.16" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Models\" />
   </ItemGroup>
 </Project>
