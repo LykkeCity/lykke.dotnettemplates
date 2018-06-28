@@ -4,14 +4,16 @@
       "commandName": "Project",
       "environmentVariables": {
         "SettingsUrl": "token_to_dev_settings",
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ENV_INFO": "localhost_dev"
       }
     },
     "LykkeService local test settings": {
       "commandName": "Project",
       "environmentVariables": {
         "SettingsUrl": "token_to_test_settings",
-        "ASPNETCORE_ENVIRONMENT": "Staging"
+        "ASPNETCORE_ENVIRONMENT": "Staging",
+        "ENV_INFO": "localhost_test"
       }
     },
     "LykkeService remote settings": {
