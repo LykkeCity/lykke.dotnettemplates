@@ -2,6 +2,7 @@
 using Autofac;
 using JetBrains.Annotations;
 using Lykke.HttpClientGenerator;
+using Lykke.HttpClientGenerator.Infrastructure;
 
 namespace Lykke.Service.LykkeService.Client
 {
@@ -26,7 +27,14 @@ namespace Lykke.Service.LykkeService.Client
             if (string.IsNullOrWhiteSpace(settings.ServiceUrl))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(LykkeServiceServiceClientSettings.ServiceUrl));
 
-            builder.RegisterClient<ILykkeServiceClient>(settings?.ServiceUrl, builderConfigure);
+            var clientBuilder = HttpClientGenerator.HttpClientGenerator.BuildForUrl(settings.ServiceUrl)
+                .WithAdditionalCallsWrapper(new ExceptionHandlerCallsWrapper());
+            
+            clientBuilder = builderConfigure?.Invoke(clientBuilder) ?? clientBuilder.WithoutRetries();
+            
+            builder.RegisterInstance(new LykkeServiceClient(clientBuilder.Create()))
+                .As<ILykkeServiceClient>()
+                .SingleInstance();
         }
     }
 }
