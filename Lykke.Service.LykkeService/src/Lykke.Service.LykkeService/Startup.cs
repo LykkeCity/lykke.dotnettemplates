@@ -2,6 +2,8 @@
 using JetBrains.Annotations;
 using Lykke.Logs.Loggers.LykkeSlack;
 using Lykke.Sdk;
+using Lykke.Sdk.Health;
+using Lykke.Sdk.Middleware;
 using Lykke.Service.LykkeService.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.ApplicationInsights.Extensibility;
@@ -13,12 +15,19 @@ namespace Lykke.Service.LykkeService
     [UsedImplicitly]
     public class Startup
     {
+        private readonly LykkeSwaggerOptions _swaggerOptions = new LykkeSwaggerOptions
+        {
+            ApiTitle = "LykkeService API",
+            ApiVersion = "v1"
+        };
+
         [UsedImplicitly]
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {                                   
             return services.BuildServiceProvider<AppSettings>(options =>
             {
-                options.ApiTitle = "LykkeService API";
+                options.SwaggerOptions = _swaggerOptions;
+
                 options.Logs = logs =>
                 {
                     logs.AzureTableName = "LykkeServiceLog";
@@ -37,6 +46,17 @@ namespace Lykke.Service.LykkeService
                     */
                 };
 
+                // TODO: Extend the service configuration
+                /*
+                options.Extend = (sc, settings) =>
+                {
+                    sc
+                        .AddOptions()
+                        .AddAuthentication(MyAuthOptions.AuthenticationScheme)
+                        .AddScheme<MyAuthOptions, KeyAuthHandler>(MyAuthOptions.AuthenticationScheme, null);
+                };
+                */
+
                 // TODO: You could add extended Swagger configuration here:
                 /*
                 options.Swagger = swagger =>
@@ -50,7 +70,23 @@ namespace Lykke.Service.LykkeService
         [UsedImplicitly]
         public void Configure(IApplicationBuilder app)
         {
-            app.UseLykkeConfiguration();
+            app.UseLykkeConfiguration(options =>
+            {
+                options.SwaggerOptions = _swaggerOptions;
+
+                // TODO: Configure additional middleware for eg authentication or maintenancemode checks
+                /*
+                options.WithMiddleware = x =>
+                {
+                    x.UseMaintenanceMode<AppSettings>(settings => new MaintenanceMode
+                    {
+                        Enabled = settings.MaintenanceMode?.Enabled ?? false,
+                        Reason = settings.MaintenanceMode?.Reason
+                    });
+                    x.UseAuthentication();
+                };
+                */
+            });
 
 #if DEBUG
             TelemetryConfiguration.Active.DisableTelemetry = true;
