@@ -1,0 +1,22 @@
+{
+  "LykkeJobJob": 
+  {
+    "Db":
+    {
+      "LogsConnString": "${LogsConnString}:[AzureTableStorage]"
+    }
+  },
+  "MonitoringServiceClient": 
+  {
+    "MonitoringServiceUrl": "${MonitoringServiceUrl}"
+  },
+  "SlackNotifications": 
+  {
+    "AzureQueue": 
+    {
+      "ConnectionString": "${SlackNotificationsConnString}:[AzureTableStorage]",
+      "QueueName": "slack-notifications"
+    },
+    "ThrottlingLimitSeconds": ${SlackNotificationsThrottlingLimit}
+  }
+}
