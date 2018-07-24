@@ -32,7 +32,7 @@ namespace Lykke.Service.LykkeService.Client
 
             clientBuilder = builderConfigure?.Invoke(clientBuilder) ?? clientBuilder.WithoutRetries();
 
-            builder.RegisterInstance(clientBuilder.Create().Generate<ILykkeServiceClient>())
+            builder.RegisterInstance(new LykkeServiceClient(clientBuilder.Create()))
                 .As<ILykkeServiceClient>()
                 .SingleInstance();
         }
