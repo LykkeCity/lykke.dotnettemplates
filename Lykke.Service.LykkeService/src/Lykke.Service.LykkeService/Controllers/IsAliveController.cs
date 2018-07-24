@@ -1,7 +1,9 @@
-﻿using System.Net;
-using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.SwaggerGen;
+﻿using Lykke.Common;
 using Lykke.Common.Api.Contract.Responses;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using System.Net;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Lykke.Service.LykkeService.Controllers
 {
@@ -12,23 +14,18 @@ namespace Lykke.Service.LykkeService.Controllers
         /// <summary>
         /// Checks service is alive
         /// </summary>
-        /// <returns></returns>
         [HttpGet]
         [SwaggerOperation("IsAlive")]
-        [ProducesResponseType(typeof(IsAliveResponse), (int)HttpStatusCode.OK)]        
+        [ProducesResponseType(typeof(IsAliveResponse), (int)HttpStatusCode.OK)]
         public IActionResult Get()
         {
             // NOTE: Feel free to extend IsAliveResponse, to display job-specific indicators
             return Ok(new IsAliveResponse
             {
-                Name = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationName,
-                Version = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationVersion,
-                Env = Program.EnvInfo,
-//#$if DEBUG
-                IsDebug = true,
-//#$else
-                //$#$//IsDebug = false,
-//#$endif
+                Name = AppEnvironment.Name,
+                Version = AppEnvironment.Version,
+                Env = AppEnvironment.EnvInfo,
+                IsDebug = Debugger.IsAttached,
             });
         }
     }
