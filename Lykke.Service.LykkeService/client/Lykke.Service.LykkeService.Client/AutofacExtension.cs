@@ -1,8 +1,8 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
 using JetBrains.Annotations;
 using Lykke.HttpClientGenerator;
 using Lykke.HttpClientGenerator.Infrastructure;
+using System;
 
 namespace Lykke.Service.LykkeService.Client
 {
@@ -29,10 +29,10 @@ namespace Lykke.Service.LykkeService.Client
 
             var clientBuilder = HttpClientGenerator.HttpClientGenerator.BuildForUrl(settings.ServiceUrl)
                 .WithAdditionalCallsWrapper(new ExceptionHandlerCallsWrapper());
-            
+
             clientBuilder = builderConfigure?.Invoke(clientBuilder) ?? clientBuilder.WithoutRetries();
-            
-            builder.RegisterInstance(new LykkeServiceClient(clientBuilder.Create()))
+
+            builder.RegisterInstance(clientBuilder.Create().Generate<ILykkeServiceClient>())
                 .As<ILykkeServiceClient>()
                 .SingleInstance();
         }
