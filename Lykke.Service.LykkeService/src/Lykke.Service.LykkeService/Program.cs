@@ -1,5 +1,4 @@
-﻿using Lykke.Common;
-using Lykke.Sdk;
+﻿using Lykke.Sdk;
 using System.Threading.Tasks;
 
 namespace Lykke.Service.LykkeService
@@ -8,7 +7,11 @@ namespace Lykke.Service.LykkeService
     {
         public static async Task Main(string[] args)
         {
-            await LykkeStarter.Start<Startup>(AppEnvironment.Name);
+//#$if DEBUG
+            await LykkeStarter.Start<Startup>(true);
+//#$else
+            await LykkeStarter.Start<Startup>(false);
+//#$endif
         }
     }
 }

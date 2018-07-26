@@ -9,7 +9,6 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Diagnostics;
 
 namespace Lykke.Service.LykkeService
 {
@@ -88,9 +87,6 @@ namespace Lykke.Service.LykkeService
                 };
                 */
             });
-
-            if (Debugger.IsAttached)
-                TelemetryConfiguration.Active.DisableTelemetry = true;
         }
     }
 }

@@ -22,7 +22,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Lykke.Sdk" Version="4.1.1" />
+    <PackageReference Include="Lykke.Sdk" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />
   </ItemGroup>
@@ -30,6 +30,9 @@
     <ProjectReference Include="..\Lykke.Service.LykkeService.AzureRepositories\Lykke.Service.LykkeService.AzureRepositories.csproj" />
     <ProjectReference Include="..\Lykke.Service.LykkeService.Core\Lykke.Service.LykkeService.Core.csproj" />
     <ProjectReference Include="..\Lykke.Service.LykkeService.Services\Lykke.Service.LykkeService.Services.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
     <ItemGroup>
