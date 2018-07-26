@@ -1,5 +1,4 @@
 ﻿using JetBrains.Annotations;
-using Refit;
 
 namespace Lykke.Service.LykkeService.Client
 {
@@ -9,5 +8,7 @@ namespace Lykke.Service.LykkeService.Client
     [PublicAPI]
     public interface ILykkeServiceClient
     {
+        /// <summary>Application Api interface</summary>
+        ILykkeServiceApi Api { get; }
     }
 }
