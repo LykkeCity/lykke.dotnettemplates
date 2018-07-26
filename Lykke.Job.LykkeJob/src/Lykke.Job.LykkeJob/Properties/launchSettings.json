@@ -5,7 +5,6 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "SettingsUrl": "token_to_dev_settings",
-        "ENV_INFO": "localhost_dev"
       }
     },
     "LykkeJob local test settings": {
@@ -13,7 +12,6 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Staging",
         "SettingsUrl": "token_to_test_settings",
-        "ENV_INFO": "localhost_test"
       }
     },
     "LykkeJob remote settings": {

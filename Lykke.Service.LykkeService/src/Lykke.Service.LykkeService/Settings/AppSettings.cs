@@ -6,6 +6,6 @@ namespace Lykke.Service.LykkeService.Settings
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
     public class AppSettings : BaseAppSettings
     {
-        public LykkeServiceSettings LykkeServiceService { get; set; }        
+        public LykkeServiceSettings LykkeServiceService { get; set; }
     }
 }

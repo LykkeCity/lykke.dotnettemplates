@@ -1,5 +1,4 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Lykke.Logs.Loggers.LykkeSlack;
 using Lykke.Sdk;
 using Lykke.Sdk.Health;
@@ -9,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace Lykke.Service.LykkeService
 {
@@ -23,7 +23,7 @@ namespace Lykke.Service.LykkeService
 
         [UsedImplicitly]
         public IServiceProvider ConfigureServices(IServiceCollection services)
-        {                                   
+        {
             return services.BuildServiceProvider<AppSettings>(options =>
             {
                 options.SwaggerOptions = _swaggerOptions;
@@ -87,10 +87,6 @@ namespace Lykke.Service.LykkeService
                 };
                 */
             });
-
-#if DEBUG
-            TelemetryConfiguration.Active.DisableTelemetry = true;
-#endif
         }
     }
 }

@@ -8,5 +8,7 @@ namespace Lykke.Service.LykkeService.Client
     [PublicAPI]
     public interface ILykkeServiceClient
     {
+        /// <summary>Application Api interface</summary>
+        ILykkeServiceApi Api { get; }
     }
 }
