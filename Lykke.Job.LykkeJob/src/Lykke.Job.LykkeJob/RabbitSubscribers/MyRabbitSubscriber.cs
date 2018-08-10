@@ -1,27 +1,28 @@
-﻿using System;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using Common;
 using Common.Log;
+using Lykke.Common.Log;
 using Lykke.Job.LykkeJob.IncomingMessages;
 using Lykke.RabbitMqBroker;
 using Lykke.RabbitMqBroker.Subscriber;
+using System;
+using System.Threading.Tasks;
 
 namespace Lykke.Job.LykkeJob.RabbitSubscribers
 {
     public class MyRabbitSubscriber : IStartable, IStopable
     {
-        private readonly ILog _log;
+        private readonly ILogFactory _logFactory;
         private readonly string _connectionString;
         private readonly string _exchangeName;
         private RabbitMqSubscriber<MySubscribedMessage> _subscriber;
 
         public MyRabbitSubscriber(
-            ILog log,
+            ILogFactory logFactory,
             string connectionString,
             string exchangeName)
         {
-            _log = log;
+            _logFactory = logFactory;
             _connectionString = connectionString;
             _exchangeName = exchangeName;
         }
@@ -36,14 +37,17 @@ namespace Lykke.Job.LykkeJob.RabbitSubscribers
             // TODO: Make additional configuration, using fluent API here:
             // ex: .MakeDurable()
 
-            _subscriber = new RabbitMqSubscriber<MySubscribedMessage>(settings,
-                    new ResilientErrorHandlingStrategy(_log, settings,
-                        retryTimeout: TimeSpan.FromSeconds(10),
-                        next: new DeadQueueErrorHandlingStrategy(_log, settings)))
+            _subscriber = new RabbitMqSubscriber<MySubscribedMessage>(
+                    _logFactory,
+                    settings,
+                    new ResilientErrorHandlingStrategy(
+                        _logFactory,
+                        settings,
+                        TimeSpan.FromSeconds(10),
+                        next: new DeadQueueErrorHandlingStrategy(_logFactory, settings)))
                 .SetMessageDeserializer(new JsonMessageDeserializer<MySubscribedMessage>())
                 .Subscribe(ProcessMessageAsync)
                 .CreateDefaultBinding()
-                .SetLogger(_log)
                 .SetConsole(new LogToConsole())
                 .Start();
         }

@@ -1,11 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Autofac;
+﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Common.Log;
 using Lykke.Job.LykkeJob.Core.Services;
-using Lykke.Job.LykkeJob.Settings.JobSettings;
 using Lykke.Job.LykkeJob.Services;
-using Lykke.SettingsReader;
+using Lykke.Job.LykkeJob.Settings.JobSettings;
 #if azurequeuesub
 using Lykke.JobTriggers.Extenstions;
 #endif
@@ -16,12 +14,14 @@ using Lykke.Job.LykkeJob.PeriodicalHandlers;
 using Lykke.Job.LykkeJob.RabbitSubscribers;
 #endif
 #if rabbitpub
+using AzureStorage.Blob;
 using Lykke.Job.LykkeJob.Contract;
+using Lykke.Job.LykkeJob.RabbitPublishers;
 using Lykke.RabbitMq.Azure;
 using Lykke.RabbitMqBroker.Publisher;
-using Lykke.Job.LykkeJob.RabbitPublishers;
-using AzureStorage.Blob;
 #endif
+using Lykke.SettingsReader;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Lykke.Job.LykkeJob.Modules
 {
@@ -29,14 +29,12 @@ namespace Lykke.Job.LykkeJob.Modules
     {
         private readonly LykkeJobSettings _settings;
         private readonly IReloadingManager<LykkeJobSettings> _settingsManager;
-        private readonly ILog _log;
         // NOTE: you can remove it if you don't need to use IServiceCollection extensions to register service specific dependencies
         private readonly IServiceCollection _services;
 
-        public JobModule(LykkeJobSettings settings, IReloadingManager<LykkeJobSettings> settingsManager, ILog log)
+        public JobModule(LykkeJobSettings settings, IReloadingManager<LykkeJobSettings> settingsManager)
         {
             _settings = settings;
-            _log = log;
             _settingsManager = settingsManager;
 
             _services = new ServiceCollection();
@@ -49,10 +47,6 @@ namespace Lykke.Job.LykkeJob.Modules
             // builder.RegisterType<QuotesPublisher>()
             //  .As<IQuotesPublisher>()
             //  .WithParameter(TypedParameter.From(_settings.Rabbit.ConnectionString))
-
-            builder.RegisterInstance(_log)
-                .As<ILog>()
-                .SingleInstance();
 
             builder.RegisterType<HealthService>()
                 .As<IHealthService>()
@@ -107,7 +101,6 @@ namespace Lykke.Job.LykkeJob.Modules
 
             builder.RegisterType<MyPeriodicalHandler>()
                 .As<IStartable>()
-                .AutoActivate()
                 .SingleInstance();
         }
 #endif
@@ -119,7 +112,6 @@ namespace Lykke.Job.LykkeJob.Modules
 
             builder.RegisterType<MyRabbitSubscriber>()
                 .As<IStartable>()
-                .AutoActivate()
                 .SingleInstance()
                 .WithParameter("connectionString", _settings.Rabbit.ConnectionString)
                 .WithParameter("exchangeName", _settings.Rabbit.ExchangeName);
