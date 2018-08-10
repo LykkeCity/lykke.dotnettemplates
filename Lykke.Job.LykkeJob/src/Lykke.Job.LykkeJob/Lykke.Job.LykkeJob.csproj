@@ -16,32 +16,26 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Lykke.Common" Version="6.8.5" />
-    <PackageReference Include="Lykke.Common.ApiLibrary" Version="1.7.2" />
+    <PackageReference Include="Lykke.Common.ApiLibrary" Version="1.10.1" />
     <!--#if (azurequeuesub) -->
-    <PackageReference Include="Lykke.JobTriggers" Version="2.1.0" />
+    <PackageReference Include="Lykke.JobTriggers" Version="2.2.0" />
     <!--#endif -->
-    <PackageReference Include="Lykke.Logs" Version="4.3.4" />
-    <PackageReference Include="Lykke.MonitoringServiceApiCaller" Version="1.4.0" />
+    <PackageReference Include="Lykke.Logs" Version="5.2.0" />
+    <PackageReference Include="Lykke.MonitoringServiceApiCaller" Version="1.6.2" />
     <!--#if (rabbitpub) -->
-    <PackageReference Include="Lykke.RabbitMq.Azure" Version="5.0.1" />
+    <PackageReference Include="Lykke.RabbitMq.Azure" Version="5.2.0" />
     <!--#endif -->
     <!--#if (rabbitpub || rabbitsub) -->
-    <PackageReference Include="Lykke.RabbitMqBroker" Version="7.0.1" />
+    <PackageReference Include="Lykke.RabbitMqBroker" Version="7.3.0" />
     <!--#endif -->
-    <PackageReference Include="Lykke.SettingsReader" Version="2.4.0" />
+    <PackageReference Include="Lykke.SettingsReader" Version="3.0.0" />
     <PackageReference Include="Lykke.SlackNotification.AzureQueue" Version="2.0.5" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.3.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.HttpOverrides" Version="2.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.1.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.HttpOverrides" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lykke.Job.LykkeJob.AzureRepositories\Lykke.Job.LykkeJob.AzureRepositories.csproj" />

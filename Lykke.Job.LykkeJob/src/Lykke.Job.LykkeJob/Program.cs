@@ -22,13 +22,17 @@ namespace Lykke.Job.LykkeJob
 
             try
             {
-                var webHost = new WebHostBuilder()
+                var hostBuilder = new WebHostBuilder()
                     .UseKestrel()
                     .UseUrls("http://*:5000")
                     .UseContentRoot(Directory.GetCurrentDirectory())
-                    .UseStartup<Startup>()
-                    .UseApplicationInsights()
-                    .Build();
+                    .UseStartup<Startup>();
+
+//#$if !DEBUG
+                hostBuilder = hostBuilder.UseApplicationInsights();
+//#$endif
+
+                var webHost = hostBuilder.Build();
 
                 await webHost.RunAsync();
             }

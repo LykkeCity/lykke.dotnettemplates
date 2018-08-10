@@ -4,6 +4,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AzureStorage.Tables;
 using Common.Log;
+using Lykke.Common;
 using Lykke.Common.ApiLibrary.Middleware;
 using Lykke.Common.ApiLibrary.Swagger;
 using Lykke.Common.Api.Contract.Responses;
@@ -18,7 +19,6 @@ using Lykke.SlackNotification.AzureQueue;
 using Lykke.JobTriggers.Triggers;
 using System.Threading.Tasks;
 #endif
-using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -67,13 +67,22 @@ namespace Lykke.Job.LykkeJob
                 });
 
                 var builder = new ContainerBuilder();
-                var appSettings = Configuration.LoadSettings<AppSettings>();
-                if (appSettings.CurrentValue.MonitoringServiceClient != null)
-                    _monitoringServiceUrl = appSettings.CurrentValue.MonitoringServiceClient.MonitoringServiceUrl;
+                var settingsManager = Configuration.LoadSettings<AppSettings>();
 
-                Log = CreateLogWithSlack(services, appSettings);
+                var appSettings = settingsManager.CurrentValue;
 
-                builder.RegisterModule(new JobModule(appSettings.CurrentValue.LykkeJobJob, appSettings.Nested(x => x.LykkeJobJob), Log));
+                Configuration.CheckDependenciesAsync(
+                    appSettings,
+                    appSettings.SlackNotifications.AzureQueue.ConnectionString,
+                    appSettings.SlackNotifications.AzureQueue.QueueName,
+                    $"{AppEnvironment.Name} {AppEnvironment.Version}");
+
+                if (appSettings.MonitoringServiceClient != null)
+                    _monitoringServiceUrl = appSettings.MonitoringServiceClient.MonitoringServiceUrl;
+
+                Log = CreateLogWithSlack(services, settingsManager);
+
+                builder.RegisterModule(new JobModule(appSettings.LykkeJobJob, settingsManager.Nested(x => x.LykkeJobJob), Log));
 
                 builder.Populate(services);
 
@@ -100,10 +109,6 @@ namespace Lykke.Job.LykkeJob
                 app.UseLykkeForwardedHeaders();
                 app.UseLykkeMiddleware("LykkeJob", ex => new ErrorResponse {ErrorMessage = "Technical problem"});
 
-#if DEBUG
-                TelemetryConfiguration.Active.DisableTelemetry = true;
-#endif
-
                 app.UseMvc();
                 app.UseSwagger(c =>
                 {
@@ -118,7 +123,7 @@ namespace Lykke.Job.LykkeJob
 
                 appLifetime.ApplicationStarted.Register(() => StartApplication().GetAwaiter().GetResult());
                 appLifetime.ApplicationStopping.Register(() => StopApplication().GetAwaiter().GetResult());
-                appLifetime.ApplicationStopped.Register(() => CleanUp().GetAwaiter().GetResult());
+                appLifetime.ApplicationStopped.Register(CleanUp);
             }
             catch (Exception ex)
             {
@@ -140,15 +145,15 @@ namespace Lykke.Job.LykkeJob
 
                 _triggerHostTask = _triggerHost.Start();
 #endif
-                await Log.WriteMonitorAsync("", Program.EnvInfo, "Started");
+                Log.WriteMonitor("", Program.EnvInfo, "Started");
 
-#if (!DEBUG)
+//#$if !DEBUG
                 await AutoRegistrationInMonitoring.RegisterAsync(Configuration, _monitoringServiceUrl, Log);
-#endif
+//#$endif
             }
             catch (Exception ex)
             {
-                await Log.WriteFatalErrorAsync(nameof(Startup), nameof(StartApplication), "", ex);
+                Log.WriteFatalError(nameof(Startup), nameof(StartApplication), ex);
                 throw;
             }
         }
@@ -172,32 +177,24 @@ namespace Lykke.Job.LykkeJob
             }
             catch (Exception ex)
             {
-                if (Log != null)
-                {
-                    await Log.WriteFatalErrorAsync(nameof(Startup), nameof(StopApplication), "", ex);
-                }
+                Log?.WriteFatalError(nameof(Startup), nameof(StopApplication), ex);
                 throw;
             }
         }
 
-        private async Task CleanUp()
+        private void CleanUp()
         {
             try
             {
                 // NOTE: Job can't recieve and process IsAlive requests here, so you can destroy all resources
-                
-                if (Log != null)
-                {
-                    await Log.WriteMonitorAsync("", Program.EnvInfo, "Terminating");
-                }
-                
+                Log?.WriteMonitor("", Program.EnvInfo, "Terminating");
                 ApplicationContainer.Dispose();
             }
             catch (Exception ex)
             {
                 if (Log != null)
                 {
-                    await Log.WriteFatalErrorAsync(nameof(Startup), nameof(CleanUp), "", ex);
+                    Log.WriteFatalError(nameof(Startup), nameof(CleanUp), ex);
                     (Log as IDisposable)?.Dispose();
                 }
                 throw;
@@ -216,7 +213,7 @@ namespace Lykke.Job.LykkeJob
 
             if (string.IsNullOrEmpty(dbLogConnectionString))
             {
-                consoleLogger.WriteWarningAsync(nameof(Startup), nameof(CreateLogWithSlack), "Table loggger is not inited").Wait();
+                consoleLogger.WriteWarning(nameof(Startup), nameof(CreateLogWithSlack), "Table loggger is not inited");
                 return aggregateLogger;
             }
 
