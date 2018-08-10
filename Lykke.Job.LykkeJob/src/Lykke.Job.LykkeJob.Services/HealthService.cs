@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Lykke.Job.LykkeJob.Core.Domain.Health;
+﻿using Lykke.Common.Health;
 using Lykke.Job.LykkeJob.Core.Services;
+using System.Collections.Generic;
 
 namespace Lykke.Job.LykkeJob.Services
 {
