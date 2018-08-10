@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Common;
 using Common.Log;
+using Lykke.Common.Log;
 using Lykke.Job.LykkeJob.Core.Services;
 
 namespace Lykke.Job.LykkeJob.Services
@@ -11,15 +12,14 @@ namespace Lykke.Job.LykkeJob.Services
     // If this is your case, use this class to manage shutdown.
     // For example, sometimes some state should be saved only after all incoming message processing and 
     // all periodical handler was stopped, and so on.
-    
     public class ShutdownManager : IShutdownManager
     {
         private readonly ILog _log;
         private readonly IEnumerable<IStopable> _items;
 
-        public ShutdownManager(ILog log, IEnumerable<IStopable> items)
+        public ShutdownManager(ILogFactory logFactory, IEnumerable<IStopable> items)
         {
-            _log = log;
+            _log = logFactory.CreateLog(this);
             _items = items;
         }
 
@@ -34,7 +34,7 @@ namespace Lykke.Job.LykkeJob.Services
                 }
                 catch (Exception ex)
                 {
-                    _log.WriteWarning(nameof(StopAsync), null, $"Unable to stop {item.GetType().Name}", ex);
+                    _log.Warning($"Unable to stop {item.GetType().Name}", ex);
                 }
             }
 

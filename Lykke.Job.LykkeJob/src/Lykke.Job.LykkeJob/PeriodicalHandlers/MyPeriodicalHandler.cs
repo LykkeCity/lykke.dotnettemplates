@@ -1,16 +1,16 @@
-﻿using System;
+﻿using Common;
+using Lykke.Common.Log;
+using System;
 using System.Threading.Tasks;
-using Common;
-using Common.Log;
 
 namespace Lykke.Job.LykkeJob.PeriodicalHandlers
 {
     public class MyPeriodicalHandler : TimerPeriod
     {
-        public MyPeriodicalHandler(ILog log) :
+        public MyPeriodicalHandler(ILogFactory logFactory) :
             // TODO: Sometimes, it is enough to hardcode the period right here, but sometimes it's better to move it to the settings.
             // Choose the simplest and sufficient solution
-            base(nameof(MyPeriodicalHandler), (int)TimeSpan.FromSeconds(10).TotalMilliseconds, log)
+            base(TimeSpan.FromSeconds(10), logFactory)
         {
         }
 

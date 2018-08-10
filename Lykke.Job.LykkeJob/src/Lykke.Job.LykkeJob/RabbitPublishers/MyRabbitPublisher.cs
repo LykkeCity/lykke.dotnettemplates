@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Common.Log;
+using Lykke.Common.Log;
 using Lykke.Job.LykkeJob.Contract;
 using Lykke.Job.LykkeJob.Core.Services;
 using Lykke.RabbitMqBroker.Publisher;
@@ -9,13 +10,13 @@ namespace Lykke.Job.LykkeJob.RabbitPublishers
 {
     public class MyRabbitPublisher : IMyRabbitPublisher
     {
-        private readonly ILog _log;
+        private readonly ILogFactory _logFactory;
         private readonly string _connectionString;
         private RabbitMqPublisher<MyPublishedMessage> _publisher;
 
-        public MyRabbitPublisher(ILog log, string connectionString)
+        public MyRabbitPublisher(ILogFactory logFactory, string connectionString)
         {
-            _log = log;
+            _logFactory = logFactory;
             _connectionString = connectionString;
         }
 
@@ -29,11 +30,10 @@ namespace Lykke.Job.LykkeJob.RabbitPublishers
             // TODO: Make additional configuration, using fluent API here:
             // ex: .MakeDurable()
 
-            _publisher = new RabbitMqPublisher<MyPublishedMessage>(settings)
+            _publisher = new RabbitMqPublisher<MyPublishedMessage>(_logFactory, settings)
                 .SetSerializer(new JsonMessageSerializer<MyPublishedMessage>())
                 .SetPublishStrategy(new DefaultFanoutPublishStrategy(settings))
                 .PublishSynchronously()
-                .SetLogger(_log)
                 .SetConsole(new LogToConsole())
                 .Start();
         }
