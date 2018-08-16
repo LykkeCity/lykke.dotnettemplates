@@ -53,10 +53,12 @@ namespace Lykke.Job.LykkeJob.Modules
                 .SingleInstance();
 
             builder.RegisterType<StartupManager>()
-                .As<IStartupManager>();
+                .As<IStartupManager>()
+                .SingleInstance();
 
             builder.RegisterType<ShutdownManager>()
-                .As<IShutdownManager>();
+                .As<IShutdownManager>()
+                .SingleInstance();
 #if azurequeuesub
 
             RegisterAzureQueueHandlers(builder);
