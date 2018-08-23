@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using Lykke.Common;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.PlatformAbstractions;
 
 namespace Lykke.Job.LykkeJob
 {
@@ -12,7 +12,7 @@ namespace Lykke.Job.LykkeJob
 
         public static async Task Main(string[] args)
         {
-            Console.WriteLine($"{PlatformServices.Default.Application.ApplicationName} version {PlatformServices.Default.Application.ApplicationVersion}");
+            Console.WriteLine($"{AppEnvironment.Name} version {AppEnvironment.Version}");
 //#$if DEBUG
             Console.WriteLine("Is DEBUG");
 //#$else
