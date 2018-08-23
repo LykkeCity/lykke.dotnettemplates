@@ -10,6 +10,6 @@
     <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Lykke.Common" Version="7.0.2" />
+    <PackageReference Include="Lykke.Common" Version="7.0.3" />
   </ItemGroup>
 </Project>

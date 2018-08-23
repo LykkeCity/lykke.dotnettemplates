@@ -70,15 +70,14 @@ namespace Lykke.Job.LykkeJob
                     options.DefaultLykkeConfiguration(ApiVersion, ApiName);
                 });
 
-                var settingsManager = Configuration.LoadSettings<AppSettings>();
+                var settingsManager = Configuration.LoadSettings<AppSettings>(options =>
+                {
+                    options.SetConnString(x => x.SlackNotifications.AzureQueue.ConnectionString);
+                    options.SetQueueName(x => x.SlackNotifications.AzureQueue.QueueName);
+                    options.SenderName = $"{AppEnvironment.Name} {AppEnvironment.Version}";
+                });
 
                 var appSettings = settingsManager.CurrentValue;
-
-                Configuration.CheckDependenciesAsync(
-                    appSettings,
-                    appSettings.SlackNotifications.AzureQueue.ConnectionString,
-                    appSettings.SlackNotifications.AzureQueue.QueueName,
-                    $"{AppEnvironment.Name} {AppEnvironment.Version}");
 
                 if (appSettings.MonitoringServiceClient != null)
                     _monitoringServiceUrl = appSettings.MonitoringServiceClient.MonitoringServiceUrl;
