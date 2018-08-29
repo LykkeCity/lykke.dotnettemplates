@@ -58,6 +58,7 @@ namespace Lykke.Job.LykkeJob.Modules
 
             builder.RegisterType<ShutdownManager>()
                 .As<IShutdownManager>()
+                .AutoActivate()
                 .SingleInstance();
 #if azurequeuesub
 
