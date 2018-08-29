@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using System.Net;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.PlatformAbstractions;
-using Swashbuckle.AspNetCore.SwaggerGen;
+﻿using Lykke.Common;
 using Lykke.Common.Api.Contract.Responses;
 using Lykke.Job.LykkeJob.Core.Services;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Linq;
+using System.Net;
 
 namespace Lykke.Job.LykkeJob.Controllers
 {
@@ -41,8 +41,8 @@ namespace Lykke.Job.LykkeJob.Controllers
             // NOTE: Feel free to extend IsAliveResponse, to display job-specific indicators
             return Ok(new IsAliveResponse
             {
-                Name = PlatformServices.Default.Application.ApplicationName,
-                Version = PlatformServices.Default.Application.ApplicationVersion,
+                Name = AppEnvironment.Name,
+                Version = AppEnvironment.Version,
                 Env = Program.EnvInfo,
 //#$if DEBUG
                 IsDebug = true,
