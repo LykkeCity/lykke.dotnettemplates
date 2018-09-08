@@ -1,10 +1,10 @@
 ﻿using Lykke.Common;
 using Lykke.Common.Api.Contract.Responses;
-using Lykke.Job.LykkeJob.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Linq;
 using System.Net;
+using Lykke.Job.LykkeJob.Domain.Services;
 
 namespace Lykke.Job.LykkeJob.Controllers
 {

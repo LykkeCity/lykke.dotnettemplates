@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Common;
 using Common.Log;
 using Lykke.Common.Log;
-using Lykke.Job.LykkeJob.Core.Services;
+using Lykke.Job.LykkeJob.Domain.Services;
 
 namespace Lykke.Job.LykkeJob.Services
 {

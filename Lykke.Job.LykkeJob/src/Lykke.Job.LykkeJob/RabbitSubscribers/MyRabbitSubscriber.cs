@@ -48,7 +48,6 @@ namespace Lykke.Job.LykkeJob.RabbitSubscribers
                 .SetMessageDeserializer(new JsonMessageDeserializer<MySubscribedMessage>())
                 .Subscribe(ProcessMessageAsync)
                 .CreateDefaultBinding()
-                .SetConsole(new LogToConsole())
                 .Start();
         }
 

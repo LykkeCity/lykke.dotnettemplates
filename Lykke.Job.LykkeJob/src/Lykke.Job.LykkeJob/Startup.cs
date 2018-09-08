@@ -7,7 +7,6 @@ using Lykke.Common.ApiLibrary.Middleware;
 using Lykke.Common.ApiLibrary.Swagger;
 using Lykke.Common.Api.Contract.Responses;
 using Lykke.Common.Log;
-using Lykke.Job.LykkeJob.Core.Services;
 using Lykke.Job.LykkeJob.Settings;
 using Lykke.Job.LykkeJob.Modules;
 #if azurequeuesub
@@ -23,6 +22,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Threading.Tasks;
+using Lykke.Job.LykkeJob.Domain.Services;
 
 namespace Lykke.Job.LykkeJob
 {

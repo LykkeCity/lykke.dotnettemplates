@@ -23,13 +23,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Lykke.Sdk" Version="5.3.0" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lykke.Service.LykkeService.AzureRepositories\Lykke.Service.LykkeService.AzureRepositories.csproj" />
-    <ProjectReference Include="..\Lykke.Service.LykkeService.Core\Lykke.Service.LykkeService.Core.csproj" />
-    <ProjectReference Include="..\Lykke.Service.LykkeService.Services\Lykke.Service.LykkeService.Services.csproj" />
+    <ProjectReference Include="..\Lykke.Service.LykkeService.Domain\Lykke.Service.LykkeService.Domain.csproj" />
+    <ProjectReference Include="..\Lykke.Service.LykkeService.DomainServices\Lykke.Service.LykkeService.DomainServices.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />

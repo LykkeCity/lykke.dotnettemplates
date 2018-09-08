@@ -20,13 +20,13 @@
     <!--#if (azurequeuesub) -->
     <PackageReference Include="Lykke.JobTriggers" Version="2.2.0" />
     <!--#endif -->
-    <PackageReference Include="Lykke.Logs" Version="5.2.0" />
+    <PackageReference Include="Lykke.Logs" Version="6.0.0" />
     <PackageReference Include="Lykke.MonitoringServiceApiCaller" Version="1.6.2" />
     <!--#if (rabbitpub) -->
     <PackageReference Include="Lykke.RabbitMq.Azure" Version="5.2.0" />
     <!--#endif -->
     <!--#if (rabbitpub || rabbitsub) -->
-    <PackageReference Include="Lykke.RabbitMqBroker" Version="7.3.0" />
+    <PackageReference Include="Lykke.RabbitMqBroker" Version="7.4.0" />
     <!--#endif -->
     <PackageReference Include="Lykke.SettingsReader" Version="4.0.1" />
     <PackageReference Include="Lykke.SlackNotification.AzureQueue" Version="2.0.5" />
@@ -39,7 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lykke.Job.LykkeJob.AzureRepositories\Lykke.Job.LykkeJob.AzureRepositories.csproj" />
-    <ProjectReference Include="..\Lykke.Job.LykkeJob.Core\Lykke.Job.LykkeJob.Core.csproj" />
-    <ProjectReference Include="..\Lykke.Job.LykkeJob.Services\Lykke.Job.LykkeJob.Services.csproj" />
+    <ProjectReference Include="..\Lykke.Job.LykkeJob.Domain\Lykke.Job.LykkeJob.Domain.csproj" />
+    <ProjectReference Include="..\Lykke.Job.LykkeJob.DomainServices\Lykke.Job.LykkeJob.DomainServices.csproj" />
   </ItemGroup>
 </Project>

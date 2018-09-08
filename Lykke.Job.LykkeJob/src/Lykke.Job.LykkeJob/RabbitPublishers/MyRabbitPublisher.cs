@@ -2,7 +2,7 @@
 using Common.Log;
 using Lykke.Common.Log;
 using Lykke.Job.LykkeJob.Contract;
-using Lykke.Job.LykkeJob.Core.Services;
+using Lykke.Job.LykkeJob.Domain.Services;
 using Lykke.RabbitMqBroker.Publisher;
 using Lykke.RabbitMqBroker.Subscriber;
 
@@ -34,7 +34,6 @@ namespace Lykke.Job.LykkeJob.RabbitPublishers
                 .SetSerializer(new JsonMessageSerializer<MyPublishedMessage>())
                 .SetPublishStrategy(new DefaultFanoutPublishStrategy(settings))
                 .PublishSynchronously()
-                .SetConsole(new LogToConsole())
                 .Start();
         }
 

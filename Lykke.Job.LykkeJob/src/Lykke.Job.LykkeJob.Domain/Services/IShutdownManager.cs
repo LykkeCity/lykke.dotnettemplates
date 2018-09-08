@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Lykke.Job.LykkeJob.Core.Services
+namespace Lykke.Job.LykkeJob.Domain.Services
 {
     public interface IShutdownManager
     {
