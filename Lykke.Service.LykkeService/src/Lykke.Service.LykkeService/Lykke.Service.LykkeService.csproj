@@ -3,8 +3,6 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <OutputType>Exe</OutputType>
     <Version>1.0.1</Version>
-    <AssemblyName>Lykke.Service.LykkeService</AssemblyName>
-    <RootNamespace>Lykke.Service.LykkeService</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netcoreapp2.0\Lykke.Service.LykkeService.xml</DocumentationFile>
@@ -27,9 +25,9 @@
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lykke.Service.LykkeService.AzureRepositories\Lykke.Service.LykkeService.AzureRepositories.csproj" />
-    <ProjectReference Include="..\Lykke.Service.LykkeService.Domain\Lykke.Service.LykkeService.Domain.csproj" />
-    <ProjectReference Include="..\Lykke.Service.LykkeService.DomainServices\Lykke.Service.LykkeService.DomainServices.csproj" />
+    <ProjectReference Include="..\Lykke.LykkeType.LykkeService.AzureRepositories\Lykke.LykkeType.LykkeService.AzureRepositories.csproj" />
+    <ProjectReference Include="..\Lykke.LykkeType.LykkeService.Domain\Lykke.LykkeType.LykkeService.Domain.csproj" />
+    <ProjectReference Include="..\Lykke.LykkeType.LykkeService.DomainServices\Lykke.LykkeType.LykkeService.DomainServices.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />

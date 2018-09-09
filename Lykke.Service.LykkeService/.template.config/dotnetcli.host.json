@@ -1,0 +1,24 @@
+{
+  "symbolInfo": {
+    "azurequeuesub": {
+      "longName": "azurequeuesub",
+      "shortName": "az"
+    },
+    "rabbitsub": {
+      "longName": "rabbitsub",
+      "shortName": "rsub"
+    },
+    "rabbitpub": {
+      "longName": "rabbitpub",
+      "shortName": "rpub"
+    },
+    "timeperiod": {
+      "longName": "timeperiod",
+      "shortName": "t"
+    },
+    "serviceType": {
+      "longName": "type",
+      "shortName": "type"
+    }
+  }
+}

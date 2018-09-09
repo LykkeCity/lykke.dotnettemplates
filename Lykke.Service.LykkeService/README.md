@@ -1,6 +1,6 @@
 # Lykke.Service template #
 
-dotnet cli template for generating a solution for the service Lykke.Service.ServiceName
+dotnet cli template for generating a solution for the service Lykke.Service.ServiceName and/or job Lykke.Job.JobName
 
 ## How to use? ##
 
@@ -13,11 +13,27 @@ $ dotnet new --install ${path}
 where `${path}` is the **full** path to the clonned directory (where folder .template.config placed) **without trailing slash**
 
 Now new template can be used in dotnet cli:
-
+to generate new service including job projects:
 ```sh
-dotnet new lkeservice -n ${ServiceName} -o Lykke.Service.${ServiceName}
+dotnet new lkeservice -n ${ServiceName} -o Lykke.Service.${ServiceName} [-az {true|false} -rpub {true|false} -rsub {true|false} -t {true|false}]  
 ```
-This will create a solution in the current folder, where `${ServiceName}` is the service name without Lykke.Service. prefix. 
+
+to generate solution with only the job projects:
+```sh
+dotnet new lkeservice -n ${JobName} -o Lykke.Job.${ServiceName} -type Job [-az {true|false} -rpub {true|false} -rsub {true|false} -t {true|false}] 
+```
+This will create a solution in the current folder, where `${ServiceName}` or `${JobName}` is the service/job name without Lykke.Service./Lykke.Job. prefix. Switches:
+
+-   **-n|--name**: Service/Job name
+-   **-o|--output**: Output directory name
+-   **-type**: Type of the project. Available values: 
+Service - will create a solution named Lykke.Service.{ServiceName} containing service, client, job, service and job contracts.
+Job - will create a solution named Lykke.Job.{JobName} containing only job related projects (no client, service contracts, and service host). 
+Default is **Service**
+-   **-az|--azurequeuesub**: Enables incoming Azure Queue messages processing, using Lykke.JobTriggers package. Default is  **false**
+-   **-rsub|--rabbitsub**: Enables incoming RabbitMQ messages processing. Default is  **false**
+-   **-rpub|--rabbitpub**: Enables outcoming RabbitMQ messages sending. Default is  **false**
+-   **-t|--timeperiod**: Enables periodical work execution, using TimerPeriod class from Lykke.Common package. Default is  **false**
 
 When temlate has changed, to update installed template run again command:
 

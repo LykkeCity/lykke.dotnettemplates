@@ -6,6 +6,9 @@ using System;
 
 namespace Lykke.Service.LykkeService.Client
 {
+    /// <summary>
+    /// Extension for client registration
+    /// </summary>
     [PublicAPI]
     public static class AutofacExtension
     {

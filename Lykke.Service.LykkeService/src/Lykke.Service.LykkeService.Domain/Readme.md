@@ -1,1 +1,0 @@
-Place domain objects here, at the root of the project
