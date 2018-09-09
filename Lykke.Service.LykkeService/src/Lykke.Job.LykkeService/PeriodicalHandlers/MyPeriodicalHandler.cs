@@ -26,13 +26,13 @@ namespace Lykke.Job.LykkeService.PeriodicalHandlers
         
         public void Stop()
         {
-            _timerTrigger?.Stop();
+            _timerTrigger.Stop();
         }
 
         public void Dispose()
         {
-            _timerTrigger?.Stop();
-            _timerTrigger?.Dispose();
+            _timerTrigger.Stop();
+            _timerTrigger.Dispose();
         }
 
         private async Task Execute(ITimerTrigger timer, TimerTriggeredHandlerArgs args, CancellationToken cancellationToken)
