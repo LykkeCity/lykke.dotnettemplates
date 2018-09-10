@@ -1,9 +1,35 @@
+##if (serviceType=='Service')
 LykkeServiceService:
     Db:
         LogsConnString:
             settings-key: LogsConnString
             types:
-                - AzureTableStorage
+              - AzureTableStorage
+##endif
+LykkeServiceJob:
+  Db:
+    LogsConnString:
+      settings-key: LogsConnString
+      types:
+        - AzureTableStorage
+##if (azurequeuesub)
+  AzureQueue:
+    ConnectionString:
+      settings-key: ConnectionString
+      types:
+        - AzureTableStorage
+##endif
+##if (rabbitsub || rabbitpub)
+  Rabbit:
+    ConnectionString:
+      settings-key: ConnectionString
+      types:
+        - RabbitMq
+##endif
+##if (rabbitsub)
+    ExchangeName:
+      settings-key: ExchangeName
+##endif
 SlackNotifications:
     AzureQueue:
         ConnectionString:
