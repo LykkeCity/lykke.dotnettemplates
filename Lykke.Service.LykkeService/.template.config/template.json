@@ -17,15 +17,17 @@
       "choices": [
         {
           "choice": "Service",
-          "description": "Will contain all projects (service, client, job)"
+          "description": "Will contain only service related projects (service, service contracts, client)"
+        },
+        {
+          "choice": "ServiceJob",
+          "description": "Will contain all projects (service, client, job, contracts)"
         },
         {
           "choice": "Job",
           "description":"Will contain only job related projects (no service and client projects)"
         }
-      ],
-      "replaces": "LykkeType",
-      "fileRename": "LykkeType"
+      ]
     },
     "azurequeuesub":{
       "type": "parameter",
@@ -79,7 +81,7 @@
             "value": "4. Tests"
           },
           {
-            "condition": "(serviceType == 'Service')",
+            "condition": "(serviceType == 'Service' || serviceType == 'ServiceJob')",
             "value": "5. Tests"
           }
         ]
@@ -97,12 +99,30 @@
             "value": "5. Hosts"
           },
           {
-            "condition": "(serviceType == 'Service')",
+            "condition": "(serviceType == 'Service' || serviceType == 'ServiceJob')",
             "value": "6. Hosts"
           }
         ]
       }
     },
+    "renameProjectType": {
+      "type": "generated",
+      "generator": "switch",
+      "dataType": "string",
+      "replaces": "LykkeType",
+      "parameters": {
+        "cases": [
+          {
+            "condition": "(serviceType == 'Job')",
+            "value": "Job"
+          },
+          {
+            "condition": "(serviceType == 'Service' || serviceType == 'ServiceJob')",
+            "value": "Service"
+          }
+        ]
+      }
+    }
   },
   "SpecialCustomOperations": {
     "*.yaml" : {
@@ -124,7 +144,7 @@
           "condition": "(!azurequeuesub)",
           "exclude": [ 
             "src/Lykke.Job.LykkeService/Settings/JobSettings/AzureQueueSettings.cs",
-            "src/Lykke.Job.LykkeService/AzureQueueHandlers/*.*",
+            "src/Lykke.Job.LykkeService/AzureQueueHandlers/*.*"
           ]
         },
         {
@@ -150,9 +170,7 @@
           "exclude": [ 
               "src/Lykke.Job.LykkeService/RabbitPublishers/*.*",
               "src/Lykke.LykkeType.LykkeService.Domain/Services/IMyRabbitPublisher.cs",
-              "contract/Lykke.Job.LykkeService.Contract/MyPublishedMessage.cs",
-              "contract/Lykke.Job.LykkeService.Contract/Lykke.Job.LykkeService.Contract.csproj",
-              "contract/Lykke.Job.LykkeService.Contract/Readme.md"
+              "contract/Lykke.Job.LykkeService.Contract/**/*"
           ]
         },
         {
@@ -162,12 +180,28 @@
           ]
         },
         {
-          "condition": "(serviceType=='Job')",
+          "condition": "(serviceType == 'Job')",
           "exclude": [ 
               "client/Lykke.Service.LykkeService.Client/**/*",
               "contract/Lykke.Service.LykkeService.Contract/**/*",
               "src/Lykke.Service.LykkeService/**/*"
           ]
+        },
+        {
+          "condition": "(serviceType == 'Service')",
+          "exclude": [ 
+              "src/Lykke.LykkeType.LykkeService.Domain/Services/IMyRabbitPublisher.cs",
+              "contract/Lykke.Job.LykkeService.Contract/**/*",
+              "src/Lykke.Job.LykkeService/**/*"
+          ]
+        },
+        {
+          "condition": "(serviceType == 'Service' || serviceType == 'ServiceJob')",
+          "rename": { "LykkeType": "Service"}
+        },
+        {
+          "condition": "(serviceType == 'Job')",
+          "rename": { "LykkeType": "Job"}
         },
         {
           "exclude": [

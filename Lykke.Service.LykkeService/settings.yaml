@@ -1,4 +1,4 @@
-##if (serviceType=='Service')
+##if (serviceType != 'Job')
 LykkeServiceService:
     Db:
         LogsConnString:
@@ -6,12 +6,14 @@ LykkeServiceService:
             types:
               - AzureTableStorage
 ##endif
+##if (serviceType != 'Service')
 LykkeServiceJob:
   Db:
     LogsConnString:
       settings-key: LogsConnString
       types:
         - AzureTableStorage
+##endif
 ##if (azurequeuesub)
   AzureQueue:
     ConnectionString:
