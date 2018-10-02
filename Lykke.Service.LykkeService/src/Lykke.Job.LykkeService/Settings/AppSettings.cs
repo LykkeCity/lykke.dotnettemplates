@@ -1,16 +1,10 @@
 ﻿using Lykke.Job.LykkeService.Settings.JobSettings;
-using Lykke.Job.LykkeService.Settings.SlackNotifications;
-using Lykke.SettingsReader.Attributes;
+using Lykke.Sdk.Settings;
 
 namespace Lykke.Job.LykkeService.Settings
 {
-    public class AppSettings
+    public class AppSettings : BaseAppSettings
     {
         public LykkeServiceJobSettings LykkeServiceJob { get; set; }
-
-        public SlackNotificationsSettings SlackNotifications { get; set; }
-
-        [Optional]
-        public MonitoringServiceClientSettings MonitoringServiceClient { get; set; }
     }
 }
