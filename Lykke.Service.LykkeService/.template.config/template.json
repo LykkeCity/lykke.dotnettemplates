@@ -149,8 +149,7 @@
           "condition": "(!rabbitpub)",
           "exclude": [ 
               "src/Lykke.Job.LykkeService/RabbitPublishers/*.*",
-              "src/Lykke.Job.LykkeService.Domain/Services/IMyRabbitPublisher.cs",
-              "src/Lykke.Service.LykkeService.Domain/Services/IMyRabbitPublisher.cs",
+              "src/Lykke.LykkeType.LykkeService.Domain/Services/IMyRabbitPublisher.cs",
               "contract/Lykke.Job.LykkeService.Contract/MyPublishedMessage.cs",
               "contract/Lykke.Job.LykkeService.Contract/Lykke.Job.LykkeService.Contract.csproj",
               "contract/Lykke.Job.LykkeService.Contract/Readme.md"
