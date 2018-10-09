@@ -21,8 +21,8 @@ using Lykke.Job.LykkeService.Contract;
 using Lykke.Job.LykkeService.RabbitPublishers;
 using Lykke.RabbitMq.Azure;
 using Lykke.RabbitMqBroker.Publisher;
-#endif
 using Lykke.LykkeType.LykkeService.Domain.Services;
+#endif
 using Lykke.SettingsReader;
 using Microsoft.Extensions.DependencyInjection;
 
