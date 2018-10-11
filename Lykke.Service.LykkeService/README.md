@@ -13,21 +13,28 @@ $ dotnet new --install ${path}
 where `${path}` is the **full** path to the clonned directory (where folder .template.config placed) **without trailing slash**
 
 Now new template can be used in dotnet cli:
-to generate new service including job projects:
+to generate new service:
 ```sh
 dotnet new lkeservice -n ${ServiceName} -o Lykke.Service.${ServiceName} [-az {true|false} -rpub {true|false} -rsub {true|false} -t {true|false}]  
 ```
 
 to generate solution with only the job projects:
 ```sh
-dotnet new lkeservice -n ${JobName} -o Lykke.Job.${ServiceName} -type Job [-az {true|false} -rpub {true|false} -rsub {true|false} -t {true|false}] 
+dotnet new lkeservice -n ${JobName} -o Lykke.Job.${JobName} -type Job [-az {true|false} -rpub {true|false} -rsub {true|false} -t {true|false}] 
 ```
+
+to generate solution with service and job projects:
+```sh
+dotnet new lkeservice -n ${ServiceName} -o Lykke.Service.${ServiceName} -type ServiceJob [-az {true|false} -rpub {true|false} -rsub {true|false} -t {true|false}] 
+```
+
 This will create a solution in the current folder, where `${ServiceName}` or `${JobName}` is the service/job name without Lykke.Service./Lykke.Job. prefix. Switches:
 
 -   **-n|--name**: Service/Job name
 -   **-o|--output**: Output directory name
 -   **-type**: Type of the project. Available values: 
-Service - will create a solution named Lykke.Service.{ServiceName} containing service, client, job, service and job contracts.
+Service - will create a solution named Lykke.Service.{ServiceName} containing service, client and service contracts.
+ServiceJob - will create a solution named Lykke.Service.{ServiceName} containing service, client, job, service and job contracts.
 Job - will create a solution named Lykke.Job.{JobName} containing only job related projects (no client, service contracts, and service host). 
 Default is **Service**
 -   **-az|--azurequeuesub**: Enables incoming Azure Queue messages processing, using Lykke.JobTriggers package. Default is  **false**
