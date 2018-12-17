@@ -2,7 +2,7 @@
 LykkeServiceService:
     Db:
         LogsConnString:
-            settings-key: LogsConnString
+            settings-key: LykkeServiceService-LogsConnString
             types:
               - AzureTableStorage
 ##endif
@@ -10,7 +10,7 @@ LykkeServiceService:
 LykkeServiceJob:
   Db:
     LogsConnString:
-      settings-key: LogsConnString
+      settings-key: LykkeServiceJob-LogsConnString
       types:
         - AzureTableStorage
 ##endif
