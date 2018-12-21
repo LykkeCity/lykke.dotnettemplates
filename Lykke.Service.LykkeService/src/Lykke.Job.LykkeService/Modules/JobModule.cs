@@ -8,6 +8,7 @@ using Lykke.Sdk;
 using Lykke.Sdk.Health;
 #if azurequeuesub
 using Lykke.JobTriggers.Extenstions;
+using Lykke.JobTriggers.Triggers;
 #endif
 #if timeperiod
 using Lykke.Job.LykkeService.PeriodicalHandlers;
@@ -88,6 +89,14 @@ namespace Lykke.Job.LykkeService.Modules
 
         private void RegisterAzureQueueHandlers(ContainerBuilder builder)
         {
+            builder.Register(ctx =>
+            {
+                var scope = ctx.Resolve<ILifetimeScope>();
+                var host = new TriggerHost(new AutofacServiceProvider(scope));
+                return host;
+            }).As<TriggerHost>()
+            .SingleInstance();
+    
             // NOTE: You can implement your own poison queue notifier for azure queue subscription.
             // See https://github.com/LykkeCity/JobTriggers/blob/master/readme.md
             // builder.Register<PoisionQueueNotifierImplementation>().As<IPoisionQueueNotifier>();

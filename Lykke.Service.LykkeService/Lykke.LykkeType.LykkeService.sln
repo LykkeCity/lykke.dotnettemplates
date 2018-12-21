@@ -27,7 +27,7 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Service.LykkeService.Contract", "contract\Lykke.Service.LykkeService.Contract\Lykke.Service.LykkeService.Contract.csproj", "{931B95E3-AF9F-4A4C-9C6A-5959C2FBCAC9}"
 EndProject
 ##endif
-##if (serviceType != 'Service' && rabbitpub)
+##if (serviceType != 'Service')
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Job.LykkeService.Contract", "contract\Lykke.Job.LykkeService.Contract\Lykke.Job.LykkeService.Contract.csproj", "{58FEDF76-9CC9-4B3B-877F-0795CE7C50F9}"
 EndProject
 ##endif
@@ -87,13 +87,11 @@ Global
 		{A61FFDEE-5725-4650-A788-6E55EE5EFD5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A61FFDEE-5725-4650-A788-6E55EE5EFD5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A61FFDEE-5725-4650-A788-6E55EE5EFD5B}.Release|Any CPU.Build.0 = Release|Any CPU
-##if (serviceType != 'Service' && rabbitpub)
+##if (serviceType != 'Service')
 		{58FEDF76-9CC9-4B3B-877F-0795CE7C50F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{58FEDF76-9CC9-4B3B-877F-0795CE7C50F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58FEDF76-9CC9-4B3B-877F-0795CE7C50F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58FEDF76-9CC9-4B3B-877F-0795CE7C50F9}.Release|Any CPU.Build.0 = Release|Any CPU
-##endif
-##if (serviceType != 'Service')
         {5566FD3E-0DB6-4BF3-A98D-4A1181B3E02C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
         {5566FD3E-0DB6-4BF3-A98D-4A1181B3E02C}.Debug|Any CPU.Build.0 = Debug|Any CPU
         {5566FD3E-0DB6-4BF3-A98D-4A1181B3E02C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -116,7 +114,7 @@ Global
 		{4BE49E02-AAAD-460B-8D00-57F412A3D181} = {BF745453-B940-470E-81BC-43FB67703D4E}
 		{2D5F52EC-2A27-4045-81ED-72355E2A6325} = {CC2067D7-1971-47BB-B491-5649EA3C18B2}
 		{A61FFDEE-5725-4650-A788-6E55EE5EFD5B} = {8F9036B1-5106-4C69-B2D2-B78EE52687A0}
-##if (serviceType != 'Service' && rabbitpub)
+##if (serviceType != 'Service')
 		{58FEDF76-9CC9-4B3B-877F-0795CE7C50F9} = {14B5AF15-F733-4EF0-9FB9-3E61C4C83ADD}
 ##endif
 	EndGlobalSection
