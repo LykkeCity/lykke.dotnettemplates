@@ -169,8 +169,7 @@
           "condition": "(!rabbitpub)",
           "exclude": [ 
               "src/Lykke.Job.LykkeService/RabbitPublishers/*.*",
-              "src/Lykke.LykkeType.LykkeService.Domain/Services/IMyRabbitPublisher.cs",
-              "contract/Lykke.Job.LykkeService.Contract/**/*"
+              "src/Lykke.LykkeType.LykkeService.Domain/Services/IMyRabbitPublisher.cs"
           ]
         },
         {

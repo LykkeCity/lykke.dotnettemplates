@@ -1,211 +1,87 @@
-﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using Common.Log;
-using JetBrains.Annotations;
-using Lykke.Common;
-using Lykke.Common.ApiLibrary.Middleware;
-using Lykke.Common.ApiLibrary.Swagger;
-using Lykke.Common.Api.Contract.Responses;
-using Lykke.Common.Log;
+﻿using JetBrains.Annotations;
 using Lykke.Job.LykkeService.Settings;
-using Lykke.Job.LykkeService.Modules;
-#if azurequeuesub
-using Lykke.JobTriggers.Triggers;
-#endif
-using Lykke.Logs;
-using Lykke.SettingsReader;
-using Lykke.MonitoringServiceApiCaller;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Converters;
 using System;
-using System.Threading.Tasks;
 using Lykke.Sdk;
 
 namespace Lykke.Job.LykkeService
 {
-    [PublicAPI]
+    [UsedImplicitly]
     public class Startup
     {
-        private const string ApiVersion = "v1";
-        private const string ApiName = "LykkeServiceJob API";
-
-        private string _monitoringServiceUrl;
-        private ILog _log;
-        private IHealthNotifier _healthNotifier;
-#if azurequeuesub
-        private TriggerHost _triggerHost;
-        private Task _triggerHostTask;
-#endif
-
-        public IHostingEnvironment Environment { get; }
-        public IContainer ApplicationContainer { get; private set; }
-        public IConfigurationRoot Configuration { get; }
-
-        public Startup(IHostingEnvironment env)
+        private readonly LykkeSwaggerOptions _swaggerOptions = new LykkeSwaggerOptions
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddEnvironmentVariables();
+            ApiTitle = "LykkeServiceJob API",
+            ApiVersion = "v1"
+        };
 
-            Configuration = builder.Build();
-            Environment = env;
-        }
-
+        [UsedImplicitly]
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            try
+            return services.BuildServiceProvider<AppSettings>(options =>
             {
-                services.AddMvc()
-                    .AddJsonOptions(options =>
+                options.SwaggerOptions = _swaggerOptions;
+
+                options.Logs = logs =>
+                {
+                    logs.AzureTableName = "LykkeServiceJobLog";
+                    logs.AzureTableConnectionStringResolver = settings => settings.LykkeServiceJob.Db.LogsConnString;
+
+                    // TODO: You could add extended logging configuration here:
+                    /* 
+                    logs.Extended = extendedLogs =>
                     {
-                        options.SerializerSettings.Converters.Add(new StringEnumConverter());
-                        options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+                        // For example, you could add additional slack channel like this:
+                        extendedLogs.AddAdditionalSlackChannel("LykkeService", channelOptions =>
+                        {
+                            channelOptions.MinLogLevel = LogLevel.Information;
+                        });
+                    };
+                    */
+                };
+
+                // TODO: Extend the service configuration
+                /*
+                options.Extend = (sc, settings) =>
+                {
+                    sc
+                        .AddOptions()
+                        .AddAuthentication(MyAuthOptions.AuthenticationScheme)
+                        .AddScheme<MyAuthOptions, KeyAuthHandler>(MyAuthOptions.AuthenticationScheme, null);
+                };
+                */
+
+                // TODO: You could add extended Swagger configuration here:
+                /*
+                options.Swagger = swagger =>
+                {
+                    swagger.IgnoreObsoleteActions();
+                };
+                */
+            });
+        }
+
+        [UsedImplicitly]
+        public void Configure(IApplicationBuilder app)
+        {
+            app.UseLykkeConfiguration(options =>
+            {
+                options.SwaggerOptions = _swaggerOptions;
+
+                // TODO: Configure additional middleware for eg authentication or maintenancemode checks
+                /*
+                options.WithMiddleware = x =>
+                {
+                    x.UseMaintenanceMode<AppSettings>(settings => new MaintenanceMode
+                    {
+                        Enabled = settings.MaintenanceMode?.Enabled ?? false,
+                        Reason = settings.MaintenanceMode?.Reason
                     });
-
-                services.AddSwaggerGen(options =>
-                {
-                    options.DefaultLykkeConfiguration(ApiVersion, ApiName);
-                });
-
-                var settingsManager = Configuration.LoadSettings<AppSettings>(options =>
-                {
-                    options.SetConnString(x => x.SlackNotifications.AzureQueue.ConnectionString);
-                    options.SetQueueName(x => x.SlackNotifications.AzureQueue.QueueName);
-                    options.SenderName = $"{AppEnvironment.Name} {AppEnvironment.Version}";
-                });
-
-                var appSettings = settingsManager.CurrentValue;
-
-                if (appSettings.MonitoringServiceClient != null)
-                    _monitoringServiceUrl = appSettings.MonitoringServiceClient.MonitoringServiceUrl;
-
-                services.AddLykkeLogging(
-                    settingsManager.ConnectionString(s => s.LykkeServiceJob.Db.LogsConnString),
-                    "LykkeServiceJobLog",
-                    appSettings.SlackNotifications.AzureQueue.ConnectionString,
-                    appSettings.SlackNotifications.AzureQueue.QueueName);
-
-                var builder = new ContainerBuilder();
-                builder.Populate(services);
-
-                builder.RegisterModule(new JobModule(appSettings.LykkeServiceJob, settingsManager.Nested(x => x.LykkeServiceJob)));
-
-                ApplicationContainer = builder.Build();
-
-                var logFactory = ApplicationContainer.Resolve<ILogFactory>();
-                _log = logFactory.CreateLog(this);
-                _healthNotifier = ApplicationContainer.Resolve<IHealthNotifier>();
-
-                return new AutofacServiceProvider(ApplicationContainer);
-            }
-            catch (Exception ex)
-            {
-                if (_log == null)
-                    Console.WriteLine(ex);
-                else
-                    _log.Critical(ex);
-                throw;
-            }
-        }
-
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime appLifetime)
-        {
-            try
-            {
-                if (env.IsDevelopment())
-                    app.UseDeveloperExceptionPage();
-
-                app.UseLykkeForwardedHeaders();
-                app.UseLykkeMiddleware(ex => new ErrorResponse {ErrorMessage = "Technical problem"});
-
-                app.UseMvc();
-                app.UseSwagger(c =>
-                {
-                    c.PreSerializeFilters.Add((swagger, httpReq) => swagger.Host = httpReq.Host.Value);
-                });
-                app.UseSwaggerUI(x =>
-                {
-                    x.RoutePrefix = "swagger/ui";
-                    x.SwaggerEndpoint($"/swagger/{ApiVersion}/swagger.json", ApiVersion);
-                });
-                app.UseStaticFiles();
-
-                appLifetime.ApplicationStarted.Register(() => StartApplication().GetAwaiter().GetResult());
-                appLifetime.ApplicationStopping.Register(() => StopApplication().GetAwaiter().GetResult());
-                appLifetime.ApplicationStopped.Register(CleanUp);
-            }
-            catch (Exception ex)
-            {
-                _log?.Critical(ex);
-                throw;
-            }
-        }
-
-        private async Task StartApplication()
-        {
-            try
-            {
-                // NOTE: Job not yet recieve and process IsAlive requests here
-
-                await ApplicationContainer.Resolve<IStartupManager>().StartAsync();
-#if azurequeuesub
-
-                _triggerHost = new TriggerHost(new AutofacServiceProvider(ApplicationContainer));
-
-                _triggerHostTask = _triggerHost.Start();
-#endif
-                _healthNotifier.Notify("Started", Program.EnvInfo);
-
-//#$if !DEBUG
-                await Configuration.RegisterInMonitoringServiceAsync(_monitoringServiceUrl, _healthNotifier);
-//#$endif
-            }
-            catch (Exception ex)
-            {
-                _log.Critical(ex);
-                throw;
-            }
-        }
-
-        private async Task StopApplication()
-        {
-            try
-            {
-                // NOTE: Job still can recieve and process IsAlive requests here, so take care about it if you add logic here.
-
-                await ApplicationContainer.Resolve<IShutdownManager>().StopAsync();
-#if azurequeuesub
-
-                _triggerHost?.Cancel();
-
-                if(_triggerHostTask != null)
-                    await _triggerHostTask;
-#endif
-            }
-            catch (Exception ex)
-            {
-                _log?.Critical(ex);
-                throw;
-            }
-        }
-
-        private void CleanUp()
-        {
-            try
-            {
-                // NOTE: Job can't recieve and process IsAlive requests here, so you can destroy all resources
-                _healthNotifier?.Notify("Terminating", Program.EnvInfo);
-
-                ApplicationContainer.Dispose();
-            }
-            catch (Exception ex)
-            {
-                _log?.Critical(ex);
-                throw;
-            }
+                    x.UseAuthentication();
+                };
+                */
+            });
         }
     }
 }

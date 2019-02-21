@@ -1,6 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Common.Log;
 using Lykke.Common.Log;
+#if azurequeuesub
+using Lykke.JobTriggers.Triggers;
+#endif
 using Lykke.Sdk;
 
 namespace Lykke.Job.LykkeService.Services
@@ -14,6 +17,23 @@ namespace Lykke.Job.LykkeService.Services
 
     public class StartupManager : IStartupManager
     {
+#if azurequeuesub
+        private readonly ILog _log;
+        private readonly TriggerHost _triggerHost;
+
+        public StartupManager(
+            ILogFactory logFactory,
+            TriggerHost triggerHost)
+        {
+            _log = logFactory.CreateLog(this);
+            _triggerHost = triggerHost;
+        }
+
+        public async Task StartAsync()
+        {
+            await _triggerHost.Start();
+        }
+#else
         private readonly ILog _log;
 
         public StartupManager(ILogFactory logFactory)
@@ -27,5 +47,6 @@ namespace Lykke.Job.LykkeService.Services
 
             await Task.CompletedTask;
         }
+#endif
     }
 }
