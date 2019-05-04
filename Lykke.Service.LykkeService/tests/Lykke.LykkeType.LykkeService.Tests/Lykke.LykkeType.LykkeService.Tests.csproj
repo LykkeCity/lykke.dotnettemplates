@@ -9,4 +9,11 @@
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
   </ItemGroup>
+  <ItemGroup>
+    <!--#if (serviceType != "Job") -->
+    <ProjectReference Include="..\..\client\Lykke.Service.LykkeService.Client\Lykke.Service.LykkeService.Client.csproj" />
+    <ProjectReference Include="..\..\src\Lykke.Service.LykkeService\Lykke.Service.LykkeService.csproj" />
+    <!--#endif -->
+    <ProjectReference Include="..\..\src\Lykke.LykkeType.LykkeService.DomainServices\Lykke.LykkeType.LykkeService.DomainServices.csproj" />
+  </ItemGroup>
 </Project>
