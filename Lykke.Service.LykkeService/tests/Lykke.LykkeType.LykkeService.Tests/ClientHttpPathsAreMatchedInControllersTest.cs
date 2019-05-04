@@ -56,13 +56,17 @@ namespace Lykke.LykkeType.LykkeService.Tests
 
                     var routeAttr = implMethod.CustomAttributes.FirstOrDefault(a => a.AttributeType == _routeAttrType);
                     var httpAttr = implMethod.CustomAttributes.First(a => _httpAttrs.Any(i => i == a.AttributeType));
-                    var implRoute = (routeAttr ?? httpAttr).ConstructorArguments[0].Value.ToString();
+                    var implRoute = string.Empty;
+                    if ((routeAttr ?? httpAttr).ConstructorArguments.Count > 0)
+                        implRoute = (routeAttr ?? httpAttr).ConstructorArguments[0].Value.ToString();
 
                     var controllerRouteAttr = implementingController.CustomAttributes.FirstOrDefault(a => a.AttributeType == _routeAttrType);
                     if (controllerRouteAttr != null)
                     {
                         var controllerRoute = controllerRouteAttr.ConstructorArguments[0].Value.ToString();
-                        implRoute = $"{controllerRoute.Trim('/')}/{implRoute.TrimStart('/')}";
+                        implRoute = string.IsNullOrWhiteSpace(implRoute)
+                            ? controllerRoute.Trim('/')
+                            : $"{controllerRoute.Trim('/')}/{implRoute.TrimStart('/')}";
                     }
 
                     if (apiRoute != implRoute)
