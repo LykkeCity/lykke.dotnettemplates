@@ -34,7 +34,7 @@ namespace Lykke.LykkeType.LykkeService.Tests
                 .ToList();
             var controllers = Assembly.GetAssembly(typeof(Startup))
                 .GetTypes()
-                .Where(t => t.IsSubclassOf(typeof(Controller)))
+                .Where(t => t.IsSubclassOf(typeof(ControllerBase)))
                 .ToList();
 
             var apiErrors = new List<string>();
