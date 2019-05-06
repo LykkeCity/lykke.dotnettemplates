@@ -15,11 +15,11 @@ namespace Lykke.LykkeType.LykkeService.Tests
         private readonly Type _routeAttrType = typeof(RouteAttribute);
         private readonly List<Type> _refitAttrs = new List<Type>
         {
-            typeof(GetAttribute), typeof(PostAttribute), typeof(PutAttribute), typeof(DeleteAttribute)
+            typeof(GetAttribute), typeof(PostAttribute), typeof(PutAttribute), typeof(DeleteAttribute), typeof(PatchAttribute)
         };
         private readonly List<Type> _httpAttrs = new List<Type>
         {
-            typeof(HttpGetAttribute), typeof(HttpPostAttribute), typeof(HttpPutAttribute), typeof(HttpDeleteAttribute)
+            typeof(HttpGetAttribute), typeof(HttpPostAttribute), typeof(HttpPutAttribute), typeof(HttpDeleteAttribute), typeof(HttpPatchAttribute)
         };
 
         [Fact]
