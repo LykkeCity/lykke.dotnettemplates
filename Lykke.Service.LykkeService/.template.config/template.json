@@ -183,7 +183,8 @@
           "exclude": [ 
               "client/Lykke.Service.LykkeService.Client/**/*",
               "contract/Lykke.Service.LykkeService.Contract/**/*",
-              "src/Lykke.Service.LykkeService/**/*"
+              "src/Lykke.Service.LykkeService/**/*",
+              "tests/Lykke.LykkeType.LykkeService.Tests/ClientHttpPathsAreMatchedInControllersTest.cs",
           ]
         },
         {
