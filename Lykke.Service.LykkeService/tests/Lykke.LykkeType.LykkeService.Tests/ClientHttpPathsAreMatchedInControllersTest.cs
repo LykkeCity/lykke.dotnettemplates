@@ -57,7 +57,8 @@ namespace Lykke.LykkeType.LykkeService.Tests
                     if (!apiRoute.StartsWith('/'))
                         apiErrors.Add(
                             $"Route '{apiRoute}' on {apiInterface.Name}.{apiMethod.Name} is missing leading slash");
-                    apiRoute = apiRoute.TrimStart('/');
+                    else
+                        apiRoute = apiRoute.TrimStart('/');
 
                     var implMethod = implementingController.GetMethod(
                         apiMethod.Name,
