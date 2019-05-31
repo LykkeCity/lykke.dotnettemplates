@@ -52,7 +52,13 @@ namespace Lykke.LykkeType.LykkeService.Tests
 
                 foreach (var apiMethod in interfaceMethods)
                 {
-                    var refitAttr = apiMethod.CustomAttributes.First(a => _refitAttrs.Any(i => i == a.AttributeType));
+                    var refitAttr = apiMethod.CustomAttributes.FirstOrDefault(a => _refitAttrs.Any(i => i == a.AttributeType));
+                    if (refitAttr == null)
+                    {
+                        apiErrors.Add($"Refit attribute is missing on {apiInterface.Name}.{apiMethod.Name}");
+                        continue;
+                    }
+
                     var apiRoute = refitAttr.ConstructorArguments[0].Value.ToString();
                     if (apiRoute.StartsWith('/'))
                         apiRoute = apiRoute.TrimStart('/');
