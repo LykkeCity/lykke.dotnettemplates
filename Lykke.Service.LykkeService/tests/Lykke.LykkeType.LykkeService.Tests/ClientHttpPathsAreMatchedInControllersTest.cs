@@ -54,11 +54,11 @@ namespace Lykke.LykkeType.LykkeService.Tests
                 {
                     var refitAttr = apiMethod.CustomAttributes.First(a => _refitAttrs.Any(i => i == a.AttributeType));
                     var apiRoute = refitAttr.ConstructorArguments[0].Value.ToString();
-                    if (!apiRoute.StartsWith('/'))
+                    if (apiRoute.StartsWith('/'))
+                        apiRoute = apiRoute.TrimStart('/');
+                    else
                         apiErrors.Add(
                             $"Route '{apiRoute}' on {apiInterface.Name}.{apiMethod.Name} is missing leading slash");
-                    else
-                        apiRoute = apiRoute.TrimStart('/');
 
                     var implMethod = implementingController.GetMethod(
                         apiMethod.Name,
