@@ -42,13 +42,29 @@ namespace Lykke.LykkeType.LykkeService.Tests
             foreach (var apiInterface in apiInterfaces)
             {
                 var implementingController = controllers.FirstOrDefault(c => c.GetInterfaces().Any(i => i == apiInterface));
+                var interfaceMethods = apiInterface.GetMethods();
                 if (implementingController == null)
-                    continue;
-
-                foreach (var apiMethod in apiInterface.GetMethods())
                 {
-                    var refitAttr = apiMethod.CustomAttributes.First(a => _refitAttrs.Any(i => i == a.AttributeType));
-                    var apiRoute = refitAttr.ConstructorArguments[0].Value.ToString().TrimStart('/');
+                    if (interfaceMethods.Length > 0)
+                        apiErrors.Add($"Api interface '{apiInterface.Name}' is not implemented");
+                    continue;
+                }
+
+                foreach (var apiMethod in interfaceMethods)
+                {
+                    var refitAttr = apiMethod.CustomAttributes.FirstOrDefault(a => _refitAttrs.Any(i => i == a.AttributeType));
+                    if (refitAttr == null)
+                    {
+                        apiErrors.Add($"Refit attribute is missing on {apiInterface.Name}.{apiMethod.Name}");
+                        continue;
+                    }
+
+                    var apiRoute = refitAttr.ConstructorArguments[0].Value.ToString();
+                    if (apiRoute.StartsWith('/'))
+                        apiRoute = apiRoute.TrimStart('/');
+                    else
+                        apiErrors.Add(
+                            $"Route '{apiRoute}' on {apiInterface.Name}.{apiMethod.Name} is missing leading slash");
 
                     var implMethod = implementingController.GetMethod(
                         apiMethod.Name,
@@ -79,8 +95,6 @@ namespace Lykke.LykkeType.LykkeService.Tests
                 }
             }
 
-            if (apiInterfaces.Any())
-                Assert.True(controllers.Any());
             Assert.True(apiErrors.Count == 0, string.Join(",\t", apiErrors));
         }
     }
