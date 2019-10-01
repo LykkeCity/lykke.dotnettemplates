@@ -13,7 +13,7 @@ namespace Lykke.LykkeType.LykkeService.Tests
 
         private readonly List<string> _sensitiveParamsNames = new List<string>
         {
-            "name", "email", "phone"
+            "name", "email", "phone", "login"
         };
 
         [Fact]
