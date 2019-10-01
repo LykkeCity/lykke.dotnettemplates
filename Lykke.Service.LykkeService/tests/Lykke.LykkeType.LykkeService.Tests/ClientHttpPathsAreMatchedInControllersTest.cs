@@ -31,7 +31,7 @@ namespace Lykke.LykkeType.LykkeService.Tests
                 .GetProperties()
                 .Where(p => p.CanRead && p.PropertyType.IsInterface)
                 .Select(p => p.PropertyType)
-                .ToList();
+                .ToHashSet();
             var controllers = Assembly.GetAssembly(typeof(Startup))
                 .GetTypes()
                 .Where(t => t.IsSubclassOf(typeof(ControllerBase)))
