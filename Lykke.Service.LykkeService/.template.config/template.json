@@ -185,6 +185,7 @@
               "contract/Lykke.Service.LykkeService.Contract/**/*",
               "src/Lykke.Service.LykkeService/**/*",
               "tests/Lykke.LykkeType.LykkeService.Tests/ClientHttpPathsAreMatchedInControllersTest.cs",
+              "tests/Lykke.LykkeType.LykkeService.Tests/SensitiveDataTests.cs"
           ]
         },
         {
